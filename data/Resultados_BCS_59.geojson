@@ -1,0 +1,1362 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -112.1158017,
+          25.1904701
+        ]
+      },
+      "properties": {
+        "id": "bcs_1",
+        "Estado": "Baja California Sur",
+        "No": 1,
+        "Municipio": "Comondú",
+        "Localidad": "Puerto Adolfo López Mateos",
+        "Nombre de la ETC": "Restaurant Bajamar",
+        "Google": "https://maps.app.goo.gl/kK14rdQj1XdQvisd8",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/Baja+Mar/@25.1904701,-112.1158017,17z/data=!4m6!3m5!1s0x86b36eeba98c5763:0x35538c5aebca191d!8m2!3d25.1904701!4d-112.1158017!16s%2Fg%2F11hbc21kfw?entry=tts&g_ep=EgoyMDI1MDgxOS4wIPu8ASoASAFQAw%3D%3D&skid=e30a16f9-56fe-48ff-ac0b-00e907c7094a",
+        "lat": 25.1904701,
+        "lon": -112.1158017
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -112.1229121,
+          25.1937069
+        ]
+      },
+      "properties": {
+        "id": "bcs_2",
+        "Estado": "Baja California Sur",
+        "No": 2,
+        "Municipio": "Comondú",
+        "Localidad": "Puerto Adolfo López Mateos",
+        "Nombre de la ETC": "Aquendi",
+        "Google": "https://maps.app.goo.gl/B8rac8LscEveYeYf7",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/Aquendi+Tour's/@25.1937069,-112.1229121,18z/data=!4m7!3m6!1s0x86b36ff8ddba6797:0x847491d0cf3b1d3a!8m2!3d25.1936211!4d-112.123898!15sCgdhcXVlbmRpkgEXc2lnaHRzZWVpbmdfdG91cl9hZ2VuY3mqAS8QATIeEAEiGpzivqE65mdu7i0I6CDOnVky6OJ8D_GN4VYNMgsQAiIHYXF1ZW5kaeABAA!16s%2Fg%2F11tw_638np?entry=tts&g_ep=EgoyMDI1MDgxOS4wIPu8ASoASAFQAw%3D%3D&skid=7f20ebc2-76d5-496b-b432-98796823f01f",
+        "lat": 25.1937069,
+        "lon": -112.1229121
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -112.1042934,
+          24.7999753
+        ]
+      },
+      "properties": {
+        "id": "bcs_3",
+        "Estado": "Baja California Sur",
+        "No": 3,
+        "Municipio": "Comondú",
+        "Localidad": "Puerto San Carlos",
+        "Nombre de la ETC": "Paseo entre dunas y manglares en Bahía Magdalena",
+        "Google": "https://maps.app.goo.gl/tJ1apJdVfDkqiQ1u6",
+        "Observación": "Localidad",
+        "google_expanded": "https://www.google.com/maps/place/23740+Puerto+San+Carlos,+B.C.S./@24.7999753,-112.1042934,14z/data=!3m1!4b1!4m6!3m5!1s0x86b305c1ba451de1:0x6e78ee10795970c6!8m2!3d24.7892439!4d-112.1045334!16s%2Fm%2F0j3gcq3?entry=tts&g_ep=EgoyMDI1MDgxOS4wIPu8ASoASAFQAw%3D%3D&skid=ec7a6924-a1db-4fca-8e04-bc3ec007d585",
+        "lat": 24.7999753,
+        "lon": -112.1042934
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -112.1042934,
+          24.7999753
+        ]
+      },
+      "properties": {
+        "id": "bcs_4",
+        "Estado": "Baja California Sur",
+        "No": 4,
+        "Municipio": "Comondú",
+        "Localidad": "Puerto San Carlos",
+        "Nombre de la ETC": "Zafari Acuático",
+        "Google": "https://maps.app.goo.gl/tJ1apJdVfDkqiQ1u6",
+        "Observación": "Localidad",
+        "google_expanded": "https://www.google.com/maps/place/23740+Puerto+San+Carlos,+B.C.S./@24.7999753,-112.1042934,14z/data=!3m1!4b1!4m6!3m5!1s0x86b305c1ba451de1:0x6e78ee10795970c6!8m2!3d24.7892439!4d-112.1045334!16s%2Fm%2F0j3gcq3?entry=tts&g_ep=EgoyMDI1MDgxOS4wIPu8ASoASAFQAw%3D%3D&skid=ec7a6924-a1db-4fca-8e04-bc3ec007d585",
+        "lat": 24.7999753,
+        "lon": -112.1042934
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -112.0722035,
+          26.1884606
+        ]
+      },
+      "properties": {
+        "id": "bcs_5",
+        "Estado": "Baja California Sur",
+        "No": 5,
+        "Municipio": "Comondú",
+        "Localidad": "San Isidro y La Purísima",
+        "Nombre de la ETC": "Tour al Sitio arqueológico El Chavalito y Rancho Agua grande. Tour al Cañón Cadegomo. Tour Rural y senderismo",
+        "Google": "https://maps.app.goo.gl/SEnpMRxyR45dHvwk9",
+        "Observación": "Localidad",
+        "google_expanded": "https://www.google.com/maps/place/23810+San+Isidro,+B.C.S./@26.1884606,-112.0722035,13.75z/data=!4m6!3m5!1s0x86b502d118655e5d:0x92a6f35f31ba121e!8m2!3d26.2039888!4d-112.043911!16s%2Fg%2F1tdcb7dq?entry=tts&g_ep=EgoyMDI1MDgxOS4wIPu8ASoASAFQAw%3D%3D&skid=5d2938dd-327b-42d3-9f62-c0cc7f910187",
+        "lat": 26.1884606,
+        "lon": -112.0722035
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.6278829,
+          24.2628801
+        ]
+      },
+      "properties": {
+        "id": "bcs_6",
+        "Estado": "Baja California Sur",
+        "No": 6,
+        "Municipio": "La Paz",
+        "Localidad": "Ejido San Simón",
+        "Nombre de la ETC": "Turismo rural Las Ánimas",
+        "Google": "https://maps.app.goo.gl/s4PrtxCXkmB2SqUB6",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Vista+point/@24.2628801,-110.6278829,4146m/data=!3m1!1e3!4m6!3m5!1s0x86b1df00561f4bef:0xf9ffb8b69037b7a2!8m2!3d24.2663148!4d-110.6169542!16s%2Fg%2F11xmp3zpjb?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=f51d32ce-d04e-4695-9389-f68da35be3f7",
+        "lat": 24.2628801,
+        "lon": -110.6278829
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.1821115,
+          24.2595902
+        ]
+      },
+      "properties": {
+        "id": "bcs_7",
+        "Estado": "Baja California Sur",
+        "No": 7,
+        "Municipio": "La Paz",
+        "Localidad": "El Rosario",
+        "Nombre de la ETC": "Visítanos en El Rosario: Turismo Rural Comunitario",
+        "Google": "https://maps.app.goo.gl/UzyVeQhkteXFy52Z7",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Playa+el+Rosario/@24.2595902,-110.1821115,1189m/data=!3m1!1e3!4m6!3m5!1s0x86afd7cfb3702a7f:0xf5bb0c3928d07d9b!8m2!3d24.2610575!4d-110.1784173!16s%2Fg%2F1q6jkb629?entry=tts&g_ep=EgoyMDI1MDgxOS4wIPu8ASoASAFQAw%3D%3D&skid=d68d67a2-be06-489e-b2e0-4d7898a0da11",
+        "lat": 24.2595902,
+        "lon": -110.1821115
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.1821115,
+          24.2595902
+        ]
+      },
+      "properties": {
+        "id": "bcs_8",
+        "Estado": "Baja California Sur",
+        "No": 8,
+        "Municipio": "La Paz",
+        "Localidad": "El Rosario, San Antonio",
+        "Nombre de la ETC": "Farmacia viviente y talleres de artesanías",
+        "Google": "https://maps.app.goo.gl/UzyVeQhkteXFy52Z7",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Playa+el+Rosario/@24.2595902,-110.1821115,1189m/data=!3m1!1e3!4m6!3m5!1s0x86afd7cfb3702a7f:0xf5bb0c3928d07d9b!8m2!3d24.2610575!4d-110.1784173!16s%2Fg%2F1q6jkb629?entry=tts&g_ep=EgoyMDI1MDgxOS4wIPu8ASoASAFQAw%3D%3D&skid=d68d67a2-be06-489e-b2e0-4d7898a0da11",
+        "lat": 24.2595902,
+        "lon": -110.1821115
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.2993769,
+          24.1760441
+        ]
+      },
+      "properties": {
+        "id": "bcs_9",
+        "Estado": "Baja California Sur",
+        "No": 9,
+        "Municipio": "La Paz",
+        "Localidad": "El Triunfo",
+        "Nombre de la ETC": "Ruta ciclista del oro y la plata",
+        "Google": "https://maps.app.goo.gl/M2aRfovYkL5zJCZT9",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/El+Triunfo,+23010+La+Paz,+B.C.S./@24.1760441,-110.2993769,841m/data=!3m1!1e3!4m6!3m5!1s0x86afd49af57bb261:0xd04af4f71bd7082a!8m2!3d24.1767031!4d-110.2983682!16s%2Fg%2F1w0h7y_6?entry=tts&g_ep=EgoyMDI1MDgxOS4wIPu8ASoASAFQAw%3D%3D&skid=fb716012-192b-4628-a68d-d909bb573227",
+        "lat": 24.1760441,
+        "lon": -110.2993769
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.3263827,
+          24.1516331
+        ]
+      },
+      "properties": {
+        "id": "bcs_10",
+        "Estado": "Baja California Sur",
+        "No": 10,
+        "Municipio": "La Paz",
+        "Localidad": "La Paz",
+        "Nombre de la ETC": "Cielos que unen: astroturismo inclusivo en Baja California Sur",
+        "Google": "https://maps.app.goo.gl/FTPPiLJQiJuJnpUb8",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Malec%C3%B3n+La+Paz/@24.1516331,-110.3263827,11318m/data=!3m1!1e3!4m6!3m5!1s0x86afd35171d76127:0x22141ccdb9b9057a!8m2!3d24.1553874!4d-110.3227178!16s%2Fg%2F11g6ml3462?entry=tts&g_ep=EgoyMDI1MDgxOS4wIPu8ASoASAFQAw%3D%3D&skid=fcdec69e-ef7e-4251-b2eb-af7917c2be3a",
+        "lat": 24.1516331,
+        "lon": -110.3263827
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.3263827,
+          24.1516331
+        ]
+      },
+      "properties": {
+        "id": "bcs_11",
+        "Estado": "Baja California Sur",
+        "No": 11,
+        "Municipio": "La Paz",
+        "Localidad": "La Paz",
+        "Nombre de la ETC": "Sabores en Común",
+        "Google": "https://maps.app.goo.gl/FTPPiLJQiJuJnpUb8",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Malec%C3%B3n+La+Paz/@24.1516331,-110.3263827,11318m/data=!3m1!1e3!4m6!3m5!1s0x86afd35171d76127:0x22141ccdb9b9057a!8m2!3d24.1553874!4d-110.3227178!16s%2Fg%2F11g6ml3462?entry=tts&g_ep=EgoyMDI1MDgxOS4wIPu8ASoASAFQAw%3D%3D&skid=fcdec69e-ef7e-4251-b2eb-af7917c2be3a",
+        "lat": 24.1516331,
+        "lon": -110.3263827
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.9893309,
+          24.0444976
+        ]
+      },
+      "properties": {
+        "id": "bcs_12",
+        "Estado": "Baja California Sur",
+        "No": 12,
+        "Municipio": "La Paz",
+        "Localidad": "La Ventana",
+        "Nombre de la ETC": "Remo y respiro",
+        "Google": "https://maps.app.goo.gl/DsLcZQtb2PJLS9Qb8",
+        "Observación": "Localidad",
+        "google_expanded": "https://www.google.com/maps/place/23232+La+Ventana,+B.C.S./@24.0444976,-109.9893309,1416m/data=!3m1!1e3!4m6!3m5!1s0x86afc23a777d9521:0x30234a437e68581!8m2!3d24.0464698!4d-109.9891363!16s%2Fm%2F027grcn?entry=tts&g_ep=EgoyMDI1MDgxOS4wIPu8ASoASAFQAw%3D%3D&skid=5c7fd342-7487-441b-aff8-e1cf218f7754",
+        "lat": 24.0444976,
+        "lon": -109.9893309
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -111.5652049,
+          24.4204595
+        ]
+      },
+      "properties": {
+        "id": "bcs_13",
+        "Estado": "Baja California Sur",
+        "No": 13,
+        "Municipio": "La Paz",
+        "Localidad": "Puerto Chale",
+        "Nombre de la ETC": "Tours Emmanuel Avistamiento de Ballenas y Aves",
+        "Google": "https://maps.app.goo.gl/iD4xLorUZagPZ8qo9",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/Tours+Emmanuel/@24.4204595,-111.5652049,4749m/data=!3m1!1e3!4m7!3m6!1s0x86b26b6174ddd073:0xd86020b6e53b6937!8m2!3d24.4258293!4d-111.5494536!15sCi5Ub3VycyBFbW1hbnVlbCBBdmlzdGFtaWVudG8gZGUgQmFsbGVuYXMgeSBBdmVzWjAiLnRvdXJzIGVtbWFudWVsIGF2aXN0YW1pZW50byBkZSBiYWxsZW5hcyB5IGF2ZXOSARdzaWdodHNlZWluZ190b3VyX2FnZW5jeZoBI0NoWkRTVWhOTUc5blMwVkpRMEZuU1VOQ2JEZHVlbHBCRUFFqgGgAQoJL20vMDE0ZHN4CggvbS8wMTVwNhABKjIiLnRvdXJzIGVtbWFudWVsIGF2aXN0YW1pZW50byBkZSBiYWxsZW5hcyB5IGF2ZXMoDjIfEAEiG9FJfHJ4q6Z54cyaIU8J50LW0KFtN4RhvHjLdzIyEAIiLnRvdXJzIGVtbWFudWVsIGF2aXN0YW1pZW50byBkZSBiYWxsZW5hcyB5IGF2ZXPgAQD6AQQIABAS!16s%2Fg%2F11pz3hqfyr?entry=tts&g_ep=EgoyMDI1MDgxOS4wIPu8ASoASAFQAw%3D%3D&skid=b0498643-eb5a-49d7-8b40-5220fdd88f81",
+        "lat": 24.4204595,
+        "lon": -111.5652049
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -111.557277,
+          24.4248518
+        ]
+      },
+      "properties": {
+        "id": "bcs_15",
+        "Estado": "Baja California Sur",
+        "No": 15,
+        "Municipio": "La Paz",
+        "Localidad": "Puerto Chale,\nDelegación Los Dolores",
+        "Nombre de la ETC": "Cárdenas Tours",
+        "Google": "https://maps.app.goo.gl/FzUSKA9ZqfUZnQBD8",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/C%C3%A1rdenas+tours/@24.4248518,-111.557277,1035m/data=!3m2!1e3!4b1!4m6!3m5!1s0x86b26b0063631989:0x96a567113e61f427!8m2!3d24.424847!4d-111.5524061!16s%2Fg%2F11lnpz5ygn?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=736a370b-d79a-4ea5-bf0f-73ae266cff2f",
+        "lat": 24.4248518,
+        "lon": -111.557277
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -111.557277,
+          24.4248615
+        ]
+      },
+      "properties": {
+        "id": "bcs_16",
+        "Estado": "Baja California Sur",
+        "No": 16,
+        "Municipio": "La Paz",
+        "Localidad": "Puerto Chale,\nDelegación Los Dolores",
+        "Nombre de la ETC": "Puerto Chale Tours",
+        "Google": "https://maps.app.goo.gl/ry3LT4jasFxwARLv8",
+        "Observación": "Localidad",
+        "google_expanded": "https://www.google.com/maps/place/Puerto+Chale/@24.4248615,-111.557277,1035m/data=!3m1!1e3!4m7!3m6!1s0x86b26be3777f49f5:0x7fe5f65fa6a27af4!8m2!3d24.4225072!4d-111.5533405!15sChJQdWVydG8gQ2hhbGUgVG91cnNaFCIScHVlcnRvIGNoYWxlIHRvdXJzkgEMdmlsbGFnZV9oYWxsmgEjQ2haRFNVaE5NRzluUzBWSlEwRm5TVVJvT1hadFVFeG5FQUWqAVEKCS9tLzAxNGRzeBABKgkiBXRvdXJzKA4yHxABIhsN8MfE7QrZmLbWgnBjEwgaNbdREIGa5gSdf10yFhACIhJwdWVydG8gY2hhbGUgdG91cnPgAQD6AQQIABBB!16s%2Fg%2F11rqx27d40?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=1f936bf5-5c81-4f22-947e-8cc9f8c4f98e",
+        "lat": 24.4248615,
+        "lon": -111.557277
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.0573808,
+          23.805444
+        ]
+      },
+      "properties": {
+        "id": "bcs_18",
+        "Estado": "Baja California Sur",
+        "No": 18,
+        "Municipio": "La Paz",
+        "Localidad": "San Antonio",
+        "Nombre de la ETC": "City Tour + Mina Hidalgo Hiking",
+        "Google": "https://maps.app.goo.gl/13tA8FaDwY2m4BEn7",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Plaza+Publica+San+Antonio/@23.805444,-110.0573808,260m/data=!3m1!1e3!4m6!3m5!1s0x86afbb05e0a87f37:0x55df64a55a535559!8m2!3d23.805172!4d-110.057896!16s%2Fg%2F11fmvdvhh3?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=e5c1d5d7-6208-4622-a7f4-39ce777c6833",
+        "lat": 23.805444,
+        "lon": -110.0573808
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.8486813,
+          23.7381693
+        ]
+      },
+      "properties": {
+        "id": "bcs_19",
+        "Estado": "Baja California Sur",
+        "No": 19,
+        "Municipio": "La Paz",
+        "Localidad": "San Bartolo",
+        "Nombre de la ETC": "Turismo Rural en San Bartolo",
+        "Google": "https://maps.app.goo.gl/UgH7LaAG58nunwFj8",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Parque+San+Bartolo/@23.7381693,-109.8486813,520m/data=!3m1!1e3!4m6!3m5!1s0x86af9bf174a23fb9:0x586a394822e02bb4!8m2!3d23.7381692!4d-109.8472651!16s%2Fg%2F11s615qztg?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=776d1d65-5cc3-484b-9b15-55342f8a235b",
+        "lat": 23.7381693,
+        "lon": -109.8486813
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.2263433,
+          23.4490099
+        ]
+      },
+      "properties": {
+        "id": "bcs_20",
+        "Estado": "Baja California Sur",
+        "No": 20,
+        "Municipio": "La Paz",
+        "Localidad": "Todos Santos",
+        "Nombre de la ETC": "Corazón del Arte",
+        "Google": "https://maps.app.goo.gl/AKa8pHJME2izNzED6",
+        "Observación": "Localidad",
+        "google_expanded": "https://www.google.com/maps/place/Plaza,+Centro,+23300+Todos+Santos,+B.C.S./@23.4490099,-110.2263433,522m/data=!3m1!1e3!4m6!3m5!1s0x86af06a83c332fcd:0x1564aef704265b22!8m2!3d23.4502057!4d-110.2253728!16s%2Fg%2F11bvtj8fxx?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=f5a36bcd-c36b-485b-82ef-443f1190c82b",
+        "lat": 23.4490099,
+        "lon": -110.2263433
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.5664209,
+          23.7523706
+        ]
+      },
+      "properties": {
+        "id": "bcs_21",
+        "Estado": "Baja California Sur",
+        "No": 21,
+        "Municipio": "La Paz",
+        "Localidad": "La Paz",
+        "Nombre de la ETC": "Palomilla Extremely Hiking y Senderismo Choyero Cimarrón",
+        "Google": "https://maps.app.goo.gl/sk9pRHxe29PwEaEx6",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/Palomilla+Extremely+Hiking/@23.7523706,-110.5664209,133199m/data=!3m1!1e3!4m7!3m6!1s0x86afd3dd10582ad3:0x2af13873479cf0ad!8m2!3d24.1135507!4d-110.2932145!15sCjlQYWxvbWlsbGEgRXh0cmVtZWx5IEhpa2luZyB5IFNlbmRlcmlzbW8gQ2hveWVybyBDaW1hcnLDs25aOyI5cGFsb21pbGxhIGV4dHJlbWVseSBoaWtpbmcgeSBzZW5kZXJpc21vIGNob3llcm8gY2ltYXJyw7NukgEXc2lnaHRzZWVpbmdfdG91cl9hZ2VuY3maAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMjVPVEZaVmNFZGlNVTV6VlZSb2VHRnNRbWhaVmtwWFRsWkdSbGt3UlJBQqoBuAEKDS9nLzExamZwcjk0cnEKDS9nLzExa3JiNHk5dzIKCS9tLzAxMnY0agoJL20vMDFzY3d5EAEqICIcc2VuZGVyaXNtbyBjaG95ZXJvIGNpbWFycsOzbigOMh8QASIbbm-j7ek2PpJc2uG_nd1Ymb1i--RB2X1W0yM3Mj0QAiI5cGFsb21pbGxhIGV4dHJlbWVseSBoaWtpbmcgeSBzZW5kZXJpc21vIGNob3llcm8gY2ltYXJyw7Nu4AEA-gEECAAQDQ!16s%2Fg%2F11jfpr94rq?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=6052ce2e-c4b2-4e4a-81ac-769e0dfa9fd7",
+        "lat": 23.7523706,
+        "lon": -110.5664209
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.9891556,
+          24.0451789
+        ]
+      },
+      "properties": {
+        "id": "bcs_22",
+        "Estado": "Baja California Sur",
+        "No": 22,
+        "Municipio": "La Paz",
+        "Localidad": "La Ventana",
+        "Nombre de la ETC": "Seafari en La Ventana",
+        "Google": "https://maps.app.goo.gl/WssZQt7hvoBCdvc9A",
+        "Observación": "Localidad",
+        "google_expanded": "https://www.google.com/maps/place/Playa+La+Ventana/@24.0451789,-109.9891556,2077m/data=!3m1!1e3!4m6!3m5!1s0x86afc3fb76afe86b:0x24920364c495ec02!8m2!3d24.049619!4d-109.988317!16s%2Fg%2F11pdqvph70?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=ae979cd9-703f-42f9-88b2-512b70bc480b",
+        "lat": 24.0451789,
+        "lon": -109.9891556
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -111.4421624,
+          25.9938743
+        ]
+      },
+      "properties": {
+        "id": "bcs_23",
+        "Estado": "Baja California Sur",
+        "No": 23,
+        "Municipio": "Loreto",
+        "Localidad": "Comunidad Paso de Santa Cruz",
+        "Nombre de la ETC": "Rancho La Huerta",
+        "Google": "https://maps.app.goo.gl/wazxeNcP1UtDjygR9",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/Rancho+La+Huerta/@25.9938743,-111.4421624,13749m/data=!3m1!1e3!4m7!3m6!1s0x86b43b4fffa81879:0xb8c7028abb5605d9!8m2!3d25.5609647!4d-111.2646094!15sChlSYW5jaG8gTGEgSHVlcnRhLCwgTG9yZXRvkgEIZmFybXN0YXmqAVUQASoUIhByYW5jaG8gbGEgaHVlcnRhKA4yHhABIhoELZGGzEBX0_X3jtfsG4jozKstD-CSiT4lPjIbEAIiF3JhbmNobyBsYSBodWVydGEgbG9yZXRv4AEA!16s%2Fg%2F11l6yrwlzt?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=46002615-eff8-44db-96d4-ebbf81e98a9b",
+        "lat": 25.9938743,
+        "lon": -111.4421624
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -111.071906,
+          25.5125808
+        ]
+      },
+      "properties": {
+        "id": "bcs_24",
+        "Estado": "Baja California Sur",
+        "No": 24,
+        "Municipio": "Loreto",
+        "Localidad": "Puerto Agua Verde",
+        "Nombre de la ETC": "Proyecto Biznaga",
+        "Google": "https://maps.app.goo.gl/xaXAoZt6oyzu9jDUA",
+        "Observación": "Localidad",
+        "google_expanded": "https://www.google.com/maps/place/23897+Puerto+Agua+Verde,+B.C.S./@25.5125808,-111.071906,427m/data=!3m1!1e3!4m6!3m5!1s0x86b155de44ae9997:0xe1b49d6494f6ba5c!8m2!3d25.512018!4d-111.0709916!16s%2Fg%2F11c5q1ftvq?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=a2896988-8563-4206-9e56-6bb37acbaf28",
+        "lat": 25.5125808,
+        "lon": -111.071906
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -111.0806726,
+          25.5118298
+        ]
+      },
+      "properties": {
+        "id": "bcs_25",
+        "Estado": "Baja California Sur",
+        "No": 25,
+        "Municipio": "Loreto",
+        "Localidad": "Puerto Agua Verde",
+        "Nombre de la ETC": "Restaurante Brisa del Mar",
+        "Google": "https://maps.app.goo.gl/ZcScUA9GMncArSu88",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/Brisa+del+Mar/@25.5118298,-111.0806726,2440m/data=!3m1!1e3!4m7!3m6!1s0x86b155d83c5724b5:0x12b515c3d243e9d2!8m2!3d25.514117!4d-111.0696738!15sChlSZXN0YXVyYW50ZSBCcmlzYSBkZWwgTWFyWhsiGXJlc3RhdXJhbnRlIGJyaXNhIGRlbCBtYXKSARJzZWFmb29kX3Jlc3RhdXJhbnSaASNDaFpEU1VoTk1HOW5TMFZKUTBGblNVUTFlVTl1UmtkM0VBRaoBcAoNL2cvMTFzNHptMDF6YhABKh0iGXJlc3RhdXJhbnRlIGJyaXNhIGRlbCBtYXIoDjIfEAEiG5QhNessprQ_nzGZOIkYRiD_PesAuh_d3QAWPTIdEAIiGXJlc3RhdXJhbnRlIGJyaXNhIGRlbCBtYXLgAQD6AQQIABAk!16s%2Fg%2F11f9hrc8mr?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=ecbeb96d-b532-4a12-9ba3-b32aa759c58e",
+        "lat": 25.5118298,
+        "lon": -111.0806726
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -111.1689408,
+          25.5786132
+        ]
+      },
+      "properties": {
+        "id": "bcs_26",
+        "Estado": "Baja California Sur",
+        "No": 26,
+        "Municipio": "Loreto",
+        "Localidad": "Rancho San Cosme",
+        "Nombre de la ETC": "Artes y Aventura",
+        "Google": "https://maps.app.goo.gl/QF78GJDb4NTSFAzr6",
+        "Observación": "Localidad",
+        "google_expanded": "https://www.google.com/maps/place/Playa+San+Cosme/@25.5786132,-111.1689408,862m/data=!3m1!1e3!4m6!3m5!1s0x86b3ff5fa6d8a3bf:0x64a4acc30625e1ac!8m2!3d25.5790079!4d-111.1680613!16s%2Fg%2F11dxrp2bkz?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=2cfbfb9e-0727-40ff-956e-68ab1330c483",
+        "lat": 25.5786132,
+        "lon": -111.1689408
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.6749106,
+          23.0627331
+        ]
+      },
+      "properties": {
+        "id": "bcs_27",
+        "Estado": "Baja California Sur",
+        "No": 27,
+        "Municipio": "Los Cabos",
+        "Localidad": "La Playita",
+        "Nombre de la ETC": "Observación de Ballenas por Salty Cabo\nExcursions",
+        "Google": "https://maps.app.goo.gl/qNGwNXPgYNTRG4Bj6",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/Salty+Cabo+-+Snorkeling+San+Jose+del+Cabo,+Whale+Watching+and+Sunset+Tours/@23.0627331,-109.6749106,1046m/data=!3m2!1e3!4b1!4m6!3m5!1s0x86af51f4f2c57d99:0xa1113330ad795b20!8m2!3d23.0627282!4d-109.6723357!16s%2Fg%2F11h9l0ft69?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=a6e54929-7d4b-4347-938b-c44fe45a9d84",
+        "lat": 23.0627331,
+        "lon": -109.6749106
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.5826712,
+          23.5969693
+        ]
+      },
+      "properties": {
+        "id": "bcs_28",
+        "Estado": "Baja California Sur",
+        "No": 28,
+        "Municipio": "Los Cabos",
+        "Localidad": "La Ribera",
+        "Nombre de la ETC": "Experiencias Botánicas: Recorrido multisensorial y comida",
+        "Google": "https://maps.app.goo.gl/EJamqG8SyxV7yPSn8",
+        "Observación": "Localidad",
+        "google_expanded": "https://www.google.com/maps/place/Playa+La+Ribera/@23.5969693,-109.5826712,1473m/data=!3m1!1e3!4m6!3m5!1s0x86af7fdc23e9da91:0x257d3225ff9b013!8m2!3d23.5996912!4d-109.5750943!16s%2Fg%2F11c2jgwlgx?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=4e96833b-963b-49b7-ba20-5a1a79a28422",
+        "lat": 23.5969693,
+        "lon": -109.5826712
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.9124805,
+          22.8839323
+        ]
+      },
+      "properties": {
+        "id": "bcs_29",
+        "Estado": "Baja California Sur",
+        "No": 29,
+        "Municipio": "Los Cabos",
+        "Localidad": "Rancherías aledañas a San José del Cabo",
+        "Nombre de la ETC": "Raíces Vivas – Turismo comunitario en rancherías de Los Cabos",
+        "Google": "https://maps.app.goo.gl/cxXVfQSyNC6gZxqx6",
+        "Observación": "Localidad",
+        "google_expanded": "https://www.google.com/maps/place/Aparcamiento,+Centro,+Marina,+23450+Cabo+San+Lucas,+B.C.S./@22.8839323,-109.9124805,623m/data=!3m1!1e3!4m6!3m5!1s0x86af4ae5b4b9fc95:0x29ba56b097e00a0c!8m2!3d22.8829499!4d-109.9111676!16s%2Fg%2F11bw4mbxx0?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=c38311b7-c9bf-4c0e-8675-04715fbf9271",
+        "lat": 22.8839323,
+        "lon": -109.9124805
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.6952219,
+          23.0764293
+        ]
+      },
+      "properties": {
+        "id": "bcs_30",
+        "Estado": "Baja California Sur",
+        "No": 30,
+        "Municipio": "Los Cabos",
+        "Localidad": "Rancho Agua de La Palma",
+        "Nombre de la ETC": "Vivencias rurales en ranchos y pueblos de\nSudcalifornia",
+        "Google": "https://maps.app.goo.gl/ry13MkJaJweFAyj29",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Rancho+El+Alamo/@23.0764293,-109.6952219,28145m/data=!3m1!1e3!4m6!3m5!1s0x86af5ea47d8f20cd:0x488c694a6bbabc08!8m2!3d23.1763625!4d-109.6550417!16s%2Fg%2F11bzyph37x?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=ca57a12b-65e2-478f-8c75-6a181a59fb69",
+        "lat": 23.0764293,
+        "lon": -109.6952219
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.8201537,
+          23.5498241
+        ]
+      },
+      "properties": {
+        "id": "bcs_31",
+        "Estado": "Baja California Sur",
+        "No": 31,
+        "Municipio": "Los Cabos",
+        "Localidad": "San Dionisio",
+        "Nombre de la ETC": "Rancho Ecológico el Refugio",
+        "Google": "https://maps.app.goo.gl/X45Efxf2SwpLrBtf9",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/Rancho+Ecol%C3%B3gico+-+El+Refugio/@23.5498241,-109.8201537,1042m/data=!3m2!1e3!4b1!4m6!3m5!1s0x86af7657e8bb0e6f:0x5b309e9a9b666a5e!8m2!3d23.5498192!4d-109.8175788!16s%2Fg%2F11g72n82df?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=248294e0-7d42-4c02-a6c1-bdf4a8d588ee",
+        "lat": 23.5498241,
+        "lon": -109.8201537
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.8234687,
+          23.5494932
+        ]
+      },
+      "properties": {
+        "id": "bcs_32",
+        "Estado": "Baja California Sur",
+        "No": 32,
+        "Municipio": "Los Cabos",
+        "Localidad": "San Dionisio",
+        "Nombre de la ETC": "Rancho Ecoturístico El Chinal",
+        "Google": "https://maps.app.goo.gl/dXahSmiaapKLMAy37",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/Rancho+Ecotur%C3%ADstico+El+Chinal/@23.5494932,-109.8234687,1042m/data=!3m2!1e3!4b1!4m6!3m5!1s0x86af77853a6f541b:0x6ebb9d37d194cb92!8m2!3d23.5494883!4d-109.8208938!16s%2Fg%2F11kpycdws1?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=74f287d6-7e80-40f2-bd6a-649f13577e9b",
+        "lat": 23.5494932,
+        "lon": -109.8234687
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.8551223,
+          23.5519484
+        ]
+      },
+      "properties": {
+        "id": "bcs_33",
+        "Estado": "Baja California Sur",
+        "No": 33,
+        "Municipio": "Los Cabos",
+        "Localidad": "San Dionisio",
+        "Nombre de la ETC": "Rancho Encino Gordo",
+        "Google": "https://maps.app.goo.gl/TLUMmRgvEGUXfTN59",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/Rcho.+Encino+Gordo/@23.5519484,-109.8551223,1042m/data=!3m2!1e3!4b1!4m6!3m5!1s0x86af779cbc0ede15:0xa9e3c98acbc2f2f3!8m2!3d23.5519435!4d-109.8525474!16s%2Fg%2F11t2zyqghw?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=511fbc7c-ba6c-4fa1-9288-4c680c117b9a",
+        "lat": 23.5519484,
+        "lon": -109.8551223
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.8755111,
+          23.5589562
+        ]
+      },
+      "properties": {
+        "id": "bcs_34",
+        "Estado": "Baja California Sur",
+        "No": 34,
+        "Municipio": "Los Cabos",
+        "Localidad": "San Dionisio",
+        "Nombre de la ETC": "Interacción Rural y Producción Artística\nTransdisciplinar en la Ranchería\nSudcaliforniana",
+        "Google": "https://maps.app.goo.gl/SfMiWiy1sk3QP1RD6",
+        "Observación": "Localidad",
+        "google_expanded": "https://www.google.com/maps/place/23500+San+Dionisio,+B.C.S./@23.5589562,-109.8755111,4169m/data=!3m2!1e3!4b1!4m6!3m5!1s0x86af75da19c01993:0x11348054d190625a!8m2!3d23.5589373!4d-109.8652114!16s%2Fg%2F1tgd6zlm?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=6d833fe6-1516-4640-ae7c-29ad79387952",
+        "lat": 23.5589562,
+        "lon": -109.8755111
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.740011,
+          23.0534969
+        ]
+      },
+      "properties": {
+        "id": "bcs_35",
+        "Estado": "Baja California Sur",
+        "No": 35,
+        "Municipio": "Los Cabos",
+        "Localidad": "San José del Cabo",
+        "Nombre de la ETC": "Cabo Nombó",
+        "Google": "https://maps.app.goo.gl/USnd5qAagVupmMm26",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/Cabo+Nombo/@23.0534969,-109.740011,1046m/data=!3m2!1e3!4b1!4m6!3m5!1s0x86af510d619a078b:0xafc4982ae5b105c1!8m2!3d23.053492!4d-109.7374361!16s%2Fg%2F11y9_kjs_2?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=08c5337a-0dbc-42ec-8285-dc465d3b1339",
+        "lat": 23.0534969,
+        "lon": -109.740011
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.7176214,
+          23.4813192
+        ]
+      },
+      "properties": {
+        "id": "bcs_37",
+        "Estado": "Baja California Sur",
+        "No": 37,
+        "Municipio": "Los Cabos",
+        "Localidad": "Santiago",
+        "Nombre de la ETC": "El Último Pericú Servicios Ecoturísticos",
+        "Google": "https://maps.app.goo.gl/U4rnPSx1sjYCW4Pp7",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Restaurante+Peric%C3%BA/@23.4813192,-109.7176214,1043m/data=!3m2!1e3!4b1!4m6!3m5!1s0x86af7b4b9637dedf:0x78e191713f48ada8!8m2!3d23.4813143!4d-109.7150465!16s%2Fg%2F11pw1tk861?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=dab2fa9d-a390-4a4a-8d73-2c8b7ba56a1d",
+        "lat": 23.4813192,
+        "lon": -109.7176214
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.7172491,
+          23.4806856
+        ]
+      },
+      "properties": {
+        "id": "bcs_38",
+        "Estado": "Baja California Sur",
+        "No": 38,
+        "Municipio": "Los Cabos",
+        "Localidad": "Santiago",
+        "Nombre de la ETC": "Alfarería Tradicional Sudcaliforniana en Santiago",
+        "Google": "https://maps.app.goo.gl/foJQiwov5Cohwy6Z8",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Alfareras+de+Santiago/@23.4806856,-109.7172491,1043m/data=!3m2!1e3!4b1!4m6!3m5!1s0x86af7b3536d484b1:0xe01a3cfcb0c2698d!8m2!3d23.4806807!4d-109.7146742!16s%2Fg%2F11q95zc9kw?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=1eb32790-cbc9-4ca4-989c-626be544ac1f",
+        "lat": 23.4806856,
+        "lon": -109.7172491
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.7227305,
+          23.4866687
+        ]
+      },
+      "properties": {
+        "id": "bcs_39",
+        "Estado": "Baja California Sur",
+        "No": 39,
+        "Municipio": "Los Cabos",
+        "Localidad": "Santiago",
+        "Nombre de la ETC": "Campamento Sierra-Oasis-Costa, Reserva de la Biosfera Sierra la Laguna y Parque Nacional Cabo Pulmo",
+        "Google": "https://maps.app.goo.gl/jaBHPjwoahA9FQ757",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Rancho/@23.4866687,-109.7227305,520m/data=!3m1!1e3!4m6!3m5!1s0x86af7b0061b59e73:0x782208d67da492ac!8m2!3d23.4863699!4d-109.7217065!16s%2Fg%2F11x8pwvybz?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=77e52cad-281a-4a25-843e-f495e819391f",
+        "lat": 23.4866687,
+        "lon": -109.7227305
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.7640012,
+          23.4745983
+        ]
+      },
+      "properties": {
+        "id": "bcs_40",
+        "Estado": "Baja California Sur",
+        "No": 40,
+        "Municipio": "Los Cabos",
+        "Localidad": "Santiago",
+        "Nombre de la ETC": "Caminos del agua: conociendo el Rancho",
+        "Google": "https://maps.app.goo.gl/uN9NdnWRx6na8sbe9",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Rancho+Agua+Viva/@23.4745983,-109.7640012,4171m/data=!3m1!1e3!4m6!3m5!1s0x86af71005fab6cd3:0xfb4afe438384987d!8m2!3d23.4808652!4d-109.7690623!16s%2Fg%2F11vwgwl2qr?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=46c64f44-5e14-49d8-8776-ba7664f9e33f",
+        "lat": 23.4745983,
+        "lon": -109.7640012
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.7280274,
+          23.4822418
+        ]
+      },
+      "properties": {
+        "id": "bcs_41",
+        "Estado": "Baja California Sur",
+        "No": 41,
+        "Municipio": "Los Cabos",
+        "Localidad": "Santiago-San Dionisio",
+        "Nombre de la ETC": "¡Santiago Sostenible e Inclusivo! ¡Santiago Sostenible Sol, Naturaleza y Cultura!",
+        "Google": "https://maps.app.goo.gl/fKExDjf6pD9Eevr87",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Mercado+Santiago+Sustentable/@23.4822418,-109.7280274,2086m/data=!3m1!1e3!4m7!3m6!1s0x86af7bf23d1d4def:0x48600b83509713bb!8m2!3d23.4786437!4d-109.7186546!15sChNzYW50aWFnbyBzb3N0ZW5pYmxlkgEGbWFya2V0qgFMEAEqDiIKc29zdGVuaWJsZSgOMh8QASIbc-IlsLXD_5SwWlD9urL48xUdl2omza6achaIMhcQAiITc2FudGlhZ28gc29zdGVuaWJsZeABAA!16s%2Fg%2F11qntqnm6z?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=4d31c7de-fe4e-4440-ba17-bab3181855df",
+        "lat": 23.4822418,
+        "lon": -109.7280274
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.4271036,
+          23.4349883
+        ]
+      },
+      "properties": {
+        "id": "bcs_42",
+        "Estado": "Baja California Sur",
+        "No": 42,
+        "Municipio": "Los Cabos",
+        "Localidad": "Cabo Pulmo",
+        "Nombre de la ETC": "Cabo Pulmo por locales",
+        "Google": "https://maps.app.goo.gl/dtgC6jYmPh2wiAw67",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Cabo+pulmo/@23.4349883,-109.4271036,439m/data=!3m1!1e3!4m6!3m5!1s0x86a58f006de81f9d:0x8d7a127085a9e271!8m2!3d23.435!4d-109.4264557!16s%2Fg%2F11vwr4f27k?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=4143030c-d493-4a43-9ddf-01bc14c22f56",
+        "lat": 23.4349883,
+        "lon": -109.4271036
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.6307927,
+          23.0719479
+        ]
+      },
+      "properties": {
+        "id": "bcs_43",
+        "Estado": "Baja California Sur",
+        "No": 43,
+        "Municipio": "Los Cabos",
+        "Localidad": "Los Cabos, Cabo del Este, Migriño",
+        "Nombre de la ETC": "Baja Stargazing Astronomy Tour",
+        "Google": "https://maps.app.goo.gl/wSgY5EaPT741aUGq8",
+        "Observación": "Localidad",
+        "google_expanded": "https://www.google.com/maps/place/Cabo+del+Este/@23.0719479,-109.6307927,1046m/data=!3m2!1e3!4b1!4m6!3m5!1s0x86af59d7fff7ef09:0x28444ed1a4ee3dea!8m2!3d23.071943!4d-109.6282178!16s%2Fg%2F11csqtkb7f?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=1d81201e-04ad-4a63-9a4e-b78f2e43aa94",
+        "lat": 23.0719479,
+        "lon": -109.6307927
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.8537145,
+          23.5518273
+        ]
+      },
+      "properties": {
+        "id": "bcs_44",
+        "Estado": "Baja California Sur",
+        "No": 44,
+        "Municipio": "Los Cabos",
+        "Localidad": "Santiago",
+        "Nombre de la ETC": "Rancho La Acacia Cabañas Ecoturísticas",
+        "Google": "https://maps.app.goo.gl/dUbrJHyZkAvwexT48",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/RANCHO+LA+ACACIA,+BCS.+MEXICO/@23.5518273,-109.8537145,1042m/data=!3m2!1e3!4b1!4m6!3m5!1s0x86af77986da4f81d:0x1ae40c90dfd7ac8a!8m2!3d23.5518224!4d-109.8511396!16s%2Fg%2F11rcwzn6wh?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=a1d8abcf-ba41-48da-8b32-3e1a0ecc5d7c",
+        "lat": 23.5518273,
+        "lon": -109.8537145
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.2948179,
+          27.1386062
+        ]
+      },
+      "properties": {
+        "id": "bcs_45",
+        "Estado": "Baja California Sur",
+        "No": 45,
+        "Municipio": "Mulegé",
+        "Localidad": "Bahía Asunción",
+        "Nombre de la ETC": "Rutas del Desierto y Mar",
+        "Google": "https://maps.app.goo.gl/hmb6Fip6NxQZPXYq7",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Muelle+Pescadero/@27.1386062,-114.2948179,521m/data=!3m1!1e3!4m6!3m5!1s0x81367dbad4000061:0xb5503abf659b2e10!8m2!3d27.1389404!4d-114.2945269!16s%2Fg%2F11trm8550r?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=5a04091f-2135-4a2f-8f15-e172c854a250",
+        "lat": 27.1386062,
+        "lon": -114.2948179
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.317947,
+          27.156334
+        ]
+      },
+      "properties": {
+        "id": "bcs_46",
+        "Estado": "Baja California Sur",
+        "No": 46,
+        "Municipio": "Mulegé",
+        "Localidad": "Ejido Gómez Palacio, Bahía Asunción",
+        "Nombre de la ETC": "Safari fotográfico de berrendos",
+        "Google": "https://maps.app.goo.gl/fkkqiUqRrrEvKWPS6",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Trail+Sin+Nombre/@27.156334,-114.317947,4046m/data=!3m1!1e3!4m6!3m5!1s0x81367d003713910b:0xb912c71500eaa7ae!8m2!3d27.1664986!4d-114.3158994!16s%2Fg%2F11l_8l7t81?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=40663615-d861-4852-8f12-7ef2151db85c",
+        "lat": 27.156334,
+        "lon": -114.317947
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -112.8769668,
+          26.8333512
+        ]
+      },
+      "properties": {
+        "id": "bcs_47",
+        "Estado": "Baja California Sur",
+        "No": 47,
+        "Municipio": "Mulegé",
+        "Localidad": "El Patrocinio",
+        "Nombre de la ETC": "Productos El Patrocinio",
+        "Google": "https://maps.app.goo.gl/62cpy5MMxvFiKQjV7",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/23917+El+Patrocinio,+B.C.S./@26.8333512,-112.8769668,4058m/data=!3m2!1e3!4b1!4m6!3m5!1s0x81355bd631a0ae8d:0x8dfa60ce47e74cde!8m2!3d26.8333329!4d-112.8666671!16s%2Fg%2F1tgp13b8?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=7c29717c-d542-4ba2-9b2f-b8f4569f7bab",
+        "lat": 26.8333512,
+        "lon": -112.8769668
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.0232728,
+          27.9721826
+        ]
+      },
+      "properties": {
+        "id": "bcs_48",
+        "Estado": "Baja California Sur",
+        "No": 48,
+        "Municipio": "Mulegé",
+        "Localidad": "Guerrero Negro",
+        "Nombre de la ETC": "Zihul Knives",
+        "Google": "https://maps.app.goo.gl/xAdTLrMW77iunEiW7",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/Zihul+knives/@27.9721826,-114.0232728,1004m/data=!3m2!1e3!4b1!4m6!3m5!1s0x8133f94df7a3d1bb:0x4b9e93c6c772fea3!8m2!3d27.9721779!4d-114.0206979!16s%2Fg%2F11h32z_pbg?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=6c9683da-c2a3-4d36-b0b1-13c301b98b38",
+        "lat": 27.9721826,
+        "lon": -114.0232728
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.03878,
+          27.9679715
+        ]
+      },
+      "properties": {
+        "id": "bcs_49",
+        "Estado": "Baja California Sur",
+        "No": 49,
+        "Municipio": "Mulegé",
+        "Localidad": "Guerrero Negro",
+        "Nombre de la ETC": "The Californias",
+        "Google": "https://maps.app.goo.gl/HqxYDyo7xAyf32oX6",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/The+Californias/@27.9679715,-114.03878,1004m/data=!3m2!1e3!4b1!4m6!3m5!1s0x8133ff2847f1f009:0x2845745a6128a9f!8m2!3d27.9679668!4d-114.0362051!16s%2Fg%2F11rfb4pskv?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=268bd5f0-8faf-4641-96cd-4ee1ce246b10",
+        "lat": 27.9679715,
+        "lon": -114.03878
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.0387444,
+          27.9679493
+        ]
+      },
+      "properties": {
+        "id": "bcs_50",
+        "Estado": "Baja California Sur",
+        "No": 50,
+        "Municipio": "Mulegé",
+        "Localidad": "Guerrero Negro",
+        "Nombre de la ETC": "Museo Comunitario MUSAM de Guerrero Negro",
+        "Google": "https://maps.app.goo.gl/oyca6Z9nfJ4ZyPsU7",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/MUSAM+Museo+Sal,+Arena+y+Mar/@27.9679493,-114.0387444,1004m/data=!3m2!1e3!4b1!4m6!3m5!1s0x8133f9f63d82ccd3:0x2f446cf718dc6a5b!8m2!3d27.9679446!4d-114.0361695!16s%2Fg%2F11k9sd3n9c?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=9c10a799-23aa-42c7-b2b5-e4b9f7f79c4a",
+        "lat": 27.9679493,
+        "lon": -114.0387444
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -112.9879229,
+          27.2430481
+        ]
+      },
+      "properties": {
+        "id": "bcs_51",
+        "Estado": "Baja California Sur",
+        "No": 51,
+        "Municipio": "Mulegé",
+        "Localidad": "Laguna San Ignacio",
+        "Nombre de la ETC": "Avistamiento de Ballena Gris en Laguna San Ignacio",
+        "Google": "https://maps.app.goo.gl/zo4yFYhwcCzbifu9A",
+        "Observación": "Localidad",
+        "google_expanded": "https://www.google.com/maps/place/Laguna+San+Ignacio/@27.2430481,-112.9879229,266349m/data=!3m1!1e3!4m6!3m5!1s0x81356f8ce3d513e9:0x7149fabc59e4018b!8m2!3d26.8783333!4d-113.1661111!16zL20vMDlmenBq?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=d08e6329-dbee-4263-a1bb-c87c5c99fe24",
+        "lat": 27.2430481,
+        "lon": -112.9879229
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -113.0613873,
+          27.6079915
+        ]
+      },
+      "properties": {
+        "id": "bcs_52",
+        "Estado": "Baja California Sur",
+        "No": 52,
+        "Municipio": "Mulegé",
+        "Localidad": "Rancho Santa Martha",
+        "Nombre de la ETC": "Turismo Comunitario",
+        "Google": "https://maps.app.goo.gl/aZw15AaEmQHE1SvV6",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Casa+camping/@27.6079915,-113.0613873,2396m/data=!3m1!1e3!4m6!3m5!1s0x8134e900049019db:0x634ccf63dd34b369!8m2!3d27.6044105!4d-113.053166!16s%2Fg%2F11vpnyrd_4?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=90c5f12d-c771-4238-8c60-66cfc5113d92",
+        "lat": 27.6079915,
+        "lon": -113.0613873
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -113.018981,
+          27.5981247
+        ]
+      },
+      "properties": {
+        "id": "bcs_54",
+        "Estado": "Baja California Sur",
+        "No": 54,
+        "Municipio": "Mulegé",
+        "Localidad": "San Francisco de la Sierra",
+        "Nombre de la ETC": "Misterios Ancestrales",
+        "Google": "https://maps.app.goo.gl/LHiLaarFG4ip4yDa6",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/place/Patrimonio+Cultural+de+la+Humanidad+Sierra+de+San+Francisco/@27.5981247,-113.018981,1008m/data=!3m1!1e3!4m6!3m5!1s0x8134e7004f9a5b0d:0xecdfaec7dd7a9a78!8m2!3d27.5988414!4d-113.0161281!16s%2Fg%2F11x0rbn0g5?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=d5ed5d8d-65d4-43c1-ad03-264d212ef6a2",
+        "lat": 27.5981247,
+        "lon": -113.018981
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -113.049469,
+          27.6136613
+        ]
+      },
+      "properties": {
+        "id": "bcs_55",
+        "Estado": "Baja California Sur",
+        "No": 55,
+        "Municipio": "Mulegé",
+        "Localidad": "Sierra de Guadalupe",
+        "Nombre de la ETC": "Guía de turismo a las pinturas rupestres",
+        "Google": "https://maps.app.goo.gl/rcEPqvN4GAyDTG2p7",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/San+Francisco+De+La+Sierra/@27.6136613,-113.049469,8059m/data=!3m1!1e3!4m7!3m6!1s0x8134e7faa6c64619:0x35b96f1374bfd10a!8m2!3d27.5976908!4d-113.0151746!15sChJwaW50dXJhcyBydXBlc3RyZXNaFCIScGludHVyYXMgcnVwZXN0cmVzkgELaGlraW5nX2FyZWGaASRDaGREU1VoTk1HOW5TMFZKUTBGblNVUmxjM1poT1hCQlJSQUKqAVwKCC9tLzA1eTR0EAEqFiIScGludHVyYXMgcnVwZXN0cmVzKA4yHhABIhpfwHJjApVARSu0NbyrZ38E7beVWQRUP-AJvDIWEAIiEnBpbnR1cmFzIHJ1cGVzdHJlc-ABAPoBBAgwECg!16s%2Fg%2F11c60dh12c?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=3dc4a1d0-031c-4599-a00c-3c73657d6b59",
+        "lat": 27.6136613,
+        "lon": -113.049469
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.3386221,
+          27.8675527
+        ]
+      },
+      "properties": {
+        "id": "bcs_56",
+        "Estado": "Baja California Sur",
+        "No": 56,
+        "Municipio": "Mulegé",
+        "Localidad": "Guerrero Negro, Laguna Ojo de Liebre",
+        "Nombre de la ETC": "Cultivando desde el mar",
+        "Google": "https://maps.app.goo.gl/Z3GaJTYbpAM77cRPA",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/Laguna+Ojo+de+Liebre/@27.8675527,-114.3386221,16081m/data=!3m1!1e3!4m6!3m5!1s0x8136ad102d1fc84f:0x5854c24b29bacf29!8m2!3d27.8675487!4d-114.262409!16s%2Fg%2F11sqgw7vkw?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=4c3312a2-c7b9-4afe-97d7-53e65d5b42e2",
+        "lat": 27.8675527,
+        "lon": -114.3386221
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -112.9094377,
+          27.2927261
+        ]
+      },
+      "properties": {
+        "id": "bcs_57",
+        "Estado": "Baja California Sur",
+        "No": 57,
+        "Municipio": "Mulegé",
+        "Localidad": "San Ignacio",
+        "Nombre de la ETC": "Villas LuGar",
+        "Google": "https://maps.app.goo.gl/2MV5EpcUr1bBveuw6",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/Villas+LuGar/@27.2927261,-112.9094377,1010m/data=!3m2!1e3!4b1!4m6!3m5!1s0x81352506667e1163:0xb68511686f8dc557!8m2!3d27.2927214!4d-112.9068628!16s%2Fg%2F11y1r0n37k?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=fe6cb852-3b7f-4ac9-962c-36152181c323",
+        "lat": 27.2927261,
+        "lon": -112.9094377
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -113.0913923,
+          27.5978308
+        ]
+      },
+      "properties": {
+        "id": "bcs_58",
+        "Estado": "Baja California Sur",
+        "No": 58,
+        "Municipio": "Mulegé",
+        "Localidad": "Sierra de San Francisco Flora",
+        "Nombre de la ETC": "Arte rupestre en la Sierra de San Francisco",
+        "Google": "https://maps.app.goo.gl/575ndi3L1xAvfbnL8",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/Pinturas+Rupestres+de+la+Sierra+de+San+Francisco/@27.5978308,-113.0913923,16121m/data=!3m1!1e3!4m7!3m6!1s0x8134e8e90524c4ad:0x51af7642d98408b7!8m2!3d27.6380992!4d-113.0697877!15sCitBcnRlIHJ1cGVzdHJlIGVuIGxhIFNpZXJyYSBkZSBTYW4gRnJhbmNpc2NvWi0iK2FydGUgcnVwZXN0cmUgZW4gbGEgc2llcnJhIGRlIHNhbiBmcmFuY2lzY2-SARNoaXN0b3JpY2FsX2xhbmRtYXJrmgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJ4cmVXSkdiRFpQVlVadFUyeGtNVTU2VW10VE1HODFXako0TUZKVlJSQUKqAXAKBy9tLzBqancQASoRIg1hcnRlIHJ1cGVzdHJlKA4yHxABIhsVJl6vb96-n9xmgr3CFTEWd_RGO_IVIeml39gyLxACIithcnRlIHJ1cGVzdHJlIGVuIGxhIHNpZXJyYSBkZSBzYW4gZnJhbmNpc2Nv4AEA-gEECAAQHA!16s%2Fg%2F11c290sgdj?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=7cbb7c59-a949-4846-b9b3-9472d660545c",
+        "lat": 27.5978308,
+        "lon": -113.0913923
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -113.9817669,
+          28.0382562
+        ]
+      },
+      "properties": {
+        "id": "bcs_59",
+        "Estado": "Baja California Sur",
+        "No": 59,
+        "Municipio": "Mulegé",
+        "Localidad": "Guerrero Negro",
+        "Nombre de la ETC": "Conoce al Berrendo Peninsular y su Museo",
+        "Google": "https://maps.app.goo.gl/59cmHvvAMtZpoCJ9A",
+        "Observación": "Sitio",
+        "google_expanded": "https://www.google.com/maps/place/MUBE+Museo+del+Berrendo+Peninsular/@28.0382562,-113.9817669,1003m/data=!3m2!1e3!4b1!4m6!3m5!1s0x8133f9a7a2b4ff3d:0xce243065a253ce0!8m2!3d28.0382515!4d-113.979192!16s%2Fg%2F11tjmzk_2y?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=58d0d166-dc89-44c9-a2fb-014dd103a72d",
+        "lat": 28.0382562,
+        "lon": -113.9817669
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -111.55484,
+          24.424718
+        ]
+      },
+      "properties": {
+        "id": "bcs_14",
+        "Estado": "Baja California Sur",
+        "No": 14,
+        "Municipio": "La Paz",
+        "Localidad": "Puerto Chale,\nDelegación Los Dolores",
+        "Nombre de la ETC": "Safari Marino",
+        "Google": "https://maps.app.goo.gl/ETspXncWgw7wzbgN7",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/search/24.424718,+-111.554840?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=b7a4ad6e-b6fc-4ec5-8450-7df23d4bda38",
+        "lat": 24.424718,
+        "lon": -111.55484
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.057835,
+          23.805652
+        ]
+      },
+      "properties": {
+        "id": "bcs_17",
+        "Estado": "Baja California Sur",
+        "No": 17,
+        "Municipio": "La Paz",
+        "Localidad": "San Antonio",
+        "Nombre de la ETC": "Los Realeños de San Antonio",
+        "Google": "https://maps.app.goo.gl/uepp6TwoEqpmHH449",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/search/23.805652,+-110.057835?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=b60fea6b-33ab-4459-beab-1a79477a8a1f",
+        "lat": 23.805652,
+        "lon": -110.057835
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.714138,
+          23.487173
+        ]
+      },
+      "properties": {
+        "id": "bcs_36",
+        "Estado": "Baja California Sur",
+        "No": 36,
+        "Municipio": "Los Cabos",
+        "Localidad": "Santiago",
+        "Nombre de la ETC": "Damiana del Desierto Californiana",
+        "Google": "https://maps.app.goo.gl/3wL26jNQzUhAdHLa6",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/search/23.487173,+-109.714138?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=c737ddbc-be19-44c4-85e3-cd4a0e6c51d7",
+        "lat": 23.487173,
+        "lon": -109.714138
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -113.029106,
+          27.607053
+        ]
+      },
+      "properties": {
+        "id": "bcs_53",
+        "Estado": "Baja California Sur",
+        "No": 53,
+        "Municipio": "Mulegé",
+        "Localidad": "San Francisco de la Sierra",
+        "Nombre de la ETC": "Visita las pinturas rupestres en Sierra de San Francisco",
+        "Google": "https://maps.app.goo.gl/Lv9S8A5tkZJqbXJt8",
+        "Observación": "No confirmado",
+        "google_expanded": "https://www.google.com/maps/search/27.607053,+-113.029106?entry=tts&g_ep=EgoyMDI1MDgyNS4wIPu8ASoASAFQAw%3D%3D&skid=379c7055-c2a8-43f2-942e-12d91fbaa62d",
+        "lat": 27.607053,
+        "lon": -113.029106
+      }
+    }
+  ]
+}
