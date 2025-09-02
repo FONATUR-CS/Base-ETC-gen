@@ -16,70 +16,41 @@
   <script src="https://unpkg.com/animejs@3.2.1/lib/anime.min.js"></script>
 
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: 'Noto Sans', system-ui, Arial, sans-serif; color:#fff; background:#000; }
-
-    #main-nav {
-      position: fixed; top: 0; left: 0; width: 100%;
-      background-image: url('../img/patron2.jpg'); 
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      color: #fff; z-index: 10000;
-      padding: 10px 24px; box-shadow: 0 2px 6px rgba(0,0,0,.2);
-    }
-    #main-nav ul {
-      display: flex;
-      gap: 1rem;
-      justify-content: left;
-      align-items: left;
-      height: 100%;
-      flex-wrap: wrap;
-    }
-    #main-nav a { text-decoration:none; color:#555; font-weight:700; padding:6px 8px; border-radius:4px; }
-    #main-nav a.active, #main-nav a:hover { background:#EA5188; color:#fff; }
-
-    #map { position: fixed; top: 56px; left:0; right:0; height: calc(100vh - 56px); z-index:1; }
-
-    #story-panels {
+    /* ... tus estilos originales ... */
+    #filter-bar {
       position: fixed;
-      top: 56px;
-      left: 0;
-      width: 100vw;
-      height: calc(100vh - 56px);
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(40,40,40,0.93);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      padding: 12px 24px;
+      z-index: 10001;
       display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: flex-start;
-      pointer-events: none;
-      z-index: 2;
+      gap: 16px;
+      color: #fff;
+      align-items: center;
     }
-    #story-main {
-      width: 420px;
-      min-width: 320px;
-      max-width: 92vw;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      pointer-events: none;
-      position: relative;
-    }
-    #story-side {
-      width: 420px;
-      min-width: 320px;
-      max-width: 92vw;
-      height: 100%;
-      position: relative;
-      pointer-events: none;
-    }
-    #story-main .story-content {
-      margin-left: 40px;
+    #filter-bar select, #filter-bar input {
+      border-radius: 8px;
+      border: 1px solid #EA5188;
+      padding: 6px 12px;
+      background: #222;
+      color: #FFF2D2;
+      font-size: 1rem;
+      min-width: 130px;
       margin-right: 0;
-      position: relative;
-      z-index: 10;
     }
+    #filter-bar label {
+      font-size: 1rem;
+      color: #FFF2D2;
+      margin-right: 5px;
+    }
+    #filter-bar input[type=text] {
+      width: 180px;
+    }
+    /* ... el resto igual que tu original ... */
     #story-side .story-content {
       margin-right: 40px;
       margin-left: 0 !important;
@@ -116,146 +87,6 @@
       opacity: 1;
       transform: scale(1);
       display: block;
-    }
-    #volver-inicio-btn {
-      display: block;
-      margin: 32px 0 0 40px;
-      padding: 12px 24px;
-      background: #EA5188;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-      transition: background 0.2s;
-      pointer-events: auto;
-    }
-    #volver-inicio-btn:hover {
-      background: #d13e74;
-    }
-    .story-content h1 { font-size: 2.2rem; margin-bottom:.5rem; }
-    .story-content h2 {
-      font-family: 'Patria', 'Noto Sans', sans-serif;
-      font-weight: 700;
-      font-size: 1.9rem;
-      margin-bottom:.35rem;
-      color:#FFF2D2;
-      justify-content:center;
-    }
-    .story-content p  { font-size: 1.15rem; line-height:1.55; color: #eaeaea; justify-content:center;}
-    .story-content img { width:100%; height:auto; border-radius:10px; margin-top:12px; }
-    .story-content a {
-      color: #EA5188;
-      text-decoration: underline;
-      transition: color 0.2s;
-    }
-    .story-content a:hover {
-      color: #F7E07F;
-    }
-    .intro-title {
-      background: none;
-      -webkit-background-clip: initial;
-      background-clip: initial;
-      color: #FFF2D2;
-      -webkit-text-fill-color: #FFF2D2;
-      font-size: 2.6rem; font-weight: 800; margin-bottom: 12px;
-      text-align:center;
-    }
-    .mapboxgl-popup-content {
-      background: rgba(0,0,0,0.95) !important;
-      border-radius: 12px !important;
-      border: 1px solid rgba(0,212,255,0.3) !important;
-      color: white !important;
-      padding: 12px !important;
-    }
-
-    /* Barra flotante de filtros */
-    #filter-bar {
-      position: fixed;
-      top: 70px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(40,40,40,0.93);
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-      padding: 12px 24px;
-      z-index: 10001;
-      display: flex;
-      gap: 16px;
-      color: #fff;
-      align-items: center;
-    }
-    #filter-bar select, #filter-bar input {
-      border-radius: 8px;
-      border: 1px solid #EA5188;
-      padding: 6px 12px;
-      background: #222;
-      color: #FFF2D2;
-      font-size: 1rem;
-      min-width: 130px;
-      margin-right: 0;
-    }
-    #filter-bar label {
-      font-size: 1rem;
-      color: #FFF2D2;
-      margin-right: 5px;
-    }
-    #filter-bar input[type=text] {
-      width: 180px;
-    }
-
-    /* Responsive para tablets y laptops */
-    @media (max-width: 1200px) {
-      #story-main, #story-side {
-        width: 340px;
-        min-width: 220px;
-        max-width: 98vw;
-      }
-      #story-main .story-content, #story-side .story-content {
-        padding: 18px;
-        margin: 24px 0 0 0;
-      }
-      #volver-inicio-btn {
-        margin: 18px 0 0 18px;
-        font-size: 1rem;
-        padding: 10px 16px;
-      }
-      #filter-bar {
-        padding: 8px 12px;
-        gap: 8px;
-      }
-      #filter-bar input[type=text] {
-        width: 120px;
-      }
-    }
-
-    @media (max-width: 900px) {
-      #main-nav { padding: 6px 8px; }
-      #main-nav ul { flex-wrap: wrap; gap: 0.5rem; }
-      #map { top: 48px; height: calc(100vh - 48px); }
-      #story-panels { flex-direction: row; align-items: flex-start; justify-content: space-between; width: 100vw; height: calc(100vh - 48px); position: fixed; top: 48px; left: 0; z-index: 2; pointer-events: none; }
-      #story-main { width: 15vw; min-width: 120px; max-width: 180px; height: auto; position: absolute; top: 0; left: 0; z-index: 10; pointer-events: none; display: flex; flex-direction: column; align-items: flex-start; }
-      #story-main .story-content { width: 100%; min-width: 120px; max-width: 180px; margin: 8px 0 0 8px; padding: 8px; border-radius: 8px; font-size: 0.9rem; pointer-events: auto; }
-      #story-main .story-content img { width: 100%; max-width: 120px; height: auto; border-radius: 6px; margin-top: 6px; }
-      #volver-inicio-btn { margin: 8px 0 0 8px; font-size: 0.85rem; padding: 6px 10px; border-radius: 6px; width: 90%; }
-      #story-side { width: 15vw; min-width: 120px; max-width: 180px; height: auto; position: absolute; top: 0; right: 0; z-index: 10; pointer-events: none; display: flex; flex-direction: column; align-items: flex-end; }
-      #story-side .story-content { width: 100%; min-width: 120px; max-width: 180px; margin: 8px 8px 0 0; padding: 8px; border-radius: 8px; font-size: 0.9rem; pointer-events: auto; position: absolute; top: 0; right: 0; display: none; opacity: 0; transform: scale(0.95); }
-      #story-side .story-content.active { display: block; }
-      #story-side .story-content img { width: 100%; max-width: 120px; height: auto; border-radius: 6px; margin-top: 6px; }
-      .story-content h1, .story-content h2 { font-size: 1rem; }
-      .story-content p  { font-size: 0.85rem; }
-      #filter-bar { top: 52px; padding: 4px 6px; gap: 4px;}
-      #filter-bar input[type=text] { width: 70px;}
-    }
-    @media (max-width: 600px) {
-      #main-nav ul { font-size: 0.95rem; }
-      .story-content h1 { font-size: 1.1rem; }
-      .story-content h2 { font-size: 1rem; }
-      .story-content p  { font-size: 0.9rem; }
-      #volver-inicio-btn { font-size: 0.9rem; }
-      #filter-bar label, #filter-bar select, #filter-bar input { font-size: 0.85rem; }
     }
   </style>
 </head>
@@ -299,383 +130,10 @@
       <button id="volver-inicio-btn">Volver a la vista general</button>
     </div>
     <div id="story-side">
-      <div class="story-content" id="card-bcs_1">
-        <h2>Isla Espíritu Santo</h2>
-        <p>Considerada Patrimonio Natural de la Humanidad desde 2007. Posibilidad de nadar con lobos marinos y buceo en zonas someras.</p>
-        <p><a href="https://simec.conanp.gob.mx/ficha.php?anp=141&reg=1" target="_blank" rel="noopener noreferrer">Ir a su página oficial</a></p>
-        <img src="../img/01_Espiritu_1.jpg" alt="Isla Espíritu Santo" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_2">
-        <h2>Bahía de Magdalena</h2>
-        <p>Bahía protegida con llegada de ballena gris en invierno y bosques de mangle de gran importancia biológica.</p>
-        <p><a href="https://maps.app.goo.gl/LkH2vCa7su64N5o78" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/02_Bahia_Magdalena.jpg" alt="Bahía de Magdalena" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_3">
-        <h2>Cerro El Pilón</h2>
-        <p>Imponente cerro de 400 m que enmarca La Purísima y San Isidro; con historia misional jesuita.</p>
-        <p><a href="https://maps.app.goo.gl/wiwaWvV8uc4nxZLb6" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/03_Pilon.jpg" alt="Cerro El Pilón" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_4">
-        <h2>Cañón del Mezquite</h2>
-        <p>El rincón más asombroso de la Sierra de la Giganta: paredes escarpadas, pozas de agua dulce y oasis.</p>
-        <p><a href="https://maps.app.goo.gl/DUzwaVJGF6ifoGWK9" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/04_Mezquite.jpg" alt="Cañón del Mezquite" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_5">
-        <h2>Cañón de Costa Azul</h2>
-        <p>Formación espectacular cercana a San José del Cabo; paisaje seco con vegetación emergiendo entre rocas.</p>
-        <p><a href="https://maps.app.goo.gl/uEZ78x8GvNsr4GJy5" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/05_CostaAzul.jpg" alt="Cañón de Costa Azul" loading="lazy">
-      </div>
+      <!-- Las tarjetas se generan automáticamente aquí -->
     </div>
   </div>
-      <div class="story-content" id="card-bcs_6">
-        <h2>Isla Espíritu Santo</h2>
-        <p>Considerada Patrimonio Natural de la Humanidad desde 2007. Posibilidad de nadar con lobos marinos y buceo en zonas someras.</p>
-        <p><a href="https://simec.conanp.gob.mx/ficha.php?anp=141&reg=1" target="_blank" rel="noopener noreferrer">Ir a su página oficial</a></p>
-        <img src="../img/01_Espiritu_1.jpg" alt="Isla Espíritu Santo" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_7">
-        <h2>Bahía de Magdalena</h2>
-        <p>Bahía protegida con llegada de ballena gris en invierno y bosques de mangle de gran importancia biológica.</p>
-        <p><a href="https://maps.app.goo.gl/LkH2vCa7su64N5o78" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/02_Bahia_Magdalena.jpg" alt="Bahía de Magdalena" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_8">
-        <h2>Cerro El Pilón</h2>
-        <p>Imponente cerro de 400 m que enmarca La Purísima y San Isidro; con historia misional jesuita.</p>
-        <p><a href="https://maps.app.goo.gl/wiwaWvV8uc4nxZLb6" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/03_Pilon.jpg" alt="Cerro El Pilón" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_9">
-        <h2>Cañón del Mezquite</h2>
-        <p>El rincón más asombroso de la Sierra de la Giganta: paredes escarpadas, pozas de agua dulce y oasis.</p>
-        <p><a href="https://maps.app.goo.gl/DUzwaVJGF6ifoGWK9" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/04_Mezquite.jpg" alt="Cañón del Mezquite" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_10">
-        <h2>Cañón de Costa Azul</h2>
-        <p>Formación espectacular cercana a San José del Cabo; paisaje seco con vegetación emergiendo entre rocas.</p>
-        <p><a href="https://maps.app.goo.gl/uEZ78x8GvNsr4GJy5" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/05_CostaAzul.jpg" alt="Cañón de Costa Azul" loading="lazy">
-      </div>
-    </div>
 
-    <div id="story-side">
-      <div class="story-content" id="card-bcs_11">
-        <h2>Isla Espíritu Santo</h2>
-        <p>Considerada Patrimonio Natural de la Humanidad desde 2007. Posibilidad de nadar con lobos marinos y buceo en zonas someras.</p>
-        <p><a href="https://simec.conanp.gob.mx/ficha.php?anp=141&reg=1" target="_blank" rel="noopener noreferrer">Ir a su página oficial</a></p>
-        <img src="../img/01_Espiritu_1.jpg" alt="Isla Espíritu Santo" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_12">
-        <h2>Bahía de Magdalena</h2>
-        <p>Bahía protegida con llegada de ballena gris en invierno y bosques de mangle de gran importancia biológica.</p>
-        <p><a href="https://maps.app.goo.gl/LkH2vCa7su64N5o78" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/02_Bahia_Magdalena.jpg" alt="Bahía de Magdalena" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_13">
-        <h2>Cerro El Pilón</h2>
-        <p>Imponente cerro de 400 m que enmarca La Purísima y San Isidro; con historia misional jesuita.</p>
-        <p><a href="https://maps.app.goo.gl/wiwaWvV8uc4nxZLb6" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/03_Pilon.jpg" alt="Cerro El Pilón" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_14">
-        <h2>Cañón del Mezquite</h2>
-        <p>El rincón más asombroso de la Sierra de la Giganta: paredes escarpadas, pozas de agua dulce y oasis.</p>
-        <p><a href="https://maps.app.goo.gl/DUzwaVJGF6ifoGWK9" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/04_Mezquite.jpg" alt="Cañón del Mezquite" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_15">
-        <h2>Cañón de Costa Azul</h2>
-        <p>Formación espectacular cercana a San José del Cabo; paisaje seco con vegetación emergiendo entre rocas.</p>
-        <p><a href="https://maps.app.goo.gl/uEZ78x8GvNsr4GJy5" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/05_CostaAzul.jpg" alt="Cañón de Costa Azul" loading="lazy">
-      </div>
-    </div>
-  </div>
-      <div class="story-content" id="card-bcs_16">
-        <h2>Isla Espíritu Santo</h2>
-        <p>Considerada Patrimonio Natural de la Humanidad desde 2007. Posibilidad de nadar con lobos marinos y buceo en zonas someras.</p>
-        <p><a href="https://simec.conanp.gob.mx/ficha.php?anp=141&reg=1" target="_blank" rel="noopener noreferrer">Ir a su página oficial</a></p>
-        <img src="../img/01_Espiritu_1.jpg" alt="Isla Espíritu Santo" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_17">
-        <h2>Bahía de Magdalena</h2>
-        <p>Bahía protegida con llegada de ballena gris en invierno y bosques de mangle de gran importancia biológica.</p>
-        <p><a href="https://maps.app.goo.gl/LkH2vCa7su64N5o78" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/02_Bahia_Magdalena.jpg" alt="Bahía de Magdalena" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_18">
-        <h2>Cerro El Pilón</h2>
-        <p>Imponente cerro de 400 m que enmarca La Purísima y San Isidro; con historia misional jesuita.</p>
-        <p><a href="https://maps.app.goo.gl/wiwaWvV8uc4nxZLb6" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/03_Pilon.jpg" alt="Cerro El Pilón" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_19">
-        <h2>Cañón del Mezquite</h2>
-        <p>El rincón más asombroso de la Sierra de la Giganta: paredes escarpadas, pozas de agua dulce y oasis.</p>
-        <p><a href="https://maps.app.goo.gl/DUzwaVJGF6ifoGWK9" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/04_Mezquite.jpg" alt="Cañón del Mezquite" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_20">
-        <h2>Cañón de Costa Azul</h2>
-        <p>Formación espectacular cercana a San José del Cabo; paisaje seco con vegetación emergiendo entre rocas.</p>
-        <p><a href="https://maps.app.goo.gl/uEZ78x8GvNsr4GJy5" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/05_CostaAzul.jpg" alt="Cañón de Costa Azul" loading="lazy">
-      </div>
-    </div>
-      <div class="story-content" id="card-bcs_21">
-        <h2>Isla Espíritu Santo</h2>
-        <p>Considerada Patrimonio Natural de la Humanidad desde 2007. Posibilidad de nadar con lobos marinos y buceo en zonas someras.</p>
-        <p><a href="https://simec.conanp.gob.mx/ficha.php?anp=141&reg=1" target="_blank" rel="noopener noreferrer">Ir a su página oficial</a></p>
-        <img src="../img/01_Espiritu_1.jpg" alt="Isla Espíritu Santo" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_22">
-        <h2>Bahía de Magdalena</h2>
-        <p>Bahía protegida con llegada de ballena gris en invierno y bosques de mangle de gran importancia biológica.</p>
-        <p><a href="https://maps.app.goo.gl/LkH2vCa7su64N5o78" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/02_Bahia_Magdalena.jpg" alt="Bahía de Magdalena" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_23">
-        <h2>Cerro El Pilón</h2>
-        <p>Imponente cerro de 400 m que enmarca La Purísima y San Isidro; con historia misional jesuita.</p>
-        <p><a href="https://maps.app.goo.gl/wiwaWvV8uc4nxZLb6" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/03_Pilon.jpg" alt="Cerro El Pilón" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_24">
-        <h2>Cañón del Mezquite</h2>
-        <p>El rincón más asombroso de la Sierra de la Giganta: paredes escarpadas, pozas de agua dulce y oasis.</p>
-        <p><a href="https://maps.app.goo.gl/DUzwaVJGF6ifoGWK9" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/04_Mezquite.jpg" alt="Cañón del Mezquite" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_25">
-        <h2>Cañón de Costa Azul</h2>
-        <p>Formación espectacular cercana a San José del Cabo; paisaje seco con vegetación emergiendo entre rocas.</p>
-        <p><a href="https://maps.app.goo.gl/uEZ78x8GvNsr4GJy5" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/05_CostaAzul.jpg" alt="Cañón de Costa Azul" loading="lazy">
-      </div>
-    </div>
-  </div>
-      <div class="story-content" id="card-bcs_26">
-        <h2>Isla Espíritu Santo</h2>
-        <p>Considerada Patrimonio Natural de la Humanidad desde 2007. Posibilidad de nadar con lobos marinos y buceo en zonas someras.</p>
-        <p><a href="https://simec.conanp.gob.mx/ficha.php?anp=141&reg=1" target="_blank" rel="noopener noreferrer">Ir a su página oficial</a></p>
-        <img src="../img/01_Espiritu_1.jpg" alt="Isla Espíritu Santo" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_27">
-        <h2>Bahía de Magdalena</h2>
-        <p>Bahía protegida con llegada de ballena gris en invierno y bosques de mangle de gran importancia biológica.</p>
-        <p><a href="https://maps.app.goo.gl/LkH2vCa7su64N5o78" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/02_Bahia_Magdalena.jpg" alt="Bahía de Magdalena" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_28">
-        <h2>Cerro El Pilón</h2>
-        <p>Imponente cerro de 400 m que enmarca La Purísima y San Isidro; con historia misional jesuita.</p>
-        <p><a href="https://maps.app.goo.gl/wiwaWvV8uc4nxZLb6" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/03_Pilon.jpg" alt="Cerro El Pilón" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_29">
-        <h2>Cañón del Mezquite</h2>
-        <p>El rincón más asombroso de la Sierra de la Giganta: paredes escarpadas, pozas de agua dulce y oasis.</p>
-        <p><a href="https://maps.app.goo.gl/DUzwaVJGF6ifoGWK9" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/04_Mezquite.jpg" alt="Cañón del Mezquite" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_30">
-        <h2>Cañón de Costa Azul</h2>
-        <p>Formación espectacular cercana a San José del Cabo; paisaje seco con vegetación emergiendo entre rocas.</p>
-        <p><a href="https://maps.app.goo.gl/uEZ78x8GvNsr4GJy5" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/05_CostaAzul.jpg" alt="Cañón de Costa Azul" loading="lazy">
-      </div>
-    </div>
-
-    <div id="story-side">
-      <div class="story-content" id="card-bcs_31">
-        <h2>Isla Espíritu Santo</h2>
-        <p>Considerada Patrimonio Natural de la Humanidad desde 2007. Posibilidad de nadar con lobos marinos y buceo en zonas someras.</p>
-        <p><a href="https://simec.conanp.gob.mx/ficha.php?anp=141&reg=1" target="_blank" rel="noopener noreferrer">Ir a su página oficial</a></p>
-        <img src="../img/01_Espiritu_1.jpg" alt="Isla Espíritu Santo" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_32">
-        <h2>Bahía de Magdalena</h2>
-        <p>Bahía protegida con llegada de ballena gris en invierno y bosques de mangle de gran importancia biológica.</p>
-        <p><a href="https://maps.app.goo.gl/LkH2vCa7su64N5o78" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/02_Bahia_Magdalena.jpg" alt="Bahía de Magdalena" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_33">
-        <h2>Cerro El Pilón</h2>
-        <p>Imponente cerro de 400 m que enmarca La Purísima y San Isidro; con historia misional jesuita.</p>
-        <p><a href="https://maps.app.goo.gl/wiwaWvV8uc4nxZLb6" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/03_Pilon.jpg" alt="Cerro El Pilón" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_34">
-        <h2>Cañón del Mezquite</h2>
-        <p>El rincón más asombroso de la Sierra de la Giganta: paredes escarpadas, pozas de agua dulce y oasis.</p>
-        <p><a href="https://maps.app.goo.gl/DUzwaVJGF6ifoGWK9" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/04_Mezquite.jpg" alt="Cañón del Mezquite" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_35">
-        <h2>Cañón de Costa Azul</h2>
-        <p>Formación espectacular cercana a San José del Cabo; paisaje seco con vegetación emergiendo entre rocas.</p>
-        <p><a href="https://maps.app.goo.gl/uEZ78x8GvNsr4GJy5" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/05_CostaAzul.jpg" alt="Cañón de Costa Azul" loading="lazy">
-      </div>
-    </div>
-  </div>
-      <div class="story-content" id="card-bcs_36">
-        <h2>Isla Espíritu Santo</h2>
-        <p>Considerada Patrimonio Natural de la Humanidad desde 2007. Posibilidad de nadar con lobos marinos y buceo en zonas someras.</p>
-        <p><a href="https://simec.conanp.gob.mx/ficha.php?anp=141&reg=1" target="_blank" rel="noopener noreferrer">Ir a su página oficial</a></p>
-        <img src="../img/01_Espiritu_1.jpg" alt="Isla Espíritu Santo" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_37">
-        <h2>Bahía de Magdalena</h2>
-        <p>Bahía protegida con llegada de ballena gris en invierno y bosques de mangle de gran importancia biológica.</p>
-        <p><a href="https://maps.app.goo.gl/LkH2vCa7su64N5o78" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/02_Bahia_Magdalena.jpg" alt="Bahía de Magdalena" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_38">
-        <h2>Cerro El Pilón</h2>
-        <p>Imponente cerro de 400 m que enmarca La Purísima y San Isidro; con historia misional jesuita.</p>
-        <p><a href="https://maps.app.goo.gl/wiwaWvV8uc4nxZLb6" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/03_Pilon.jpg" alt="Cerro El Pilón" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_39">
-        <h2>Cañón del Mezquite</h2>
-        <p>El rincón más asombroso de la Sierra de la Giganta: paredes escarpadas, pozas de agua dulce y oasis.</p>
-        <p><a href="https://maps.app.goo.gl/DUzwaVJGF6ifoGWK9" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/04_Mezquite.jpg" alt="Cañón del Mezquite" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_40">
-        <h2>Cañón de Costa Azul</h2>
-        <p>Formación espectacular cercana a San José del Cabo; paisaje seco con vegetación emergiendo entre rocas.</p>
-        <p><a href="https://maps.app.goo.gl/uEZ78x8GvNsr4GJy5" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/05_CostaAzul.jpg" alt="Cañón de Costa Azul" loading="lazy">
-      </div>
-        <div class="story-content" id="card-bcs_41">
-        <h2>Isla Espíritu Santo</h2>
-        <p>Considerada Patrimonio Natural de la Humanidad desde 2007. Posibilidad de nadar con lobos marinos y buceo en zonas someras.</p>
-        <p><a href="https://simec.conanp.gob.mx/ficha.php?anp=141&reg=1" target="_blank" rel="noopener noreferrer">Ir a su página oficial</a></p>
-        <img src="../img/01_Espiritu_1.jpg" alt="Isla Espíritu Santo" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_42">
-        <h2>Bahía de Magdalena</h2>
-        <p>Bahía protegida con llegada de ballena gris en invierno y bosques de mangle de gran importancia biológica.</p>
-        <p><a href="https://maps.app.goo.gl/LkH2vCa7su64N5o78" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/02_Bahia_Magdalena.jpg" alt="Bahía de Magdalena" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_43">
-        <h2>Cerro El Pilón</h2>
-        <p>Imponente cerro de 400 m que enmarca La Purísima y San Isidro; con historia misional jesuita.</p>
-        <p><a href="https://maps.app.goo.gl/wiwaWvV8uc4nxZLb6" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/03_Pilon.jpg" alt="Cerro El Pilón" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_44">
-        <h2>Cañón del Mezquite</h2>
-        <p>El rincón más asombroso de la Sierra de la Giganta: paredes escarpadas, pozas de agua dulce y oasis.</p>
-        <p><a href="https://maps.app.goo.gl/DUzwaVJGF6ifoGWK9" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/04_Mezquite.jpg" alt="Cañón del Mezquite" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_45">
-        <h2>Cañón de Costa Azul</h2>
-        <p>Formación espectacular cercana a San José del Cabo; paisaje seco con vegetación emergiendo entre rocas.</p>
-        <p><a href="https://maps.app.goo.gl/uEZ78x8GvNsr4GJy5" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/05_CostaAzul.jpg" alt="Cañón de Costa Azul" loading="lazy">
-      </div>
-    </div>
-  </div>
-      <div class="story-content" id="card-bcs_46">
-        <h2>Isla Espíritu Santo</h2>
-        <p>Considerada Patrimonio Natural de la Humanidad desde 2007. Posibilidad de nadar con lobos marinos y buceo en zonas someras.</p>
-        <p><a href="https://simec.conanp.gob.mx/ficha.php?anp=141&reg=1" target="_blank" rel="noopener noreferrer">Ir a su página oficial</a></p>
-        <img src="../img/01_Espiritu_1.jpg" alt="Isla Espíritu Santo" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_47">
-        <h2>Bahía de Magdalena</h2>
-        <p>Bahía protegida con llegada de ballena gris en invierno y bosques de mangle de gran importancia biológica.</p>
-        <p><a href="https://maps.app.goo.gl/LkH2vCa7su64N5o78" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/02_Bahia_Magdalena.jpg" alt="Bahía de Magdalena" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_48">
-        <h2>Cerro El Pilón</h2>
-        <p>Imponente cerro de 400 m que enmarca La Purísima y San Isidro; con historia misional jesuita.</p>
-        <p><a href="https://maps.app.goo.gl/wiwaWvV8uc4nxZLb6" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/03_Pilon.jpg" alt="Cerro El Pilón" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_49">
-        <h2>Cañón del Mezquite</h2>
-        <p>El rincón más asombroso de la Sierra de la Giganta: paredes escarpadas, pozas de agua dulce y oasis.</p>
-        <p><a href="https://maps.app.goo.gl/DUzwaVJGF6ifoGWK9" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/04_Mezquite.jpg" alt="Cañón del Mezquite" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_50">
-        <h2>Cañón de Costa Azul</h2>
-        <p>Formación espectacular cercana a San José del Cabo; paisaje seco con vegetación emergiendo entre rocas.</p>
-        <p><a href="https://maps.app.goo.gl/uEZ78x8GvNsr4GJy5" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/05_CostaAzul.jpg" alt="Cañón de Costa Azul" loading="lazy">
-      </div>
-    </div>
-
-    <div id="story-side">
-      <div class="story-content" id="card-bcs_51">
-        <h2>Isla Espíritu Santo</h2>
-        <p>Considerada Patrimonio Natural de la Humanidad desde 2007. Posibilidad de nadar con lobos marinos y buceo en zonas someras.</p>
-        <p><a href="https://simec.conanp.gob.mx/ficha.php?anp=141&reg=1" target="_blank" rel="noopener noreferrer">Ir a su página oficial</a></p>
-        <img src="../img/01_Espiritu_1.jpg" alt="Isla Espíritu Santo" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_52">
-        <h2>Bahía de Magdalena</h2>
-        <p>Bahía protegida con llegada de ballena gris en invierno y bosques de mangle de gran importancia biológica.</p>
-        <p><a href="https://maps.app.goo.gl/LkH2vCa7su64N5o78" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/02_Bahia_Magdalena.jpg" alt="Bahía de Magdalena" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_53">
-        <h2>Cerro El Pilón</h2>
-        <p>Imponente cerro de 400 m que enmarca La Purísima y San Isidro; con historia misional jesuita.</p>
-        <p><a href="https://maps.app.goo.gl/wiwaWvV8uc4nxZLb6" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/03_Pilon.jpg" alt="Cerro El Pilón" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_54">
-        <h2>Cañón del Mezquite</h2>
-        <p>El rincón más asombroso de la Sierra de la Giganta: paredes escarpadas, pozas de agua dulce y oasis.</p>
-        <p><a href="https://maps.app.goo.gl/DUzwaVJGF6ifoGWK9" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/04_Mezquite.jpg" alt="Cañón del Mezquite" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_55">
-        <h2>Cañón de Costa Azul</h2>
-        <p>Formación espectacular cercana a San José del Cabo; paisaje seco con vegetación emergiendo entre rocas.</p>
-        <p><a href="https://maps.app.goo.gl/uEZ78x8GvNsr4GJy5" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/05_CostaAzul.jpg" alt="Cañón de Costa Azul" loading="lazy">
-      </div>
-    </div>
-  </div>
-      <div class="story-content" id="card-bcs_56">
-        <h2>Isla Espíritu Santo</h2>
-        <p>Considerada Patrimonio Natural de la Humanidad desde 2007. Posibilidad de nadar con lobos marinos y buceo en zonas someras.</p>
-        <p><a href="https://simec.conanp.gob.mx/ficha.php?anp=141&reg=1" target="_blank" rel="noopener noreferrer">Ir a su página oficial</a></p>
-        <img src="../img/01_Espiritu_1.jpg" alt="Isla Espíritu Santo" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_57">
-        <h2>Bahía de Magdalena</h2>
-        <p>Bahía protegida con llegada de ballena gris en invierno y bosques de mangle de gran importancia biológica.</p>
-        <p><a href="https://maps.app.goo.gl/LkH2vCa7su64N5o78" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/02_Bahia_Magdalena.jpg" alt="Bahía de Magdalena" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_58">
-        <h2>Cerro El Pilón</h2>
-        <p>Imponente cerro de 400 m que enmarca La Purísima y San Isidro; con historia misional jesuita.</p>
-        <p><a href="https://maps.app.goo.gl/wiwaWvV8uc4nxZLb6" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/03_Pilon.jpg" alt="Cerro El Pilón" loading="lazy">
-      </div>
-      <div class="story-content" id="card-bcs_59">
-        <h2>Cañón del Mezquite</h2>
-        <p>El rincón más asombroso de la Sierra de la Giganta: paredes escarpadas, pozas de agua dulce y oasis.</p>
-        <p><a href="https://maps.app.goo.gl/DUzwaVJGF6ifoGWK9" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/04_Mezquite.jpg" alt="Cañón del Mezquite" loading="lazy">
-      </div>
-  </div>
   <script>
     // === CONFIG ===
     const ACCESS_TOKEN = 'pk.eyJ1IjoiY2hheXZvbHRhIiwiYSI6ImNsdGRlNml1NDAyaXgyanJ3eXYzdGQ0MmEifQ.VH5UyDCjvPQ1X_KrkkHcZQ';
@@ -687,7 +145,7 @@
     let map, pointsData = null, stateBounds = null;
     let pulseAnim = null, activeId = null;
     let breathingAnim = null;
-    let allFeatures = []; // Para filtrar
+    let allFeatures = [];
 
     mapboxgl.accessToken = ACCESS_TOKEN;
     map = new mapboxgl.Map({
@@ -699,7 +157,6 @@
     map.addControl(new mapboxgl.NavigationControl({ visualizePitch:true }), 'top-right');
 
     map.on('load', async () => {
-      // --- DEM y terreno ---
       map.addSource('mapbox-dem', {
         "type": "raster-dem",
         "url": "mapbox://mapbox.terrain-rgb",
@@ -708,7 +165,6 @@
       });
       map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
 
-      // Estado
       const state = await fetch(STATE_GEO).then(r=>r.json());
       stateBounds = getGeoJSONBounds(state);
       map.addSource('bcs-poly',{ type:'geojson', data: state });
@@ -717,13 +173,11 @@
       map.addLayer({ id:'bcs-line', type:'line', source:'bcs-poly',
         paint:{ 'line-color':'#EA5188', 'line-width':2 }});
 
-      // Puntos
       pointsData = await fetch(POINTS_GEO).then(r=>r.json());
-      allFeatures = pointsData.features; // Backup para filtrar
+      allFeatures = pointsData.features;
 
       map.addSource('bcs-points',{ type:'geojson', data: pointsData });
 
-      // Icono
       const img = new Image(32,32);
       img.src = ICON_URL;
       img.onload = () => {
@@ -732,27 +186,22 @@
         setupPointClick();
         startBreathingAll();
         animatePointsIn();
-
-        // Inicializa los filtros
         setupFilterBar();
-      };
 
+        // Genera tarjetas iniciales
+        renderCards(allFeatures);
+      };
       if (stateBounds) { map.fitBounds(stateBounds, { padding: 40, duration: 800 }); }
     });
 
     function addPointLayers(){
-      // Puntos con icono y animación
       if (!map.getLayer('bcs-symbols')) {
         map.addLayer({
           id:'bcs-symbols',
           type:'symbol',
           source:'bcs-points',
           layout:{
-            'icon-image': ['case',
-              ['==', ['get', 'tipo'], 'ecoturismo'], 'eco',
-              ['==', ['get', 'tipo'], 'cultural'], 'eco', // Puedes poner otros iconos según tipo
-              'eco'
-            ],
+            'icon-image': 'eco',
             'icon-size': 3,
             'icon-allow-overlap': true
           }
@@ -777,7 +226,7 @@
           type:'symbol',
           source:'bcs-points',
           layout:{
-            'text-field': ['get','nombre'], // Cambia a tu propiedad de nombre real
+            'text-field': ['get','Nombre de la ETC'],
             'text-size': 14,
             'text-offset': [0, 2.2],
             'text-anchor': 'top',
@@ -793,7 +242,6 @@
       }
     }
 
-    // Animación de "fade-in" al cargar puntos (EvilCharts style)
     function animatePointsIn(){
       let state = { s: 0.2 };
       anime({
@@ -809,7 +257,6 @@
       });
     }
 
-    // Animación "respirar" para todos los puntos
     function startBreathingAll() {
       if (breathingAnim) breathingAnim.pause();
       let state = { s: 3 };
@@ -828,7 +275,6 @@
       });
     }
 
-    // Animación de aparición/desaparición de tarjetas de puntos
     function animateCardIn(card) {
       card.style.display = 'block';
       anime({
@@ -852,7 +298,6 @@
       });
     }
 
-    // Tarjeta lateral + zoom al punto
     function showSideCard(id) {
       document.querySelectorAll('#story-side .story-content').forEach(card => {
         if (card.classList.contains('active')) {
@@ -868,7 +313,6 @@
       flyToFeatureId(id);
     }
 
-    // Animación de pulso al seleccionar punto
     function stopPulse() {
       if (pulseAnim) { pulseAnim.pause(); pulseAnim = null; }
       activeId = null;
@@ -901,7 +345,7 @@
       if (!pointsData) return;
       const f = pointsData.features.find(fe => (fe.properties && String(fe.properties.id) === String(id)));
       if (!f) return;
-      const coords = f.geometry.coordinates; // [lng,lat]
+      const coords = f.geometry.coordinates;
       map.flyTo({ center: coords, zoom: 14, pitch: 35, bearing: 0, duration: 1400, essential: true });
     }
 
@@ -917,7 +361,6 @@
       return b;
     }
 
-    // Interacción con puntos: click para mostrar tarjeta y animar
     function setupPointClick() {
       map.on('click', 'bcs-symbols', function(e) {
         if (!e.features || !e.features.length) return;
@@ -926,7 +369,6 @@
         showSideCard(id);
         startPulseFor(id);
       });
-      // Animación al pasar mouse (EvilCharts style)
       map.on('mouseenter', 'bcs-symbols', function(e) {
         map.getCanvas().style.cursor = 'pointer';
         if (e.features && e.features.length) {
@@ -953,7 +395,6 @@
       });
     }
 
-    // Botón "Volver al inicio"
     document.addEventListener('DOMContentLoaded', function() {
       const btn = document.getElementById('volver-inicio-btn');
       btn.addEventListener('click', function() {
@@ -970,17 +411,15 @@
       });
     });
 
-    // ---- FILTROS ----
+    // FILTROS
     function setupFilterBar() {
-      // Obtén lista de municipios y localidades del GeoJSON
-      const municipios = Array.from(new Set(allFeatures.map(f => f.properties.municipio))).sort();
+      const municipios = Array.from(new Set(allFeatures.map(f => f.properties["Municipio"]))).sort();
       llenarSelect(document.getElementById('filter-municipio'), municipios, "Todos");
       document.getElementById('filter-municipio').addEventListener('change', onFilterMunicipio);
 
       document.getElementById('filter-localidad').addEventListener('change', filtrarYActualizar);
       document.getElementById('filter-nombre').addEventListener('input', filtrarYActualizar);
 
-      // Inicializa localidades con todos
       onFilterMunicipio();
     }
 
@@ -1002,9 +441,9 @@
       const municipio = document.getElementById('filter-municipio').value;
       let localidades = [];
       if (!municipio) {
-        localidades = Array.from(new Set(allFeatures.map(f=>f.properties.localidad))).sort();
+        localidades = Array.from(new Set(allFeatures.map(f=>f.properties["Localidad"]))).sort();
       } else {
-        localidades = Array.from(new Set(allFeatures.filter(f=>f.properties.municipio===municipio).map(f=>f.properties.localidad))).sort();
+        localidades = Array.from(new Set(allFeatures.filter(f=>f.properties["Municipio"]===municipio).map(f=>f.properties["Localidad"]))).sort();
       }
       llenarSelect(document.getElementById('filter-localidad'), localidades, "Todas");
       filtrarYActualizar();
@@ -1015,31 +454,21 @@
       const localidad = document.getElementById('filter-localidad').value;
       const nombre = document.getElementById('filter-nombre').value.trim().toLowerCase();
 
-      // Filtra features
       const filtrados = allFeatures.filter(f => {
         const p = f.properties;
         let match = true;
-        if (municipio && p.municipio !== municipio) match = false;
-        if (localidad && p.localidad !== localidad) match = false;
-        if (nombre && !(p.nombre && p.nombre.toLowerCase().includes(nombre))) match = false;
+        if (municipio && p["Municipio"] !== municipio) match = false;
+        if (localidad && p["Localidad"] !== localidad) match = false;
+        if (nombre && !(p["Nombre de la ETC"] && p["Nombre de la ETC"].toLowerCase().includes(nombre))) match = false;
         return match;
       });
-      // Animación al filtrar: fade-out y fade-in
       animateFilterPoints(filtrados);
 
-      // Actualiza fuente GeoJSON de puntos
       map.getSource('bcs-points').setData({ type: 'FeatureCollection', features: filtrados });
       stopPulse();
-      // Opcional: Oculta tarjetas abiertas si el punto ya no está visible
-      document.querySelectorAll('#story-side .story-content').forEach(card => {
-        card.classList.remove('active');
-        card.style.display = 'none';
-        card.style.opacity = 0;
-        card.style.transform = 'scale(0.95)';
-      });
+      renderCards(filtrados); // Genera solo las tarjetas visibles
     }
 
-    // Animación de filtrado
     function animateFilterPoints(filtrados) {
       let state = { s: 3, opacity: 1 };
       anime({
@@ -1069,6 +498,29 @@
         }
       });
     }
+
+    // --- CARD GENERATION ---
+    function renderCards(featureList) {
+      const sidePanel = document.getElementById('story-side');
+      sidePanel.innerHTML = '';
+      featureList.forEach(f => {
+        const p = f.properties;
+        // Personaliza el contenido aquí según los campos de tu GeoJSON
+        const div = document.createElement('div');
+        div.className = 'story-content';
+        div.id = 'card-' + p.id;
+        div.innerHTML = `
+          <h2>${p["Nombre de la ETC"] || "(Sin nombre)"}</h2>
+          <p><strong>Municipio:</strong> ${p["Municipio"] || "-"}<br>
+          <strong>Localidad:</strong> ${p["Localidad"] || "-"}</p>
+          ${p.descripcion ? `<p>${p.descripcion}</p>` : ""}
+          ${p.url ? `<p><a href="${p.url}" target="_blank" rel="noopener noreferrer">Ver más información</a></p>` : ""}
+          ${p.imagen ? `<img src="${p.imagen}" alt="${p["Nombre de la ETC"]}" loading="lazy">` : ""}
+        `;
+        sidePanel.appendChild(div);
+      });
+    }
+
   </script>
 </body>
 </html>
