@@ -9,7 +9,7 @@
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet"/>
 
-  <!-- (NUEVO) Hoja de estilos del CDN para fuente "Patria" -->
+  <!-- Hoja de estilos del CDN para fuente "Patria" -->
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
 
   <!-- anime.js (para el pulso y animaciones) -->
@@ -171,6 +171,41 @@
       padding: 12px !important;
     }
 
+    /* Barra flotante de filtros */
+    #filter-bar {
+      position: fixed;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(40,40,40,0.93);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      padding: 12px 24px;
+      z-index: 10001;
+      display: flex;
+      gap: 16px;
+      color: #fff;
+      align-items: center;
+    }
+    #filter-bar select, #filter-bar input {
+      border-radius: 8px;
+      border: 1px solid #EA5188;
+      padding: 6px 12px;
+      background: #222;
+      color: #FFF2D2;
+      font-size: 1rem;
+      min-width: 130px;
+      margin-right: 0;
+    }
+    #filter-bar label {
+      font-size: 1rem;
+      color: #FFF2D2;
+      margin-right: 5px;
+    }
+    #filter-bar input[type=text] {
+      width: 180px;
+    }
+
     /* Responsive para tablets y laptops */
     @media (max-width: 1200px) {
       #story-main, #story-side {
@@ -187,113 +222,32 @@
         font-size: 1rem;
         padding: 10px 16px;
       }
+      #filter-bar {
+        padding: 8px 12px;
+        gap: 8px;
+      }
+      #filter-bar input[type=text] {
+        width: 120px;
+      }
     }
 
-    /* Responsive para móviles: tarjetas pequeñas arriba izquierda/derecha */
     @media (max-width: 900px) {
-      #main-nav {
-        padding: 6px 8px;
-      }
-      #main-nav ul {
-        flex-wrap: wrap;
-        gap: 0.5rem;
-      }
-      #map {
-        top: 48px;
-        height: calc(100vh - 48px);
-      }
-      #story-panels {
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: space-between;
-        width: 100vw;
-        height: calc(100vh - 48px);
-        position: fixed;
-        top: 48px;
-        left: 0;
-        z-index: 2;
-        pointer-events: none;
-      }
-      #story-main {
-        width: 15vw;
-        min-width: 120px;
-        max-width: 180px;
-        height: auto;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 10;
-        pointer-events: none;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      #story-main .story-content {
-        width: 100%;
-        min-width: 120px;
-        max-width: 180px;
-        margin: 8px 0 0 8px;
-        padding: 8px;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        pointer-events: auto;
-      }
-      #story-main .story-content img {
-        width: 100%;
-        max-width: 120px;
-        height: auto;
-        border-radius: 6px;
-        margin-top: 6px;
-      }
-      #volver-inicio-btn {
-        margin: 8px 0 0 8px;
-        font-size: 0.85rem;
-        padding: 6px 10px;
-        border-radius: 6px;
-        width: 90%;
-      }
-      #story-side {
-        width: 15vw;
-        min-width: 120px;
-        max-width: 180px;
-        height: auto;
-        position: absolute;
-        top: 0;
-        right: 0;
-        z-index: 10;
-        pointer-events: none;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-      }
-      #story-side .story-content {
-        width: 100%;
-        min-width: 120px;
-        max-width: 180px;
-        margin: 8px 8px 0 0;
-        padding: 8px;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        pointer-events: auto;
-        position: absolute;
-        top: 0;
-        right: 0;
-        display: none;
-        opacity: 0;
-        transform: scale(0.95);
-      }
-      #story-side .story-content.active {
-        display: block;
-      }
-      #story-side .story-content img {
-        width: 100%;
-        max-width: 120px;
-        height: auto;
-        border-radius: 6px;
-        margin-top: 6px;
-      }
+      #main-nav { padding: 6px 8px; }
+      #main-nav ul { flex-wrap: wrap; gap: 0.5rem; }
+      #map { top: 48px; height: calc(100vh - 48px); }
+      #story-panels { flex-direction: row; align-items: flex-start; justify-content: space-between; width: 100vw; height: calc(100vh - 48px); position: fixed; top: 48px; left: 0; z-index: 2; pointer-events: none; }
+      #story-main { width: 15vw; min-width: 120px; max-width: 180px; height: auto; position: absolute; top: 0; left: 0; z-index: 10; pointer-events: none; display: flex; flex-direction: column; align-items: flex-start; }
+      #story-main .story-content { width: 100%; min-width: 120px; max-width: 180px; margin: 8px 0 0 8px; padding: 8px; border-radius: 8px; font-size: 0.9rem; pointer-events: auto; }
+      #story-main .story-content img { width: 100%; max-width: 120px; height: auto; border-radius: 6px; margin-top: 6px; }
+      #volver-inicio-btn { margin: 8px 0 0 8px; font-size: 0.85rem; padding: 6px 10px; border-radius: 6px; width: 90%; }
+      #story-side { width: 15vw; min-width: 120px; max-width: 180px; height: auto; position: absolute; top: 0; right: 0; z-index: 10; pointer-events: none; display: flex; flex-direction: column; align-items: flex-end; }
+      #story-side .story-content { width: 100%; min-width: 120px; max-width: 180px; margin: 8px 8px 0 0; padding: 8px; border-radius: 8px; font-size: 0.9rem; pointer-events: auto; position: absolute; top: 0; right: 0; display: none; opacity: 0; transform: scale(0.95); }
+      #story-side .story-content.active { display: block; }
+      #story-side .story-content img { width: 100%; max-width: 120px; height: auto; border-radius: 6px; margin-top: 6px; }
       .story-content h1, .story-content h2 { font-size: 1rem; }
       .story-content p  { font-size: 0.85rem; }
+      #filter-bar { top: 52px; padding: 4px 6px; gap: 4px;}
+      #filter-bar input[type=text] { width: 70px;}
     }
     @media (max-width: 600px) {
       #main-nav ul { font-size: 0.95rem; }
@@ -301,6 +255,7 @@
       .story-content h2 { font-size: 1rem; }
       .story-content p  { font-size: 0.9rem; }
       #volver-inicio-btn { font-size: 0.9rem; }
+      #filter-bar label, #filter-bar select, #filter-bar input { font-size: 0.85rem; }
     }
   </style>
 </head>
@@ -320,6 +275,16 @@
       <li><a href="veracruz.html">Veracruz</a></li>
     </ul>
   </nav>
+
+  <!-- Barra de filtros flotante -->
+  <div id="filter-bar">
+    <label for="filter-municipio">Municipio:</label>
+    <select id="filter-municipio"><option value="">Todos</option></select>
+    <label for="filter-localidad">Localidad:</label>
+    <select id="filter-localidad"><option value="">Todas</option></select>
+    <label for="filter-nombre">Nombre ETC:</label>
+    <input type="text" id="filter-nombre" placeholder="Buscar ETC...">
+  </div>
 
   <div id="map"></div>
 
@@ -378,6 +343,7 @@
     let map, pointsData = null, stateBounds = null;
     let pulseAnim = null, activeId = null;
     let breathingAnim = null;
+    let allFeatures = []; // Para filtrar
 
     mapboxgl.accessToken = ACCESS_TOKEN;
     map = new mapboxgl.Map({
@@ -389,25 +355,28 @@
     map.addControl(new mapboxgl.NavigationControl({ visualizePitch:true }), 'top-right');
 
     map.on('load', async () => {
-      // --- AQUI VA EL CAMBIO ---
-  map.addSource('mapbox-dem', {
-    "type": "raster-dem",
-    "url": "mapbox://mapbox.terrain-rgb",
-    "tileSize": 512,
-    "maxzoom": 14
-  });
-  map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
+      // --- DEM y terreno ---
+      map.addSource('mapbox-dem', {
+        "type": "raster-dem",
+        "url": "mapbox://mapbox.terrain-rgb",
+        "tileSize": 512,
+        "maxzoom": 14
+      });
+      map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
+
       // Estado
       const state = await fetch(STATE_GEO).then(r=>r.json());
       stateBounds = getGeoJSONBounds(state);
       map.addSource('bcs-poly',{ type:'geojson', data: state });
       map.addLayer({ id:'bcs-fill', type:'fill', source:'bcs-poly',
-        paint:{ 'fill-color':'#EA5188', 'fill-opacity':0.18 }}); // Color rosa y transparencia igual
+        paint:{ 'fill-color':'#EA5188', 'fill-opacity':0.18 }});
       map.addLayer({ id:'bcs-line', type:'line', source:'bcs-poly',
         paint:{ 'line-color':'#EA5188', 'line-width':2 }});
 
       // Puntos
       pointsData = await fetch(POINTS_GEO).then(r=>r.json());
+      allFeatures = pointsData.features; // Backup para filtrar
+
       map.addSource('bcs-points',{ type:'geojson', data: pointsData });
 
       // Icono
@@ -418,26 +387,33 @@
         addPointLayers();
         setupPointClick();
         startBreathingAll();
+        animatePointsIn();
+
+        // Inicializa los filtros
+        setupFilterBar();
       };
 
       if (stateBounds) { map.fitBounds(stateBounds, { padding: 40, duration: 800 }); }
     });
 
     function addPointLayers(){
-      // Todos los puntos con icono y animación de "respirar"
+      // Puntos con icono y animación
       if (!map.getLayer('bcs-symbols')) {
         map.addLayer({
           id:'bcs-symbols',
           type:'symbol',
           source:'bcs-points',
           layout:{
-            'icon-image': 'eco',
+            'icon-image': ['case',
+              ['==', ['get', 'tipo'], 'ecoturismo'], 'eco',
+              ['==', ['get', 'tipo'], 'cultural'], 'eco', // Puedes poner otros iconos según tipo
+              'eco'
+            ],
             'icon-size': 3,
             'icon-allow-overlap': true
           }
         });
       }
-      // Icono activo para pulso extra
       if (!map.getLayer('bcs-symbols-active')) {
         map.addLayer({
           id: 'bcs-symbols-active',
@@ -451,14 +427,13 @@
           }
         });
       }
-      // Etiquetas
       if (!map.getLayer('bcs-labels')) {
         map.addLayer({
           id:'bcs-labels',
           type:'symbol',
           source:'bcs-points',
           layout:{
-            'text-field': ['get','XXX Aca va el nombre'],
+            'text-field': ['get','nombre'], // Cambia a tu propiedad de nombre real
             'text-size': 14,
             'text-offset': [0, 2.2],
             'text-anchor': 'top',
@@ -466,15 +441,31 @@
             'text-ignore-placement': true
           },
           paint:{
-            'text-color':'#ffffff',
-            'text-halo-color':'#000000',
+            'text-color':'#FFF2D2',
+            'text-halo-color':'#EA5188',
             'text-halo-width': 1.5
           }
         });
       }
     }
 
-    // Animación de "respirar" para todos los puntos
+    // Animación de "fade-in" al cargar puntos (EvilCharts style)
+    function animatePointsIn(){
+      let state = { s: 0.2 };
+      anime({
+        targets: state,
+        s: [0.2, 3],
+        duration: 1200,
+        easing: 'easeOutExpo',
+        update: () => {
+          if (map.getLayer('bcs-symbols')) {
+            map.setLayoutProperty('bcs-symbols', 'icon-size', state.s);
+          }
+        }
+      });
+    }
+
+    // Animación "respirar" para todos los puntos
     function startBreathingAll() {
       if (breathingAnim) breathingAnim.pause();
       let state = { s: 3 };
@@ -517,7 +508,7 @@
       });
     }
 
-    // Mostrar tarjeta del punto en el panel derecho y hacer zoom al punto
+    // Tarjeta lateral + zoom al punto
     function showSideCard(id) {
       document.querySelectorAll('#story-side .story-content').forEach(card => {
         if (card.classList.contains('active')) {
@@ -533,17 +524,7 @@
       flyToFeatureId(id);
     }
 
-    function setupPointClick() {
-      // Permitir interacción con el mapa y los puntos
-      map.on('click', 'bcs-symbols', function(e) {
-        if (!e.features || !e.features.length) return;
-        const feature = e.features[0];
-        const id = feature.properties.id;
-        showSideCard(id);
-        startPulseFor(id);
-      });
-    }
-
+    // Animación de pulso al seleccionar punto
     function stopPulse() {
       if (pulseAnim) { pulseAnim.pause(); pulseAnim = null; }
       activeId = null;
@@ -592,24 +573,158 @@
       return b;
     }
 
+    // Interacción con puntos: click para mostrar tarjeta y animar
+    function setupPointClick() {
+      map.on('click', 'bcs-symbols', function(e) {
+        if (!e.features || !e.features.length) return;
+        const feature = e.features[0];
+        const id = feature.properties.id;
+        showSideCard(id);
+        startPulseFor(id);
+      });
+      // Animación al pasar mouse (EvilCharts style)
+      map.on('mouseenter', 'bcs-symbols', function(e) {
+        map.getCanvas().style.cursor = 'pointer';
+        if (e.features && e.features.length) {
+          const id = e.features[0].properties.id;
+          anime({
+            targets: '#card-' + id,
+            scale: [1, 1.05],
+            duration: 240,
+            easing: 'easeOutQuad'
+          });
+        }
+      });
+      map.on('mouseleave', 'bcs-symbols', function(e) {
+        map.getCanvas().style.cursor = '';
+        if (e.features && e.features.length) {
+          const id = e.features[0].properties.id;
+          anime({
+            targets: '#card-' + id,
+            scale: [1.05, 1],
+            duration: 240,
+            easing: 'easeInQuad'
+          });
+        }
+      });
+    }
+
     // Botón "Volver al inicio"
     document.addEventListener('DOMContentLoaded', function() {
       const btn = document.getElementById('volver-inicio-btn');
       btn.addEventListener('click', function() {
-        // Oculta todas las tarjetas de la derecha con animación
         document.querySelectorAll('#story-side .story-content').forEach(card => {
           if (card.classList.contains('active')) {
             card.classList.remove('active');
             animateCardOut(card);
           }
         });
-        // Vuelve a la vista general del estado
         if (stateBounds) {
           map.fitBounds(stateBounds, { padding: 40, duration: 1200 });
         }
         stopPulse();
       });
     });
+
+    // ---- FILTROS ----
+    function setupFilterBar() {
+      // Obtén lista de municipios y localidades del GeoJSON
+      const municipios = Array.from(new Set(allFeatures.map(f => f.properties.municipio))).sort();
+      llenarSelect(document.getElementById('filter-municipio'), municipios, "Todos");
+      document.getElementById('filter-municipio').addEventListener('change', onFilterMunicipio);
+
+      document.getElementById('filter-localidad').addEventListener('change', filtrarYActualizar);
+      document.getElementById('filter-nombre').addEventListener('input', filtrarYActualizar);
+
+      // Inicializa localidades con todos
+      onFilterMunicipio();
+    }
+
+    function llenarSelect(select, items, labelTodos) {
+      select.innerHTML = '';
+      const opt0 = document.createElement('option');
+      opt0.value = '';
+      opt0.textContent = labelTodos;
+      select.appendChild(opt0);
+      items.forEach(it => {
+        const o = document.createElement('option');
+        o.value = it;
+        o.textContent = it;
+        select.appendChild(o);
+      });
+    }
+
+    function onFilterMunicipio() {
+      const municipio = document.getElementById('filter-municipio').value;
+      let localidades = [];
+      if (!municipio) {
+        localidades = Array.from(new Set(allFeatures.map(f=>f.properties.localidad))).sort();
+      } else {
+        localidades = Array.from(new Set(allFeatures.filter(f=>f.properties.municipio===municipio).map(f=>f.properties.localidad))).sort();
+      }
+      llenarSelect(document.getElementById('filter-localidad'), localidades, "Todas");
+      filtrarYActualizar();
+    }
+
+    function filtrarYActualizar() {
+      const municipio = document.getElementById('filter-municipio').value;
+      const localidad = document.getElementById('filter-localidad').value;
+      const nombre = document.getElementById('filter-nombre').value.trim().toLowerCase();
+
+      // Filtra features
+      const filtrados = allFeatures.filter(f => {
+        const p = f.properties;
+        let match = true;
+        if (municipio && p.municipio !== municipio) match = false;
+        if (localidad && p.localidad !== localidad) match = false;
+        if (nombre && !(p.nombre && p.nombre.toLowerCase().includes(nombre))) match = false;
+        return match;
+      });
+      // Animación al filtrar: fade-out y fade-in
+      animateFilterPoints(filtrados);
+
+      // Actualiza fuente GeoJSON de puntos
+      map.getSource('bcs-points').setData({ type: 'FeatureCollection', features: filtrados });
+      stopPulse();
+      // Opcional: Oculta tarjetas abiertas si el punto ya no está visible
+      document.querySelectorAll('#story-side .story-content').forEach(card => {
+        card.classList.remove('active');
+        card.style.display = 'none';
+        card.style.opacity = 0;
+        card.style.transform = 'scale(0.95)';
+      });
+    }
+
+    // Animación de filtrado
+    function animateFilterPoints(filtrados) {
+      let state = { s: 3, opacity: 1 };
+      anime({
+        targets: state,
+        s: [3, 0.2],
+        opacity: [1, 0.2],
+        duration: 280,
+        easing: 'easeInCubic',
+        update: () => {
+          if (map.getLayer('bcs-symbols')) {
+            map.setLayoutProperty('bcs-symbols', 'icon-size', state.s);
+          }
+        },
+        complete: () => {
+          anime({
+            targets: state,
+            s: [0.2, 3],
+            opacity: [0.2, 1],
+            duration: 440,
+            easing: 'easeOutCubic',
+            update: () => {
+              if (map.getLayer('bcs-symbols')) {
+                map.setLayoutProperty('bcs-symbols', 'icon-size', state.s);
+              }
+            }
+          });
+        }
+      });
+    }
   </script>
 </body>
 </html>
