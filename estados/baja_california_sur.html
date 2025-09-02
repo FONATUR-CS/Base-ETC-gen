@@ -5,40 +5,196 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Baja California Sur – Turismo Comunitario (Story Map)</title>
 
+  <!-- Mapbox GL -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet"/>
+
+  <!-- Hoja de estilos del CDN para fuente "Patria" -->
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
+
+  <!-- anime.js (para el pulso y animaciones) -->
   <script src="https://unpkg.com/animejs@3.2.1/lib/anime.min.js"></script>
 
   <style>
-    /* Tus estilos originales aquí */
-    body { font-family: 'Noto Sans', Arial, sans-serif; color:#fff; background:#000; }
-    #main-nav { position: fixed; top: 0; left: 0; width: 100%; background: #222; color: #fff; z-index: 10000; padding: 10px 24px;}
-    #main-nav ul { display: flex; gap: 1rem; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Noto Sans', system-ui, Arial, sans-serif; color:#fff; background:#000; }
+
+    #main-nav {
+      position: fixed; top: 0; left: 0; width: 100%;
+      background-image: url('../img/patron2.jpg'); 
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: #fff; z-index: 10000;
+      padding: 10px 24px; box-shadow: 0 2px 6px rgba(0,0,0,.2);
+    }
+    #main-nav ul {
+      display: flex;
+      gap: 1rem;
+      justify-content: left;
+      align-items: left;
+      height: 100%;
+      flex-wrap: wrap;
+    }
     #main-nav a { text-decoration:none; color:#555; font-weight:700; padding:6px 8px; border-radius:4px; }
     #main-nav a.active, #main-nav a:hover { background:#EA5188; color:#fff; }
+
     #map { position: fixed; top: 56px; left:0; right:0; height: calc(100vh - 56px); z-index:1; }
-    #filter-bar { position: fixed; top: 70px; left: 50%; transform: translateX(-50%); background: rgba(40,40,40,0.93); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.18); padding: 12px 24px; z-index: 10001; display: flex; gap: 16px; color: #fff; align-items: center; }
-    #filter-bar select, #filter-bar input { border-radius: 8px; border: 1px solid #EA5188; padding: 6px 12px; background: #222; color: #FFF2D2; font-size: 1rem; min-width: 130px; margin-right: 0; }
-    #filter-bar label { font-size: 1rem; color: #FFF2D2; margin-right: 5px; }
-    #filter-bar input[type=text] { width: 180px; }
-    #story-panels { position: fixed; top: 56px; left: 0; width: 100vw; height: calc(100vh - 56px); display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; pointer-events: none; z-index: 2; }
-    #story-main { width: 420px; min-width: 320px; max-width: 92vw; height: 100%; display: flex; flex-direction: column; align-items: flex-start; pointer-events: none; position: relative; }
-    #story-side { width: 420px; min-width: 320px; max-width: 92vw; height: 100%; position: relative; pointer-events: none; }
-    #story-main .story-content { margin-left: 40px; margin-right: 0; position: relative; z-index: 10; }
-    .story-content { background: #222; padding: 28px; border-radius: 14px; margin: 40px 0 0 0; color: #fff; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 24px 48px rgba(0,0,0,.45);}
-    .story-content.active { opacity: 1; transform: scale(1); display: block; }
-    #story-side .story-content { display: none; opacity: 0; transform: scale(0.95); position: absolute; top: 0; right: 0; z-index: 10; width: calc(100% - 40px); pointer-events: auto;}
-    #story-side .story-content.active { display: block; opacity: 1; transform: scale(1);}
-    #volver-inicio-btn { margin: 32px 0 0 40px; padding: 12px 24px; background: #EA5188; color: #fff; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.18);}
-    #volver-inicio-btn:hover { background: #d13e74; }
-    .story-content h2 { font-size: 1.9rem; margin-bottom:.35rem; color:#FFF2D2; }
+
+    #filter-bar {
+      position: fixed;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(40,40,40,0.93);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      padding: 12px 24px;
+      z-index: 10001;
+      display: flex;
+      gap: 16px;
+      color: #fff;
+      align-items: center;
+      font-family: 'Noto Sans', Arial, sans-serif;
+    }
+    #filter-bar select, #filter-bar input {
+      border-radius: 8px;
+      border: 1px solid #EA5188;
+      padding: 6px 12px;
+      background: #222;
+      color: #FFF2D2;
+      font-size: 1rem;
+      min-width: 130px;
+      margin-right: 0;
+      font-family: inherit;
+    }
+    #filter-bar label {
+      font-size: 1rem;
+      color: #FFF2D2;
+      margin-right: 5px;
+      font-family: inherit;
+    }
+    #filter-bar input[type=text] {
+      width: 180px;
+    }
+
+    #story-panels {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      width: 100vw;
+      height: calc(100vh - 56px);
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+      z-index: 2;
+    }
+    #story-main {
+      width: 420px;
+      min-width: 320px;
+      max-width: 92vw;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      pointer-events: none;
+      position: relative;
+    }
+    #story-side {
+      width: 420px;
+      min-width: 320px;
+      max-width: 92vw;
+      height: 100%;
+      position: relative;
+      pointer-events: none;
+    }
+    #story-main .story-content {
+      margin-left: 40px;
+      margin-right: 0;
+      position: relative;
+      z-index: 10;
+    }
+    #story-side .story-content {
+      margin-right: 40px;
+      margin-left: 0 !important;
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 10;
+      width: calc(100% - 40px);
+      pointer-events: auto;
+      display: none;
+      opacity: 0;
+      transform: scale(0.95);
+      background-image: url('../img/patron1.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: all .8s cubic-bezier(.25,.46,.45,.94);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 24px 48px rgba(0,0,0,.45);
+      color: #fff;
+    }
+    #story-side .story-content.active {
+      display: block;
+      opacity: 1;
+      transform: scale(1);
+    }
+    .story-content h2 {
+      font-family: 'Patria', 'Noto Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.7rem;
+      margin-bottom:.35rem;
+      color:#FFF2D2;
+      justify-content:center;
+    }
+    .story-content p  { font-size: 1.09rem; line-height:1.55; color: #eaeaea; justify-content:center;}
     .story-content img { width:100%; height:auto; border-radius:10px; margin-top:12px; }
-    .story-content a { color: #EA5188; text-decoration: underline; transition: color 0.2s; }
-    .story-content a:hover { color: #F7E07F; }
+    .story-content a {
+      color: #EA5188;
+      text-decoration: underline;
+      transition: color 0.2s;
+    }
+    .story-content a:hover {
+      color: #F7E07F;
+    }
+    #volver-inicio-btn {
+      display: block;
+      margin: 32px 0 0 40px;
+      padding: 12px 24px;
+      background: #EA5188;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      transition: background 0.2s;
+      pointer-events: auto;
+      font-family: 'Noto Sans', Arial, sans-serif;
+    }
+    #volver-inicio-btn:hover {
+      background: #d13e74;
+    }
+    @media (max-width: 900px) {
+      #story-main, #story-side { width: 180px; min-width: 120px; }
+      #story-main .story-content, #story-side .story-content { padding: 8px; border-radius: 8px; font-size: 0.9rem;}
+      #story-main .story-content img, #story-side .story-content img { max-width: 120px;}
+      #volver-inicio-btn { margin: 8px 0 0 8px; font-size: 0.85rem; padding: 6px 10px; border-radius: 6px; width: 90%;}
+      #filter-bar { top: 52px; padding: 4px 6px; gap: 4px;}
+      #filter-bar input[type=text] { width: 70px;}
+    }
   </style>
 </head>
 <body>
+
   <nav id="main-nav">
     <ul>
       <li><a href="../index.html">Inicio</a></li>
@@ -54,6 +210,7 @@
     </ul>
   </nav>
 
+  <!-- Barra de filtros flotante -->
   <div id="filter-bar">
     <label for="filter-municipio">Municipio:</label>
     <select id="filter-municipio"><option value="">Todos</option></select>
@@ -75,18 +232,16 @@
       </div>
       <button id="volver-inicio-btn">Volver a la vista general</button>
     </div>
-    <div id="story-side">
-      <!-- Tarjetas generadas dinámicamente -->
-    </div>
+    <div id="story-side"></div>
   </div>
 
   <script>
+    // === CONFIG ===
     const ACCESS_TOKEN = 'pk.eyJ1IjoiY2hheXZvbHRhIiwiYSI6ImNsdGRlNml1NDAyaXgyanJ3eXYzdGQ0MmEifQ.VH5UyDCjvPQ1X_KrkkHcZQ';
     const BASE = '../';
     const STATE_GEO  = BASE + 'data/baja_california_sur.geojson';
     const POINTS_GEO = BASE + 'data/Resultados_BCS_59.geojson';
     const ICON_URL   = BASE + 'img/eco.svg';
-
     let map, pointsData = null, stateBounds = null;
     let pulseAnim = null, activeId = null;
     let breathingAnim = null;
@@ -113,8 +268,10 @@
       const state = await fetch(STATE_GEO).then(r=>r.json());
       stateBounds = getGeoJSONBounds(state);
       map.addSource('bcs-poly',{ type:'geojson', data: state });
-      map.addLayer({ id:'bcs-fill', type:'fill', source:'bcs-poly', paint:{ 'fill-color':'#EA5188', 'fill-opacity':0.18 }});
-      map.addLayer({ id:'bcs-line', type:'line', source:'bcs-poly', paint:{ 'line-color':'#EA5188', 'line-width':2 }});
+      map.addLayer({ id:'bcs-fill', type:'fill', source:'bcs-poly',
+        paint:{ 'fill-color':'#EA5188', 'fill-opacity':0.18 }});
+      map.addLayer({ id:'bcs-line', type:'line', source:'bcs-poly',
+        paint:{ 'line-color':'#EA5188', 'line-width':2 }});
 
       pointsData = await fetch(POINTS_GEO).then(r=>r.json());
       allFeatures = pointsData.features;
@@ -442,6 +599,8 @@
       sidePanel.innerHTML = '';
       featureList.forEach(f => {
         const p = f.properties;
+        const imgSrc = p.imagen ? p.imagen : "../img/BCS_1.png"; // Usa imagen específica o la panorámica por defecto
+        const googleUrl = p.Google || p.google_expanded || "#";
         const div = document.createElement('div');
         div.className = 'story-content';
         div.id = 'card-' + p.id;
@@ -449,9 +608,9 @@
           <h2>${p["Nombre de la ETC"] || "(Sin nombre)"}</h2>
           <p><strong>Municipio:</strong> ${p["Municipio"] || "-"}<br>
           <strong>Localidad:</strong> ${p["Localidad"] || "-"}</p>
-          ${p.descripcion ? `<p>${p.descripcion}</p>` : ""}
-          ${p.url ? `<p><a href="${p.url}" target="_blank" rel="noopener noreferrer">Ver más información</a></p>` : ""}
-          ${p.imagen ? `<img src="${p.imagen}" alt="${p["Nombre de la ETC"]}" loading="lazy">` : ""}
+          <p><a href="${googleUrl}" target="_blank" rel="noopener noreferrer">Ubicación en Google Maps</a></p>
+          ${p.Observación ? `<p><strong>Observación:</strong> ${p.Observación}</p>` : ""}
+          <img src="${imgSrc}" alt="${p["Nombre de la ETC"]}" loading="lazy">
         `;
         sidePanel.appendChild(div);
       });
