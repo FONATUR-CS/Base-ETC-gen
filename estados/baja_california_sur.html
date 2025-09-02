@@ -5,93 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Baja California Sur – Turismo Comunitario (Story Map)</title>
 
-  <!-- Mapbox GL -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet"/>
-
-  <!-- Hoja de estilos del CDN para fuente "Patria" -->
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
-
-  <!-- anime.js (para el pulso y animaciones) -->
   <script src="https://unpkg.com/animejs@3.2.1/lib/anime.min.js"></script>
 
   <style>
-    /* ... tus estilos originales ... */
-    #filter-bar {
-      position: fixed;
-      top: 70px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(40,40,40,0.93);
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-      padding: 12px 24px;
-      z-index: 10001;
-      display: flex;
-      gap: 16px;
-      color: #fff;
-      align-items: center;
-    }
-    #filter-bar select, #filter-bar input {
-      border-radius: 8px;
-      border: 1px solid #EA5188;
-      padding: 6px 12px;
-      background: #222;
-      color: #FFF2D2;
-      font-size: 1rem;
-      min-width: 130px;
-      margin-right: 0;
-    }
-    #filter-bar label {
-      font-size: 1rem;
-      color: #FFF2D2;
-      margin-right: 5px;
-    }
-    #filter-bar input[type=text] {
-      width: 180px;
-    }
-    /* ... el resto igual que tu original ... */
-    #story-side .story-content {
-      margin-right: 40px;
-      margin-left: 0 !important;
-      position: absolute;
-      top: 0;
-      right: 0;
-      z-index: 10;
-      width: calc(100% - 40px);
-      pointer-events: auto;
-      display: none;
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    #story-side .story-content.active {
-      display: block;
-    }
-    .story-content {
-      background-image: url('../img/patron1.jpg'); 
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      padding: 28px; border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.12);
-      margin: 40px 0 0 0;
-      transition: all .8s cubic-bezier(.25,.46,.45,.94);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 24px 48px rgba(0,0,0,.45);
-      width: 100%;
-      z-index: 10;
-      pointer-events: auto;
-    }
-    .story-content.active {
-      opacity: 1;
-      transform: scale(1);
-      display: block;
-    }
+    /* Tus estilos originales aquí */
+    body { font-family: 'Noto Sans', Arial, sans-serif; color:#fff; background:#000; }
+    #main-nav { position: fixed; top: 0; left: 0; width: 100%; background: #222; color: #fff; z-index: 10000; padding: 10px 24px;}
+    #main-nav ul { display: flex; gap: 1rem; }
+    #main-nav a { text-decoration:none; color:#555; font-weight:700; padding:6px 8px; border-radius:4px; }
+    #main-nav a.active, #main-nav a:hover { background:#EA5188; color:#fff; }
+    #map { position: fixed; top: 56px; left:0; right:0; height: calc(100vh - 56px); z-index:1; }
+    #filter-bar { position: fixed; top: 70px; left: 50%; transform: translateX(-50%); background: rgba(40,40,40,0.93); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.18); padding: 12px 24px; z-index: 10001; display: flex; gap: 16px; color: #fff; align-items: center; }
+    #filter-bar select, #filter-bar input { border-radius: 8px; border: 1px solid #EA5188; padding: 6px 12px; background: #222; color: #FFF2D2; font-size: 1rem; min-width: 130px; margin-right: 0; }
+    #filter-bar label { font-size: 1rem; color: #FFF2D2; margin-right: 5px; }
+    #filter-bar input[type=text] { width: 180px; }
+    #story-panels { position: fixed; top: 56px; left: 0; width: 100vw; height: calc(100vh - 56px); display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; pointer-events: none; z-index: 2; }
+    #story-main { width: 420px; min-width: 320px; max-width: 92vw; height: 100%; display: flex; flex-direction: column; align-items: flex-start; pointer-events: none; position: relative; }
+    #story-side { width: 420px; min-width: 320px; max-width: 92vw; height: 100%; position: relative; pointer-events: none; }
+    #story-main .story-content { margin-left: 40px; margin-right: 0; position: relative; z-index: 10; }
+    .story-content { background: #222; padding: 28px; border-radius: 14px; margin: 40px 0 0 0; color: #fff; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 24px 48px rgba(0,0,0,.45);}
+    .story-content.active { opacity: 1; transform: scale(1); display: block; }
+    #story-side .story-content { display: none; opacity: 0; transform: scale(0.95); position: absolute; top: 0; right: 0; z-index: 10; width: calc(100% - 40px); pointer-events: auto;}
+    #story-side .story-content.active { display: block; opacity: 1; transform: scale(1);}
+    #volver-inicio-btn { margin: 32px 0 0 40px; padding: 12px 24px; background: #EA5188; color: #fff; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.18);}
+    #volver-inicio-btn:hover { background: #d13e74; }
+    .story-content h2 { font-size: 1.9rem; margin-bottom:.35rem; color:#FFF2D2; }
+    .story-content img { width:100%; height:auto; border-radius:10px; margin-top:12px; }
+    .story-content a { color: #EA5188; text-decoration: underline; transition: color 0.2s; }
+    .story-content a:hover { color: #F7E07F; }
   </style>
 </head>
 <body>
-
   <nav id="main-nav">
     <ul>
       <li><a href="../index.html">Inicio</a></li>
@@ -107,7 +54,6 @@
     </ul>
   </nav>
 
-  <!-- Barra de filtros flotante -->
   <div id="filter-bar">
     <label for="filter-municipio">Municipio:</label>
     <select id="filter-municipio"><option value="">Todos</option></select>
@@ -130,12 +76,11 @@
       <button id="volver-inicio-btn">Volver a la vista general</button>
     </div>
     <div id="story-side">
-      <!-- Las tarjetas se generan automáticamente aquí -->
+      <!-- Tarjetas generadas dinámicamente -->
     </div>
   </div>
 
   <script>
-    // === CONFIG ===
     const ACCESS_TOKEN = 'pk.eyJ1IjoiY2hheXZvbHRhIiwiYSI6ImNsdGRlNml1NDAyaXgyanJ3eXYzdGQ0MmEifQ.VH5UyDCjvPQ1X_KrkkHcZQ';
     const BASE = '../';
     const STATE_GEO  = BASE + 'data/baja_california_sur.geojson';
@@ -168,10 +113,8 @@
       const state = await fetch(STATE_GEO).then(r=>r.json());
       stateBounds = getGeoJSONBounds(state);
       map.addSource('bcs-poly',{ type:'geojson', data: state });
-      map.addLayer({ id:'bcs-fill', type:'fill', source:'bcs-poly',
-        paint:{ 'fill-color':'#EA5188', 'fill-opacity':0.18 }});
-      map.addLayer({ id:'bcs-line', type:'line', source:'bcs-poly',
-        paint:{ 'line-color':'#EA5188', 'line-width':2 }});
+      map.addLayer({ id:'bcs-fill', type:'fill', source:'bcs-poly', paint:{ 'fill-color':'#EA5188', 'fill-opacity':0.18 }});
+      map.addLayer({ id:'bcs-line', type:'line', source:'bcs-poly', paint:{ 'line-color':'#EA5188', 'line-width':2 }});
 
       pointsData = await fetch(POINTS_GEO).then(r=>r.json());
       allFeatures = pointsData.features;
@@ -187,8 +130,6 @@
         startBreathingAll();
         animatePointsIn();
         setupFilterBar();
-
-        // Genera tarjetas iniciales
         renderCards(allFeatures);
       };
       if (stateBounds) { map.fitBounds(stateBounds, { padding: 40, duration: 800 }); }
@@ -324,10 +265,8 @@
       if (!map.getLayer('bcs-symbols-active')) return;
       const targetId = String(id);
       if (activeId === targetId) return;
-
       activeId = targetId;
       map.setFilter('bcs-symbols-active', ['==', ['get','id'], activeId]);
-
       if (pulseAnim) pulseAnim.pause();
       const state = { s: 4.2 };
       pulseAnim = anime({
@@ -416,10 +355,8 @@
       const municipios = Array.from(new Set(allFeatures.map(f => f.properties["Municipio"]))).sort();
       llenarSelect(document.getElementById('filter-municipio'), municipios, "Todos");
       document.getElementById('filter-municipio').addEventListener('change', onFilterMunicipio);
-
       document.getElementById('filter-localidad').addEventListener('change', filtrarYActualizar);
       document.getElementById('filter-nombre').addEventListener('input', filtrarYActualizar);
-
       onFilterMunicipio();
     }
 
@@ -466,7 +403,7 @@
 
       map.getSource('bcs-points').setData({ type: 'FeatureCollection', features: filtrados });
       stopPulse();
-      renderCards(filtrados); // Genera solo las tarjetas visibles
+      renderCards(filtrados);
     }
 
     function animateFilterPoints(filtrados) {
@@ -505,7 +442,6 @@
       sidePanel.innerHTML = '';
       featureList.forEach(f => {
         const p = f.properties;
-        // Personaliza el contenido aquí según los campos de tu GeoJSON
         const div = document.createElement('div');
         div.className = 'story-content';
         div.id = 'card-' + p.id;
@@ -520,7 +456,6 @@
         sidePanel.appendChild(div);
       });
     }
-
   </script>
 </body>
 </html>
