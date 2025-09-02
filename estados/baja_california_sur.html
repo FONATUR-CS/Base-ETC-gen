@@ -327,42 +327,18 @@
     <div id="story-main">
       <div class="story-content active">
         <h2>Turismo Comunitario en Baja California Sur</h2>
-        <p class="intro-sub">Explora los puntos destacados con este mapa interactivo.</p>
-        <p>Desplázate para acercarte a cada sitio. <br> Puedes moverte libremente por el mapa y dar clic en cada punto de interés, así saltarás a su capítulo correspondiente en el mapa.<br> </p>
+        <p class="intro-sub">Descubre 59 Empresas de Turismo Comunitario con este mapa interactivo.</p>
+        <p>Explora las empresas de turismo comunitario distribuidas por todo el estado. <br> Puedes moverte libremente por el mapa y dar clic en cada punto para conocer más sobre las iniciativas locales de turismo comunitario.<br> </p>
         <img src="../img/BCS_1.png" alt="Panorámica de Baja California Sur" loading="lazy">
       </div>
       <button id="volver-inicio-btn">Volver a la vista general</button>
     </div>
     <div id="story-side">
-      <div class="story-content" id="card-BCS_1">
-        <h2>Isla Espíritu Santo</h2>
-        <p>Considerada Patrimonio Natural de la Humanidad desde 2007. Posibilidad de nadar con lobos marinos y buceo en zonas someras.</p>
-        <p><a href="https://simec.conanp.gob.mx/ficha.php?anp=141&reg=1" target="_blank" rel="noopener noreferrer">Ir a su página oficial</a></p>
-        <img src="../img/01_Espiritu_1.jpg" alt="Isla Espíritu Santo" loading="lazy">
-      </div>
-      <div class="story-content" id="card-BCS_2">
-        <h2>Bahía de Magdalena</h2>
-        <p>Bahía protegida con llegada de ballena gris en invierno y bosques de mangle de gran importancia biológica.</p>
-        <p><a href="https://maps.app.goo.gl/LkH2vCa7su64N5o78" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/02_Bahia_Magdalena.jpg" alt="Bahía de Magdalena" loading="lazy">
-      </div>
-      <div class="story-content" id="card-BCS_3">
-        <h2>Cerro El Pilón</h2>
-        <p>Imponente cerro de 400 m que enmarca La Purísima y San Isidro; con historia misional jesuita.</p>
-        <p><a href="https://maps.app.goo.gl/wiwaWvV8uc4nxZLb6" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/03_Pilon.jpg" alt="Cerro El Pilón" loading="lazy">
-      </div>
-      <div class="story-content" id="card-BCS_4">
-        <h2>Cañón del Mezquite</h2>
-        <p>El rincón más asombroso de la Sierra de la Giganta: paredes escarpadas, pozas de agua dulce y oasis.</p>
-        <p><a href="https://maps.app.goo.gl/DUzwaVJGF6ifoGWK9" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/04_Mezquite.jpg" alt="Cañón del Mezquite" loading="lazy">
-      </div>
-      <div class="story-content" id="card-BCS_5">
-        <h2>Cañón de Costa Azul</h2>
-        <p>Formación espectacular cercana a San José del Cabo; paisaje seco con vegetación emergiendo entre rocas.</p>
-        <p><a href="https://maps.app.goo.gl/uEZ78x8GvNsr4GJy5" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a></p>
-        <img src="../img/05_CostaAzul.jpg" alt="Cañón de Costa Azul" loading="lazy">
+      <div class="story-content" id="dynamic-card" style="display: none;">
+        <h2 id="card-title">Empresa de Turismo Comunitario</h2>
+        <p id="card-location"></p>
+        <p id="card-description"></p>
+        <p><a id="card-link" href="#" target="_blank" rel="noopener noreferrer">Ver en Google Maps</a></p>
       </div>
     </div>
   </div>
@@ -372,7 +348,7 @@
     const ACCESS_TOKEN = 'pk.eyJ1IjoiY2hheXZvbHRhIiwiYSI6ImNsdGRlNml1NDAyaXgyanJ3eXYzdGQ0MmEifQ.VH5UyDCjvPQ1X_KrkkHcZQ';
     const BASE = '../';
     const STATE_GEO  = BASE + 'data/baja_california_sur.geojson';
-    const POINTS_GEO = BASE + 'data/5_Puntos_BCS.geojson';
+    const POINTS_GEO = BASE + 'data/Resultados_BCS_59.geojson';
     const ICON_URL   = BASE + 'img/eco.svg';
 
     let map, pointsData = null, stateBounds = null;
@@ -458,7 +434,7 @@
           type:'symbol',
           source:'bcs-points',
           layout:{
-            'text-field': ['get','Name'],
+            'text-field': ['get','Nombre de la ETC'],
             'text-size': 14,
             'text-offset': [0, 2.2],
             'text-anchor': 'top',
@@ -519,17 +495,37 @@
 
     // Mostrar tarjeta del punto en el panel derecho y hacer zoom al punto
     function showSideCard(id) {
-      document.querySelectorAll('#story-side .story-content').forEach(card => {
-        if (card.classList.contains('active')) {
-          card.classList.remove('active');
-          animateCardOut(card);
-        }
-      });
-      const card = document.getElementById('card-' + id);
-      if (card) {
-        card.classList.add('active');
-        animateCardIn(card);
+      // Hide any existing card
+      const dynamicCard = document.getElementById('dynamic-card');
+      if (dynamicCard.classList.contains('active')) {
+        dynamicCard.classList.remove('active');
+        animateCardOut(dynamicCard);
       }
+      
+      // Find the feature data
+      if (!pointsData) return;
+      const feature = pointsData.features.find(f => String(f.properties.id) === String(id));
+      if (!feature) return;
+      
+      const props = feature.properties;
+      
+      // Update card content
+      document.getElementById('card-title').textContent = props['Nombre de la ETC'] || 'Empresa de Turismo Comunitario';
+      document.getElementById('card-location').textContent = `${props.Municipio || ''}, ${props.Localidad || ''}`.replace(/^, |, $/, '');
+      document.getElementById('card-description').textContent = props.Observación || 'Empresa de turismo comunitario en Baja California Sur';
+      
+      const linkEl = document.getElementById('card-link');
+      if (props.Google) {
+        linkEl.href = props.Google;
+        linkEl.style.display = 'inline';
+      } else {
+        linkEl.style.display = 'none';
+      }
+      
+      // Show the card
+      dynamicCard.classList.add('active');
+      animateCardIn(dynamicCard);
+      
       flyToFeatureId(id);
     }
 
@@ -596,13 +592,12 @@
     document.addEventListener('DOMContentLoaded', function() {
       const btn = document.getElementById('volver-inicio-btn');
       btn.addEventListener('click', function() {
-        // Oculta todas las tarjetas de la derecha con animación
-        document.querySelectorAll('#story-side .story-content').forEach(card => {
-          if (card.classList.contains('active')) {
-            card.classList.remove('active');
-            animateCardOut(card);
-          }
-        });
+        // Oculta la tarjeta dinámica con animación
+        const dynamicCard = document.getElementById('dynamic-card');
+        if (dynamicCard.classList.contains('active')) {
+          dynamicCard.classList.remove('active');
+          animateCardOut(dynamicCard);
+        }
         // Vuelve a la vista general del estado
         if (stateBounds) {
           map.fitBounds(stateBounds, { padding: 40, duration: 1200 });
