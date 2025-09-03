@@ -170,23 +170,30 @@
       background: #d13e74;
     }
     #filter-bar {
-      position: static;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      margin-left: 24px;
-      margin-top: 14px;
-      background: rgba(40,40,40,0.93);
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-      padding: 10px 18px;
-      z-index: 10001;
-      color: #fff;
-      align-items: flex-start;
-      font-family: 'Noto Sans', Arial, sans-serif;
-      width: 250px; /* <-- Aquí aumentas el ancho */
-      max-width: 94vw;
-      pointer-events: auto;
+        position: static;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        margin-left: 24px;
+        margin-top: 14px;
+        background: rgba(0, 76, 66, 0.92); /* igual que tarjeta */
+        background-image: url('../img/patron1.jpg'); /* igual que tarjeta */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        padding: 10px 18px;
+        z-index: 10001;
+        color: #fff;
+        align-items: flex-start;
+        font-family: 'Noto Sans', Arial, sans-serif;
+        width: 250px; /* O el ancho que quieras */
+        max-width: 98vw;
+        pointer-events: auto;
+        align-self: flex-start;
+      }
       align-self: flex-start;
     }
     #filter-bar label {
