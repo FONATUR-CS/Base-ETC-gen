@@ -317,6 +317,7 @@
           }
         });
       }
+      // Nombres solo cuando zoom >= 12
       if (!map.getLayer('bcs-labels')) {
         map.addLayer({
           id:'bcs-labels',
@@ -334,7 +335,8 @@
             'text-color':'#FFF2D2',
             'text-halo-color':'#EA5188',
             'text-halo-width': 1.5
-          }
+          },
+          minzoom: 12 // Solo aparecen los nombres con zoom >= 12
         });
       }
     }
