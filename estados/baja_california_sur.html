@@ -57,9 +57,10 @@
       height: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       position: relative;
       pointer-events: auto;
+      margin-left: 48px; /* separación hacia la derecha */
     }
     #story-side {
       width: 420px;
@@ -150,8 +151,8 @@
       display: block;
       margin: 32px 0 0 0;
       padding: 12px 24px;
-      background: #7CE6C9;
-      color: #00524C;
+      background: #EA5188; /* color original */
+      color: #fff;
       border: none;
       border-radius: 8px;
       font-size: 1.1rem;
@@ -163,16 +164,17 @@
       font-family: 'Noto Sans', Arial, sans-serif;
       text-align: left;
       align-self: flex-start;
+      margin-left: 24px; /* separación hacia la derecha */
     }
     #volver-inicio-btn:hover {
-      background: #5bc1a8;
+      background: #d13e74;
     }
     #filter-bar {
       position: static;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-left: 0;
+      margin-left: 24px; /* separación hacia la derecha */
       margin-top: 18px;
       background: rgba(40,40,40,0.93);
       border-radius: 12px;
