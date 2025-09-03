@@ -1,22 +1,10 @@
-¡Gracias por tu observación!  
-A continuación te entrego el archivo **completo**, combinando fielmente el CSS responsive y estructura del ejemplo original con todos los componentes y lógica de tu versión más avanzada (mapa, filtros, botón, tarjetas, animaciones, estilos, etc).
-
-**Características combinadas:**
-- Todos los estilos del ejemplo original y el tuyo (paneles, tarjetas, botón, filtro, centrado, sombras, márgenes, radios, fuente, colores, etc).
-- Responsive igual que el ejemplo: tarjetas y elementos se ven compactos, centrados y con espacio en móvil, y amplios en escritorio.
-- El filtro debajo del botón y ambos debajo de la tarjeta principal, todo centrado.
-- Tarjeta activa lateral con el mismo diseño.
-- Toda la funcionalidad de Mapbox y animaciones.
-- El botón y los filtros se reinician al volver.
-- No se omite ninguna línea importante de lógica ni de estilos.
-
-```html name=estados/baja_california_sur.html
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Baja California Sur – Turismo Comunitario (Story Map)</title>
+
   <!-- Mapbox GL -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet"/>
@@ -25,158 +13,276 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: 'Noto Sans', system-ui, Arial, sans-serif; color:#fff; background:#000; }
+
     #main-nav {
       position: fixed; top: 0; left: 0; width: 100%;
       background-image: url('../img/patron2.jpg'); 
-      background-size: cover; background-position: center;
-      background-repeat: no-repeat; background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
       color: #fff; z-index: 10000;
       padding: 10px 24px; box-shadow: 0 2px 6px rgba(0,0,0,.2);
     }
-    #main-nav ul { display: flex; gap: 1rem; flex-wrap: wrap;}
+    #main-nav ul {
+      display: flex;
+      gap: 1rem;
+      justify-content: left;
+      align-items: left;
+      height: 100%;
+      flex-wrap: wrap;
+    }
     #main-nav a { text-decoration:none; color:#555; font-weight:700; padding:6px 8px; border-radius:4px; }
     #main-nav a.active, #main-nav a:hover { background:#EA5188; color:#fff; }
+
     #map { position: fixed; top: 56px; left:0; right:0; height: calc(100vh - 56px); z-index:1; }
 
-    /* Paneles */
     #story-panels {
       position: fixed;
-      top: 56px; left: 0; width: 100vw; height: calc(100vh - 56px);
-      display: flex; flex-direction: row; justify-content: space-between;
-      align-items: flex-start; pointer-events: none; z-index: 2;
+      top: 56px;
+      left: 0;
+      width: 100vw;
+      height: calc(100vh - 56px);
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+      z-index: 2;
     }
-    #story-main, #story-side {
-      width: 420px; min-width: 320px; max-width: 94vw; height: auto;
-      display: flex; flex-direction: column; align-items: center;
-      position: relative; pointer-events: auto;
-    }
-    #story-main { margin-top: 24px; }
-    #story-side { margin-top: 24px; }
-
-    /* Tarjeta principal y lateral */
-    .story-content {
-      background: rgba(0,76,66,0.93);
-      background-image: url('../img/patron1.jpg');
-      background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;
-      box-shadow: 0 10px 32px rgba(0,0,0,.32);
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,0.13);
-      padding: 34px 34px 28px 34px;
-      color: #fff;
-      margin: 0 0 16px 0;
-      width: 100%;
-      max-width: 520px;
-      transition: all .7s cubic-bezier(.25,.46,.45,.94);
-      backdrop-filter: blur(8px);
-      z-index: 10;
+    #story-main {
+      width: 420px;
+      min-width: 320px;
+      max-width: 92vw;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      position: relative;
       pointer-events: auto;
-      display: flex; flex-direction: column; align-items: center;
-      opacity: 1; transform: scale(1);
+      margin-left: 48px;
     }
-    .story-content.active { display: flex; opacity: 1; transform: scale(1);}
+    #story-side {
+      width: 420px;
+      min-width: 320px;
+      max-width: 92vw;
+      height: 100%;
+      position: relative;
+      pointer-events: none;
+    }
+    #story-main .story-content {
+      background: rgba(0, 76, 66, 0.92);
+      background-image: url('../img/patron1.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      padding: 32px 32px 28px 32px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 24px 48px rgba(0,0,0,.45);
+      color: #fff;
+      margin: 48px 0 0 0;
+      max-width: 520px;
+      width: 100%;
+      transition: all .8s cubic-bezier(.25,.46,.45,.94);
+      backdrop-filter: blur(6px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #story-side .story-content {
+      margin-right: 40px;
+      margin-left: 0 !important;
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 10;
+      width: calc(100% - 40px);
+      pointer-events: auto;
+      display: none;
+      opacity: 0;
+      transform: scale(0.95);
+      background: rgba(0, 76, 66, 0.92);
+      background-image: url('../img/patron1.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: all .8s cubic-bezier(.25,.46,.45,.94);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 24px 48px rgba(0,0,0,.45);
+      color: #fff;
+      padding: 32px 32px 28px 32px;
+      max-width: 520px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #story-side .story-content.active {
+      display: flex;
+      opacity: 1;
+      transform: scale(1);
+    }
     .story-content h2 {
       font-family: 'Patria', 'Noto Sans', sans-serif;
-      font-weight: 700; font-size: 2rem; margin-bottom: .7rem;
-      color: #FFF2D2; text-align: center; width: 100%;
+      font-weight: 700;
+      font-size: 1.55rem;
+      margin-bottom:.7rem;
+      color:#FFF2D2;
+      justify-content:center;
+      text-align: left;
+      width: 100%;
     }
-    .story-content p  { font-size: 1.09rem; line-height:1.55; color: #eaeaea; text-align: center; width: 100%; margin-bottom: 0.7em;}
-    .story-content img { width:100%; max-width: 420px; height:auto; border-radius:18px; margin-top:16px; margin-bottom:0; box-shadow: 0 4px 16px rgba(0,0,0,0.13);}
-    .story-content a { color: #EA5188; text-decoration: underline; transition: color 0.2s;}
-    .story-content a:hover { color: #F7E07F; }
-
-    /* Botón centrado debajo de la tarjeta */
+    .story-content p  { font-size: 1.09rem; line-height:1.55; color: #eaeaea; justify-content:center; text-align: left; width: 100%;}
+    .story-content img { width:100%; max-width: 420px; height:auto; border-radius:18px; margin-top:16px; margin-bottom:0; }
+    .story-content a {
+      color: #EA5188;
+      text-decoration: underline;
+      transition: color 0.2s;
+    }
+    .story-content a:hover {
+      color: #F7E07F;
+    }
     #volver-inicio-btn {
       display: block;
-      margin: 22px auto 0 auto;
-      padding: 13px 36px;
+      margin: 32px 0 0 0;
+      padding: 12px 24px;
       background: #EA5188;
       color: #fff;
       border: none;
-      border-radius: 10px;
-      font-size: 1.11rem;
+      border-radius: 8px;
+      font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
       transition: background 0.2s;
       pointer-events: auto;
       font-family: 'Noto Sans', Arial, sans-serif;
-      text-align: center;
+      text-align: left;
+      align-self: flex-start;
+      margin-left: 24px;
     }
-    #volver-inicio-btn:hover { background: #d13e74; }
-
-    /* Filtros debajo del botón, centrado */
+    #volver-inicio-btn:hover {
+      background: #d13e74;
+    }
     #filter-bar {
+      position: static;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin: 22px auto 0 auto;
+      gap: 7px;
+      margin-left: 24px;
+      margin-top: 14px;
       background: rgba(40,40,40,0.93);
-      border-radius: 14px;
+      border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-      padding: 18px 32px;
+      padding: 10px 18px;
+      z-index: 10001;
       color: #fff;
-      align-items: center;
+      align-items: flex-start;
       font-family: 'Noto Sans', Arial, sans-serif;
-      width: 320px;
+      width: 230px;
       max-width: 94vw;
       pointer-events: auto;
+      align-self: flex-start;
     }
-    #filter-bar label { font-size: 1rem; color: #FFF2D2; margin-bottom: 2px;}
+    #filter-bar label {
+      font-size: 0.93rem;
+      color: #FFF2D2;
+      margin-bottom: 2px;
+      font-family: inherit;
+    }
     #filter-bar select, #filter-bar input {
-      border-radius: 8px;
+      border-radius: 7px;
       border: 1px solid #EA5188;
-      padding: 7px 14px;
+      padding: 5px 10px;
       background: #222;
       color: #FFF2D2;
-      font-size: 1rem;
-      min-width: 160px;
-      margin-bottom: 8px;
+      font-size: 0.93rem;
+      min-width: 110px;
+      margin-bottom: 6px;
       margin-right: 0;
       font-family: inherit;
     }
-    #filter-bar input[type=text] { width: 160px; }
-
-    /* Responsive tablets/laptops */
-    @media (max-width:1200px) {
-      #story-main, #story-side { width: 320px; min-width: 220px; }
-      .story-content { padding: 18px; border-radius: 14px; font-size: 1rem;}
-      .story-content img { max-width: 220px;}
-      #filter-bar { padding: 12px 18px; width: 230px;}
-      #filter-bar select, #filter-bar input { min-width: 100px; font-size:0.98rem;}
-      #filter-bar input[type=text] { width: 100px;}
+    #filter-bar input[type=text] {
+      width: 110px;
     }
 
-    /* Responsive móviles */
-    @media (max-width:900px) {
-      #main-nav { padding: 6px 8px; }
-      #main-nav ul { flex-wrap: wrap; gap: 0.5rem;}
-      #map { top: 48px; height: calc(100vh - 48px);}
-      #story-panels { flex-direction: column; align-items: center; height: auto; width: 100vw;}
-      #story-main, #story-side { width: 98vw; min-width: 80px; max-width: 98vw; margin: 0 auto;}
-      .story-content {
-        margin: 14px auto 0 auto;
-        padding: 8px 8px 8px 8px;
-        border-radius: 10px;
-        font-size: 0.97rem;
-        max-width: 98vw;
-        box-shadow: 0 8px 16px rgba(0,0,0,.21);
+    /* Responsive design para móviles y pantallas pequeñas */
+    @media (max-width: 900px) {
+      #main-nav ul { font-size: 0.9rem; }
+      #story-panels {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        width: 100vw;
       }
-      .story-content img { max-width: 82vw; border-radius: 9px;}
-      #volver-inicio-btn { margin: 16px auto 0 auto; font-size: 0.92rem; padding: 9px 23px; border-radius: 9px;}
-      #filter-bar { padding: 9px 7px; border-radius: 10px; gap: 7px; width: 90vw; max-width: 96vw;}
-      #filter-bar label { font-size: 0.97rem; }
-      #filter-bar select, #filter-bar input { min-width: 75px; font-size: 0.97rem;}
-      #filter-bar input[type=text] { width: 75px;}
+      #story-main, #story-side {
+        width: 98vw;
+        min-width: 80px;
+        max-width: 98vw;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+      #story-main { margin-left: 0; }
+      #story-main .story-content,
+      #story-side .story-content {
+        margin: 20px auto 0 auto;
+        padding: 7px 8px 5px 8px;
+        border-radius: 7px;
+        font-size: 0.85rem;
+        box-shadow: 0 8px 16px rgba(0,0,0,.21);
+        max-width: 96vw;
+      }
+      #story-main .story-content img,
+      #story-side .story-content img { max-width: 76vw; border-radius: 10px; }
+      #volver-inicio-btn,
+      #filter-bar {
+        margin-left: 0 !important;
+        width: 94vw !important;
+        max-width: 94vw !important;
+      }
+      #volver-inicio-btn { font-size: 0.88rem; padding: 7px 12px; border-radius: 7px; }
+      #filter-bar {
+        padding: 7px 12px;
+        border-radius: 7px;
+        font-size: 0.85rem;
+        gap: 5px;
+        width: 94vw !important;
+        max-width: 94vw !important;
+      }
+      #filter-bar label { font-size: 0.85rem; }
+      #filter-bar input[type=text], #filter-bar select { min-width: 60px; width: 92px; font-size: 0.85rem;}
     }
-    @media (max-width:600px) {
-      #main-nav ul { font-size: 0.90rem; }
-      .story-content { padding: 4px 4px 4px 4px !important; font-size: 0.83rem !important; border-radius: 7px;}
-      .story-content img { max-width: 62vw; border-radius: 7px;}
-      #volver-inicio-btn { font-size: 0.82rem; padding: 6px 10px; border-radius: 7px;}
-      #filter-bar { padding: 5px 3px !important; width: 99vw !important; max-width: 99vw !important; gap: 4.5px;}
-      #filter-bar label { font-size: 0.83rem; }
-      #filter-bar select, #filter-bar input { min-width: 38px; width: 58px; font-size: 0.83rem;}
-      #filter-bar input[type=text] { width: 58px;}
+    @media (max-width: 600px) {
+      #main-nav ul { font-size: 0.84rem; }
+      #story-main, #story-side,
+      #story-main .story-content,
+      #story-side .story-content {
+        width: 99vw !important;
+        min-width: 50px !important;
+        max-width: 99vw !important;
+        padding: 3px 4px 3px 4px !important;
+        font-size: 0.80rem !important;
+      }
+      #story-main .story-content img,
+      #story-side .story-content img { max-width: 62vw; border-radius: 7px;}
+      #filter-bar,
+      #volver-inicio-btn {
+        width: 99vw !important;
+        max-width: 99vw !important;
+        padding: 2px 3px !important;
+      }
+      #filter-bar label { font-size: 0.74rem; }
+      #filter-bar input[type=text], #filter-bar select { min-width: 38px; width: 59px; font-size: 0.74rem;}
+      #volver-inicio-btn { font-size: 0.82rem; padding: 5px 8px; border-radius: 6px; }
+    }
+    #story-main, #volver-inicio-btn, #filter-bar {
+      align-items: flex-start;
+      text-align: left;
     }
   </style>
 </head>
@@ -218,7 +324,6 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
     <div id="story-side"></div>
   </div>
   <script>
-    // Todo el JS, igual que tu versión completa, no se omite nada.
     const ACCESS_TOKEN = 'pk.eyJ1IjoiY2hheXZvbHRhIiwiYSI6ImNsdGRlNml1NDAyaXgyanJ3eXYzdGQ0MmEifQ.VH5UyDCjvPQ1X_KrkkHcZQ';
     const BASE = '../';
     const STATE_GEO  = BASE + 'data/baja_california_sur.geojson';
@@ -303,6 +408,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
           }
         });
       }
+      // Nombres solo cuando zoom >= 14
       if (!map.getLayer('bcs-labels')) {
         map.addLayer({
           id:'bcs-labels',
@@ -325,6 +431,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
         });
       }
     }
+
     function animatePointsIn(){
       let state = { s: 0.2 };
       anime({
@@ -339,6 +446,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
         }
       });
     }
+
     function startBreathingAll() {
       if (breathingAnim) breathingAnim.pause();
       let state = { s: 3 };
@@ -356,6 +464,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
         }
       });
     }
+
     function animateCardIn(card) {
       card.style.display = 'flex';
       card.style.opacity = 1;
@@ -366,6 +475,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
       card.style.opacity = 0;
       card.style.transform = "scale(0.95)";
     }
+
     function showSideCard(id) {
       const existing = document.getElementById('card-active');
       if (existing && existing.dataset.activeId === String(id)) {
@@ -383,6 +493,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
       flyToFeatureId(id);
       startPulseFor(id);
     }
+
     function renderActiveCard(feature, id) {
       const p = feature.properties;
       const googleUrl = p.Google || p.google_expanded || "#";
@@ -405,6 +516,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
       div.dataset.activeId = String(id);
       animateCardIn(div);
     }
+
     function stopPulse() {
       if (pulseAnim) { pulseAnim.pause(); pulseAnim = null; }
       activeId = null;
@@ -430,6 +542,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
         update: () => map.setLayoutProperty('bcs-symbols-active', 'icon-size', state.s)
       });
     }
+
     function flyToFeatureId(id){
       if (!pointsData) return;
       const f = allFeatures.find(fe => (fe.properties && String(fe.properties.id) === String(id)));
@@ -437,6 +550,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
       const coords = f.geometry.coordinates;
       map.flyTo({ center: coords, zoom: 14, pitch: 35, bearing: 0, duration: 1400, essential: true });
     }
+
     function getGeoJSONBounds(gj){
       const b = new mapboxgl.LngLatBounds();
       const eachCoord = (coords) => {
@@ -448,6 +562,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
       else if (gj.type === 'Polygon' || gj.type === 'MultiPolygon') eachCoord(gj.coordinates);
       return b;
     }
+
     function setupPointClick() {
       map.on('click', 'bcs-symbols', function(e) {
         if (!e.features || !e.features.length) return;
@@ -462,6 +577,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
         map.getCanvas().style.cursor = '';
       });
     }
+
     document.addEventListener('DOMContentLoaded', function() {
       const btn = document.getElementById('volver-inicio-btn');
       btn.addEventListener('click', function() {
@@ -479,6 +595,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
         stopPulse();
       });
     });
+
     function setupFilterBar() {
       const municipios = Array.from(new Set(allFeatures.map(f => f.properties["Municipio"] || ""))).sort();
       llenarSelect(document.getElementById('filter-municipio'), municipios, "Todos");
@@ -487,6 +604,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
       document.getElementById('filter-nombre').addEventListener('input', filtrarYActualizar);
       onFilterMunicipio();
     }
+
     function llenarSelect(select, items, labelTodos) {
       select.innerHTML = '';
       const opt0 = document.createElement('option');
@@ -500,6 +618,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
         select.appendChild(o);
       });
     }
+
     function onFilterMunicipio() {
       const municipio = document.getElementById('filter-municipio').value;
       let localidades;
@@ -509,12 +628,14 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
         localidades = Array.from(new Set(allFeatures.filter(f=>f.properties["Municipio"]===municipio).map(f=>f.properties["Localidad"] || ""))).sort();
       }
       llenarSelect(document.getElementById('filter-localidad'), localidades, "Todas");
-      filtrarYActualizar(true);
+      filtrarYActualizar(true); // true: para saber que viene de un filtro de localidad
     }
+
     function filtrarYActualizar(fromLocalidadChange=false) {
       const municipio = document.getElementById('filter-municipio').value;
       const localidad = document.getElementById('filter-localidad').value;
       const nombre = document.getElementById('filter-nombre').value.trim().toLowerCase();
+
       let filtrados = allFeatures.filter(f => {
         const p = f.properties;
         let match = true;
@@ -523,11 +644,14 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
         if (nombre && !(p["Nombre de la ETC"] && p["Nombre de la ETC"].toLowerCase().includes(nombre))) match = false;
         return match;
       });
+
       lastFilterFeatures = filtrados.length ? filtrados : [];
       animateFilterPoints(filtrados);
+
       map.getSource('bcs-points').setData({ type: 'FeatureCollection', features: filtrados });
       stopPulse();
       renderCards(filtrados);
+
       if (filtrados.length > 0) {
         const bounds = new mapboxgl.LngLatBounds();
         filtrados.forEach(f => {
@@ -551,6 +675,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
         });
       }
     }
+
     function animateFilterPoints(filtrados) {
       let state = { s: 3, opacity: 1 };
       anime({
@@ -580,6 +705,7 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
         }
       });
     }
+
     function renderCards(featureList) {
       const sidePanel = document.getElementById('story-side');
       sidePanel.innerHTML = '';
@@ -603,7 +729,3 @@ A continuación te entrego el archivo **completo**, combinando fielmente el CSS 
   </script>
 </body>
 </html>
-```
-
-**Ahora sí tienes todo lo del ejemplo original y lo avanzado de tu código, con el diseño responsive igual al ejemplo y la lógica completa.**
-¿Quieres que afine algún detalle visual extra o tienes otra referencia para comparar?
