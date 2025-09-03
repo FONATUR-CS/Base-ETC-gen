@@ -5,16 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Baja California Sur – Turismo Comunitario (Story Map)</title>
 
-  <!-- Mapbox GL -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet"/>
-
-  <!-- Hoja de estilos del CDN para fuente "Patria" -->
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
-
-  <!-- anime.js (para el pulso y animaciones) -->
   <script src="https://unpkg.com/animejs@3.2.1/lib/anime.min.js"></script>
-
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: 'Noto Sans', system-ui, Arial, sans-serif; color:#fff; background:#000; }
@@ -115,6 +109,7 @@
       backdrop-filter: blur(10px);
       box-shadow: 0 24px 48px rgba(0,0,0,.45);
       color: #fff;
+      padding: 28px;
     }
     #story-side .story-content.active {
       display: block;
@@ -158,13 +153,12 @@
     #volver-inicio-btn:hover {
       background: #d13e74;
     }
-
     /* Vertical filter bar styles */
     #filter-bar {
       position: static;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 8px;
       margin-left: 40px;
       margin-top: 18px;
       background: rgba(40,40,40,0.93);
@@ -181,7 +175,7 @@
     #filter-bar label {
       font-size: 1rem;
       color: #FFF2D2;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       font-family: inherit;
     }
     #filter-bar select, #filter-bar input {
@@ -199,7 +193,6 @@
     #filter-bar input[type=text] {
       width: 180px;
     }
-
     @media (max-width: 900px) {
       #story-main, #story-side { width: 180px; min-width: 120px; }
       #story-main .story-content, #story-side .story-content { padding: 8px; border-radius: 8px; font-size: 0.9rem;}
@@ -207,6 +200,21 @@
       #volver-inicio-btn { margin: 8px 0 0 8px; font-size: 0.85rem; padding: 6px 10px; border-radius: 6px; width: 90%;}
       #filter-bar { width: 90vw; max-width: 360px; margin-left: 8px; padding: 4px 10px; gap: 8px;}
       #filter-bar input[type=text], #filter-bar select { min-width: 80px; width: 100px;}
+    }
+    /* Tarjeta activa de la derecha (igual que la de la izquierda) */
+    #story-side .story-content.active {
+      background-image: url('../img/patron1.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: all .8s cubic-bezier(.25,.46,.45,.94);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 24px 48px rgba(0,0,0,.45);
+      color: #fff;
+      padding: 28px;
     }
   </style>
 </head>
@@ -256,10 +264,12 @@
     const STATE_GEO  = BASE + 'data/baja_california_sur.geojson';
     const POINTS_GEO = BASE + 'data/Resultados_BCS_59.geojson';
     const ICON_URL   = BASE + 'img/eco.svg';
+
     let map, pointsData = null, stateBounds = null;
     let pulseAnim = null, activeId = null;
     let breathingAnim = null;
     let allFeatures = [];
+    let lastFilterFeatures = [];
 
     mapboxgl.accessToken = ACCESS_TOKEN;
     map = new mapboxgl.Map({
@@ -289,6 +299,7 @@
 
       pointsData = await fetch(POINTS_GEO).then(r=>r.json());
       allFeatures = pointsData.features;
+      lastFilterFeatures = allFeatures;
 
       map.addSource('bcs-points',{ type:'geojson', data: pointsData });
 
@@ -413,18 +424,41 @@
     }
 
     function showSideCard(id) {
-      document.querySelectorAll('#story-side .story-content').forEach(card => {
-        if (card.classList.contains('active')) {
-          card.classList.remove('active');
-          animateCardOut(card);
-        }
-      });
-      const card = document.getElementById('card-' + id);
-      if (card) {
-        card.classList.add('active');
-        animateCardIn(card);
-      }
+      // Buscar el feature actual según el filtro activo
+      const f = lastFilterFeatures.find(fe => fe.properties && String(fe.properties.id) === String(id));
+      if (!f) return;
+      renderActiveCard(f);
       flyToFeatureId(id);
+      startPulseFor(id);
+    }
+
+    function renderActiveCard(feature) {
+      // Elimina la tarjeta activa anterior
+      document.querySelectorAll('#story-side .story-content.active').forEach(card => {
+        card.classList.remove('active');
+        animateCardOut(card);
+      });
+
+      // Crea la nueva tarjeta activa con diseño idéntico
+      const p = feature.properties;
+      const googleUrl = p.Google || p.google_expanded || "#";
+      let div = document.getElementById('card-active');
+      if (!div) {
+        div = document.createElement('div');
+        div.id = 'card-active';
+        div.className = 'story-content active';
+        document.getElementById('story-side').appendChild(div);
+      }
+      div.innerHTML = `
+        <h2>${p["Nombre de la ETC"] || "(Sin nombre)"}</h2>
+        <p><strong>Municipio:</strong> ${p["Municipio"] || "-"}<br>
+        <strong>Localidad:</strong> ${p["Localidad"] || "-"}</p>
+        <p><a href="${googleUrl}" target="_blank" rel="noopener noreferrer">Ubicación en Google Maps</a></p>
+        ${p.Observación ? `<p><strong>Observación:</strong> ${p.Observación}</p>` : ""}
+        <img src="../img/BCS_1.png" alt="${p["Nombre de la ETC"]}" loading="lazy">
+      `;
+      div.classList.add('active');
+      animateCardIn(div);
     }
 
     function stopPulse() {
@@ -455,7 +489,7 @@
 
     function flyToFeatureId(id){
       if (!pointsData) return;
-      const f = pointsData.features.find(fe => (fe.properties && String(fe.properties.id) === String(id)));
+      const f = allFeatures.find(fe => (fe.properties && String(fe.properties.id) === String(id)));
       if (!f) return;
       const coords = f.geometry.coordinates;
       map.flyTo({ center: coords, zoom: 14, pitch: 35, bearing: 0, duration: 1400, essential: true });
@@ -479,7 +513,6 @@
         const feature = e.features[0];
         const id = feature.properties.id;
         showSideCard(id);
-        startPulseFor(id);
       });
       map.on('mouseenter', 'bcs-symbols', function(e) {
         map.getCanvas().style.cursor = 'pointer';
@@ -510,13 +543,12 @@
     document.addEventListener('DOMContentLoaded', function() {
       const btn = document.getElementById('volver-inicio-btn');
       btn.addEventListener('click', function() {
-        document.querySelectorAll('#story-side .story-content').forEach(card => {
-          if (card.classList.contains('active')) {
-            card.classList.remove('active');
-            animateCardOut(card);
-          }
+        // Oculta la tarjeta activa de la derecha
+        document.querySelectorAll('#story-side .story-content.active').forEach(card => {
+          card.classList.remove('active');
+          animateCardOut(card);
         });
-        // Zoom a todo el estado, aunque el filtro esté activo
+        // Zoom al estado
         if (stateBounds) {
           map.fitBounds(stateBounds, { padding: 40, duration: 1200 });
         }
@@ -526,7 +558,7 @@
 
     // FILTROS
     function setupFilterBar() {
-      const municipios = Array.from(new Set(allFeatures.map(f => f.properties["Municipio"]))).sort();
+      const municipios = Array.from(new Set(allFeatures.map(f => f.properties["Municipio"] || ""))).sort();
       llenarSelect(document.getElementById('filter-municipio'), municipios, "Todos");
       document.getElementById('filter-municipio').addEventListener('change', onFilterMunicipio);
       document.getElementById('filter-localidad').addEventListener('change', filtrarYActualizar);
@@ -540,7 +572,7 @@
       opt0.value = '';
       opt0.textContent = labelTodos;
       select.appendChild(opt0);
-      items.forEach(it => {
+      items.filter(it => it).forEach(it => {
         const o = document.createElement('option');
         o.value = it;
         o.textContent = it;
@@ -550,11 +582,11 @@
 
     function onFilterMunicipio() {
       const municipio = document.getElementById('filter-municipio').value;
-      let localidades = [];
+      let localidades;
       if (!municipio) {
-        localidades = Array.from(new Set(allFeatures.map(f=>f.properties["Localidad"]))).sort();
+        localidades = Array.from(new Set(allFeatures.map(f=>f.properties["Localidad"] || ""))).sort();
       } else {
-        localidades = Array.from(new Set(allFeatures.filter(f=>f.properties["Municipio"]===municipio).map(f=>f.properties["Localidad"]))).sort();
+        localidades = Array.from(new Set(allFeatures.filter(f=>f.properties["Municipio"]===municipio).map(f=>f.properties["Localidad"] || ""))).sort();
       }
       llenarSelect(document.getElementById('filter-localidad'), localidades, "Todas");
       filtrarYActualizar();
@@ -565,7 +597,7 @@
       const localidad = document.getElementById('filter-localidad').value;
       const nombre = document.getElementById('filter-nombre').value.trim().toLowerCase();
 
-      const filtrados = allFeatures.filter(f => {
+      let filtrados = allFeatures.filter(f => {
         const p = f.properties;
         let match = true;
         if (municipio && p["Municipio"] !== municipio) match = false;
@@ -573,13 +605,16 @@
         if (nombre && !(p["Nombre de la ETC"] && p["Nombre de la ETC"].toLowerCase().includes(nombre))) match = false;
         return match;
       });
+
+      lastFilterFeatures = filtrados.length ? filtrados : [];
       animateFilterPoints(filtrados);
 
+      // Actualiza los puntos en el mapa
       map.getSource('bcs-points').setData({ type: 'FeatureCollection', features: filtrados });
       stopPulse();
       renderCards(filtrados);
 
-      // --- Zoom a los puntos filtrados ---
+      // Zoom a los puntos filtrados
       if (filtrados.length > 0) {
         const bounds = new mapboxgl.LngLatBounds();
         filtrados.forEach(f => {
@@ -592,6 +627,13 @@
         } else {
           map.fitBounds(bounds, { padding: 60, duration: 1200 });
         }
+      }
+      // Oculta tarjeta activa si el filtro la borra
+      if (filtrados.length === 0) {
+        document.querySelectorAll('#story-side .story-content.active').forEach(card => {
+          card.classList.remove('active');
+          animateCardOut(card);
+        });
       }
     }
 
