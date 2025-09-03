@@ -61,6 +61,7 @@
       position: relative;
       pointer-events: auto;
       margin-left: 48px;
+      gap: 32px;
     }
     #story-side {
       width: 420px;
@@ -147,53 +148,28 @@
     .story-content a:hover {
       color: #F7E07F;
     }
-    #volver-inicio-btn {
-      display: block;
-      margin: 32px 0 0 0;
-      padding: 12px 24px;
-      background: #EA5188;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-      transition: background 0.2s;
-      pointer-events: auto;
-      font-family: 'Noto Sans', Arial, sans-serif;
-      text-align: left;
-      align-self: flex-start;
-      margin-left: 5px;
-    }
-    #volver-inicio-btn:hover {
-      background: #d13e74;
-    }
+
     #filter-bar {
-        position: static;
-        display: flex;
-        flex-direction: column;
-        gap: 7px;
-        margin-left: 5px;
-        margin-top: 14px;
-        background: rgba(0, 76, 66, 0.92); /* igual que tarjeta */
-        background-image: url('../img/patron1.jpg'); /* igual que tarjeta */
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-        padding: 10px 18px;
-        z-index: 10001;
-        color: #fff;
-        align-items: flex-start;
-        font-family: 'Noto Sans', Arial, sans-serif;
-        width: 250px; /* O el ancho que quieras */
-        max-width: 98vw;
-        pointer-events: auto;
-        align-self: flex-start;
-      }
+      position: static;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      background: rgba(0, 76, 66, 0.92); /* igual que tarjeta */
+      background-image: url('../img/patron1.jpg'); /* igual que tarjeta */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      padding: 10px 18px;
+      z-index: 10001;
+      color: #fff;
+      align-items: flex-start;
+      font-family: 'Noto Sans', Arial, sans-serif;
+      width: 350px;
+      max-width: 98vw;
+      pointer-events: auto;
       align-self: flex-start;
     }
     #filter-bar label {
@@ -218,6 +194,27 @@
       width: 110px;
     }
 
+    #volver-inicio-btn {
+      display: block;
+      padding: 12px 24px;
+      background: #EA5188;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      transition: background 0.2s;
+      pointer-events: auto;
+      font-family: 'Noto Sans', Arial, sans-serif;
+      text-align: left;
+      align-self: flex-start;
+    }
+    #volver-inicio-btn:hover {
+      background: #d13e74;
+    }
+
     /* Responsive design para móviles y pantallas pequeñas */
     @media (max-width: 900px) {
       #main-nav ul { font-size: 0.9rem; }
@@ -234,7 +231,7 @@
         margin-left: 0 !important;
         margin-right: 0 !important;
       }
-      #story-main { margin-left: 0; }
+      #story-main { margin-left: 0; gap: 20px; }
       #story-main .story-content,
       #story-side .story-content {
         margin: 20px auto 0 auto;
@@ -248,7 +245,6 @@
       #story-side .story-content img { max-width: 76vw; border-radius: 10px; }
       #volver-inicio-btn,
       #filter-bar {
-        margin-left: 0 !important;
         width: 94vw !important;
         max-width: 94vw !important;
       }
@@ -275,6 +271,7 @@
         padding: 3px 4px 3px 4px !important;
         font-size: 0.80rem !important;
       }
+      #story-main { gap: 12px; }
       #story-main .story-content img,
       #story-side .story-content img { max-width: 62vw; border-radius: 7px;}
       #filter-bar,
@@ -318,7 +315,6 @@
         Puedes moverte libremente por el mapa y dar clic en cada punto de interés, así saltarás a su capítulo correspondiente en el mapa.<br></p>
         <img src="../img/BCS_1.png" alt="Panorámica de Baja California Sur" loading="lazy">
       </div>
-      <button id="volver-inicio-btn">Volver a la vista general</button>
       <div id="filter-bar">
         <label for="filter-municipio">Municipio:</label>
         <select id="filter-municipio"><option value="">Todos</option></select>
@@ -327,6 +323,7 @@
         <label for="filter-nombre">Nombre ETC:</label>
         <input type="text" id="filter-nombre" placeholder="Buscar ETC...">
       </div>
+      <button id="volver-inicio-btn">Volver a la vista general</button>
     </div>
     <div id="story-side"></div>
   </div>
