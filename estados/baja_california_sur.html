@@ -13,7 +13,6 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: 'Noto Sans', system-ui, Arial, sans-serif; color:#fff; background:#000; }
-
     #main-nav {
       position: fixed; top: 0; left: 0; width: 100%;
       background-image: url('../img/patron2.jpg'); 
@@ -34,9 +33,7 @@
     }
     #main-nav a { text-decoration:none; color:#555; font-weight:700; padding:6px 8px; border-radius:4px; }
     #main-nav a.active, #main-nav a:hover { background:#EA5188; color:#fff; }
-
     #map { position: fixed; top: 56px; left:0; right:0; height: calc(100vh - 56px); z-index:1; }
-
     #story-panels {
       position: fixed;
       top: 56px;
@@ -151,7 +148,7 @@
       display: block;
       margin: 32px 0 0 0;
       padding: 12px 24px;
-      background: #EA5188; /* color original */
+      background: #EA5188;
       color: #fff;
       border: none;
       border-radius: 8px;
@@ -164,7 +161,7 @@
       font-family: 'Noto Sans', Arial, sans-serif;
       text-align: left;
       align-self: flex-start;
-      margin-left: 24px; /* separación hacia la derecha */
+      margin-left: 24px;
     }
     #volver-inicio-btn:hover {
       background: #d13e74;
@@ -174,7 +171,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-left: 24px; /* separación hacia la derecha */
+      margin-left: 24px;
       margin-top: 18px;
       background: rgba(40,40,40,0.93);
       border-radius: 12px;
@@ -405,40 +402,37 @@
 
     function animateCardIn(card) {
       card.style.display = 'flex';
-      anime({
-        targets: card,
-        opacity: [0, 1],
-        scale: [0.95, 1],
-        duration: 600,
-        easing: 'easeOutQuad'
-      });
+      card.style.opacity = 1;
+      card.style.transform = "scale(1)";
     }
     function animateCardOut(card) {
-      anime({
-        targets: card,
-        opacity: [1, 0],
-        scale: [1, 0.95],
-        duration: 400,
-        easing: 'easeInQuad',
-        complete: function() {
-          card.style.display = 'none';
-        }
-      });
+      card.style.display = 'none';
+      card.style.opacity = 0;
+      card.style.transform = "scale(0.95)";
     }
 
     function showSideCard(id) {
-      const f = lastFilterFeatures.find(fe => fe.properties && String(fe.properties.id) === String(id));
-      if (!f) return;
-      renderActiveCard(f);
-      flyToFeatureId(id);
-      startPulseFor(id);
-    }
-
-    function renderActiveCard(feature) {
+      // Evita que desaparezca la tarjeta si das doble clic en el mismo punto
+      const existing = document.getElementById('card-active');
+      if (existing && existing.dataset.activeId === String(id)) {
+        // Si es el mismo punto, solo mantén visible la tarjeta
+        animateCardIn(existing);
+        existing.classList.add('active');
+        return;
+      }
+      // Elimina la tarjeta activa anterior
       document.querySelectorAll('#story-side .story-content.active').forEach(card => {
         card.classList.remove('active');
         animateCardOut(card);
       });
+      const f = lastFilterFeatures.find(fe => fe.properties && String(fe.properties.id) === String(id));
+      if (!f) return;
+      renderActiveCard(f, id);
+      flyToFeatureId(id);
+      startPulseFor(id);
+    }
+
+    function renderActiveCard(feature, id) {
       const p = feature.properties;
       const googleUrl = p.Google || p.google_expanded || "#";
       let div = document.getElementById('card-active');
@@ -457,6 +451,7 @@
         <img src="../img/BCS_1.png" alt="${p["Nombre de la ETC"]}" loading="lazy">
       `;
       div.classList.add('active');
+      div.dataset.activeId = String(id); // para detectar doble clic
       animateCardIn(div);
     }
 
@@ -509,33 +504,16 @@
     function setupPointClick() {
       map.on('click', 'bcs-symbols', function(e) {
         if (!e.features || !e.features.length) return;
+        // Si hay varios puntos juntos, siempre toma el primero
         const feature = e.features[0];
         const id = feature.properties.id;
         showSideCard(id);
       });
       map.on('mouseenter', 'bcs-symbols', function(e) {
         map.getCanvas().style.cursor = 'pointer';
-        if (e.features && e.features.length) {
-          const id = e.features[0].properties.id;
-          anime({
-            targets: '#card-' + id,
-            scale: [1, 1.05],
-            duration: 240,
-            easing: 'easeOutQuad'
-          });
-        }
       });
       map.on('mouseleave', 'bcs-symbols', function(e) {
         map.getCanvas().style.cursor = '';
-        if (e.features && e.features.length) {
-          const id = e.features[0].properties.id;
-          anime({
-            targets: '#card-' + id,
-            scale: [1.05, 1],
-            duration: 240,
-            easing: 'easeInQuad'
-          });
-        }
       });
     }
 
@@ -546,12 +524,10 @@
           card.classList.remove('active');
           animateCardOut(card);
         });
-        // Reset filters
         document.getElementById('filter-municipio').selectedIndex = 0;
         document.getElementById('filter-localidad').selectedIndex = 0;
         document.getElementById('filter-nombre').value = '';
         filtrarYActualizar();
-        // Zoom al estado
         if (stateBounds) {
           map.fitBounds(stateBounds, { padding: 40, duration: 1200 });
         }
@@ -591,10 +567,10 @@
         localidades = Array.from(new Set(allFeatures.filter(f=>f.properties["Municipio"]===municipio).map(f=>f.properties["Localidad"] || ""))).sort();
       }
       llenarSelect(document.getElementById('filter-localidad'), localidades, "Todas");
-      filtrarYActualizar();
+      filtrarYActualizar(true); // true: para saber que viene de un filtro de localidad
     }
 
-    function filtrarYActualizar() {
+    function filtrarYActualizar(fromLocalidadChange=false) {
       const municipio = document.getElementById('filter-municipio').value;
       const localidad = document.getElementById('filter-localidad').value;
       const nombre = document.getElementById('filter-nombre').value.trim().toLowerCase();
@@ -624,6 +600,10 @@
         });
         if (filtrados.length === 1) {
           map.flyTo({ center: filtrados[0].geometry.coordinates, zoom: 14, pitch: 35, bearing: 0, duration: 1400, essential: true });
+        } else if (fromLocalidadChange && localidad) {
+          // Si el filtro de localidad está activado, siempre haz zoom a nivel 14
+          map.fitBounds(bounds, { padding: 60, duration: 1200, maxZoom: 14 });
+          setTimeout(() => map.setZoom(14), 1300); // fuerza el zoom a 14 tras animación
         } else {
           map.fitBounds(bounds, { padding: 60, duration: 1200 });
         }
