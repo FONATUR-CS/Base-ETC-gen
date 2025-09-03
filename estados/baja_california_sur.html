@@ -236,7 +236,6 @@
   </div>
 
   <script>
-    // === CONFIG ===
     const ACCESS_TOKEN = 'pk.eyJ1IjoiY2hheXZvbHRhIiwiYSI6ImNsdGRlNml1NDAyaXgyanJ3eXYzdGQ0MmEifQ.VH5UyDCjvPQ1X_KrkkHcZQ';
     const BASE = '../';
     const STATE_GEO  = BASE + 'data/baja_california_sur.geojson';
@@ -500,6 +499,7 @@
             animateCardOut(card);
           }
         });
+        // Zoom a todo el estado, aunque el filtro esté activo
         if (stateBounds) {
           map.fitBounds(stateBounds, { padding: 40, duration: 1200 });
         }
@@ -561,6 +561,21 @@
       map.getSource('bcs-points').setData({ type: 'FeatureCollection', features: filtrados });
       stopPulse();
       renderCards(filtrados);
+
+      // --- Zoom a los puntos filtrados ---
+      if (filtrados.length > 0) {
+        const bounds = new mapboxgl.LngLatBounds();
+        filtrados.forEach(f => {
+          if (f.geometry && f.geometry.coordinates) {
+            bounds.extend(f.geometry.coordinates);
+          }
+        });
+        if (filtrados.length === 1) {
+          map.flyTo({ center: filtrados[0].geometry.coordinates, zoom: 14, pitch: 35, bearing: 0, duration: 1400, essential: true });
+        } else {
+          map.fitBounds(bounds, { padding: 60, duration: 1200 });
+        }
+      }
     }
 
     function animateFilterPoints(filtrados) {
@@ -599,7 +614,6 @@
       sidePanel.innerHTML = '';
       featureList.forEach(f => {
         const p = f.properties;
-        const imgSrc = p.imagen ? p.imagen : "../img/BCS_1.png"; // Usa imagen específica o la panorámica por defecto
         const googleUrl = p.Google || p.google_expanded || "#";
         const div = document.createElement('div');
         div.className = 'story-content';
@@ -610,7 +624,7 @@
           <strong>Localidad:</strong> ${p["Localidad"] || "-"}</p>
           <p><a href="${googleUrl}" target="_blank" rel="noopener noreferrer">Ubicación en Google Maps</a></p>
           ${p.Observación ? `<p><strong>Observación:</strong> ${p.Observación}</p>` : ""}
-          <img src="${imgSrc}" alt="${p["Nombre de la ETC"]}" loading="lazy">
+          <img src="../img/BCS_1.png" alt="${p["Nombre de la ETC"]}" loading="lazy">
         `;
         sidePanel.appendChild(div);
       });
