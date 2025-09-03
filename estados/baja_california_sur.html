@@ -16,7 +16,7 @@
 
     #main-nav {
       position: fixed; top: 0; left: 0; width: 100%;
-      background-image: url('../img/patron2.jpg'); 
+      background-image: url('../img/patron2.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -77,19 +77,18 @@
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      padding: 32px 32px 28px 32px;
-      border-radius: 22px;
+      padding: 28px;
+      border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.12);
       box-shadow: 0 24px 48px rgba(0,0,0,.45);
       color: #fff;
-      margin: 48px 0 0 0;
+      margin: 40px 0 0 0;
       max-width: 520px;
       width: 100%;
       transition: all .8s cubic-bezier(.25,.46,.45,.94);
-      backdrop-filter: blur(6px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      backdrop-filter: blur(10px);
+      z-index: 10;
+      pointer-events: auto;
     }
     #story-side .story-content {
       margin-right: 40px;
@@ -109,13 +108,13 @@
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      border-radius: 22px;
+      border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.12);
       transition: all .8s cubic-bezier(.25,.46,.45,.94);
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(10px);
       box-shadow: 0 24px 48px rgba(0,0,0,.45);
       color: #fff;
-      padding: 32px 32px 28px 32px;
+      padding: 28px;
       max-width: 520px;
       width: 100%;
       display: flex;
@@ -123,22 +122,22 @@
       align-items: center;
     }
     #story-side .story-content.active {
-      display: flex;
+      display: block;
       opacity: 1;
       transform: scale(1);
     }
     .story-content h2 {
       font-family: 'Patria', 'Noto Sans', sans-serif;
       font-weight: 700;
-      font-size: 1.55rem;
-      margin-bottom:.7rem;
+      font-size: 1.7rem;
+      margin-bottom:.35rem;
       color:#FFF2D2;
       justify-content:center;
       text-align: left;
       width: 100%;
     }
     .story-content p  { font-size: 1.09rem; line-height:1.55; color: #eaeaea; justify-content:center; text-align: left; width: 100%;}
-    .story-content img { width:100%; max-width: 420px; height:auto; border-radius:18px; margin-top:16px; margin-bottom:0; }
+    .story-content img { width:100%; max-width: 420px; height:auto; border-radius:10px; margin-top:12px; }
     .story-content a {
       color: #EA5188;
       text-decoration: underline;
@@ -149,7 +148,7 @@
     }
     #volver-inicio-btn {
       display: block;
-      margin: 32px 0 0 0;
+      margin: 32px 0 0 24px;
       padding: 12px 24px;
       background: #EA5188;
       color: #fff;
@@ -164,7 +163,6 @@
       font-family: 'Noto Sans', Arial, sans-serif;
       text-align: left;
       align-self: flex-start;
-      margin-left: 24px;
     }
     #volver-inicio-btn:hover {
       background: #d13e74;
@@ -173,92 +171,140 @@
       position: static;
       display: flex;
       flex-direction: column;
-      gap: 7px;
+      gap: 8px;
       margin-left: 24px;
-      margin-top: 14px;
+      margin-top: 18px;
       background: rgba(40,40,40,0.93);
       border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-      padding: 10px 18px;
+      padding: 12px 24px;
       z-index: 10001;
       color: #fff;
       align-items: flex-start;
       font-family: 'Noto Sans', Arial, sans-serif;
-      width: 230px;
+      width: 320px;
       max-width: 94vw;
       pointer-events: auto;
       align-self: flex-start;
     }
     #filter-bar label {
-      font-size: 0.93rem;
+      font-size: 1rem;
       color: #FFF2D2;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
       font-family: inherit;
     }
     #filter-bar select, #filter-bar input {
-      border-radius: 7px;
+      border-radius: 8px;
       border: 1px solid #EA5188;
-      padding: 5px 10px;
+      padding: 6px 12px;
       background: #222;
       color: #FFF2D2;
-      font-size: 0.93rem;
-      min-width: 110px;
-      margin-bottom: 6px;
+      font-size: 1rem;
+      min-width: 180px;
+      margin-bottom: 8px;
       margin-right: 0;
       font-family: inherit;
     }
     #filter-bar input[type=text] {
-      width: 110px;
+      width: 180px;
     }
-
-    /* Responsive design para móviles y pantallas pequeñas */
+    /* Responsive para tablets y laptops */
+    @media (max-width: 1200px) {
+      #story-main, #story-side {
+        width: 340px;
+        min-width: 220px;
+        max-width: 98vw;
+      }
+      #story-main .story-content, #story-side .story-content {
+        padding: 18px;
+        margin: 24px 0 0 0;
+      }
+      #volver-inicio-btn {
+        margin: 18px 0 0 18px;
+        font-size: 1rem;
+        padding: 10px 16px;
+      }
+      #filter-bar {
+        padding: 8px 14px;
+        min-width: 140px;
+        width: 210px;
+      }
+      #filter-bar label,
+      #filter-bar select, #filter-bar input {
+        font-size: 0.97rem;
+      }
+      .story-content img { max-width: 220px; }
+    }
+    /* Responsive para móviles: tarjetas pequeñas arriba izquierda/derecha */
     @media (max-width: 900px) {
-      #main-nav ul { font-size: 0.9rem; }
+      #main-nav { padding: 6px 8px; }
+      #main-nav ul { flex-wrap: wrap; gap: 0.5rem; }
+      #map { top: 48px; height: calc(100vh - 48px); }
       #story-panels {
-        flex-direction: column;
+        flex-direction: row;
         align-items: flex-start;
-        height: auto;
+        justify-content: space-between;
         width: 100vw;
+        height: calc(100vh - 48px);
+        position: fixed;
+        top: 48px;
+        left: 0;
+        z-index: 2;
+        pointer-events: none;
       }
       #story-main, #story-side {
-        width: 98vw;
-        min-width: 80px;
-        max-width: 98vw;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
+        width: 120px;
+        min-width: 100px;
+        max-width: 180px;
+        height: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
       }
-      #story-main { margin-left: 0; }
       #story-main .story-content,
       #story-side .story-content {
-        margin: 20px auto 0 auto;
-        padding: 7px 8px 5px 8px;
-        border-radius: 7px;
-        font-size: 0.85rem;
-        box-shadow: 0 8px 16px rgba(0,0,0,.21);
-        max-width: 96vw;
+        min-width: 100px;
+        max-width: 140px;
+        margin: 8px 0 0 8px;
+        padding: 7px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        pointer-events: auto;
       }
       #story-main .story-content img,
-      #story-side .story-content img { max-width: 76vw; border-radius: 10px; }
+      #story-side .story-content img {
+        max-width: 90px;
+        border-radius: 6px;
+        margin-top: 6px;
+      }
       #volver-inicio-btn,
       #filter-bar {
         margin-left: 0 !important;
-        width: 94vw !important;
-        max-width: 94vw !important;
-      }
-      #volver-inicio-btn { font-size: 0.88rem; padding: 7px 12px; border-radius: 7px; }
-      #filter-bar {
-        padding: 7px 12px;
-        border-radius: 7px;
+        width: 90% !important;
+        max-width: 140px !important;
         font-size: 0.85rem;
+      }
+      #volver-inicio-btn { padding: 6px 8px; border-radius: 6px; }
+      #filter-bar {
+        padding: 6px 8px;
+        border-radius: 7px;
         gap: 5px;
-        width: 94vw !important;
-        max-width: 94vw !important;
+        min-width: 66px;
+        width: 90% !important;
+        max-width: 140px !important;
       }
       #filter-bar label { font-size: 0.85rem; }
-      #filter-bar input[type=text], #filter-bar select { min-width: 60px; width: 92px; font-size: 0.85rem;}
+      #filter-bar input[type=text], #filter-bar select { min-width: 40px; width: 70px; font-size: 0.85rem;}
+      .story-content h2 { font-size: 1rem; }
+      .story-content p  { font-size: 0.85rem; }
     }
     @media (max-width: 600px) {
-      #main-nav ul { font-size: 0.84rem; }
+      #main-nav ul { font-size: 0.95rem; }
       #story-main, #story-side,
       #story-main .story-content,
       #story-side .story-content {
@@ -287,6 +333,7 @@
   </style>
 </head>
 <body>
+
   <nav id="main-nav">
     <ul>
       <li><a href="../index.html">Inicio</a></li>
@@ -324,6 +371,7 @@
     <div id="story-side"></div>
   </div>
   <script>
+    // El JS es igual al anterior que te compartí, no requiere cambios para responsive, pero lo adapto aquí:
     const ACCESS_TOKEN = 'pk.eyJ1IjoiY2hheXZvbHRhIiwiYSI6ImNsdGRlNml1NDAyaXgyanJ3eXYzdGQ0MmEifQ.VH5UyDCjvPQ1X_KrkkHcZQ';
     const BASE = '../';
     const STATE_GEO  = BASE + 'data/baja_california_sur.geojson';
@@ -408,7 +456,6 @@
           }
         });
       }
-      // Nombres solo cuando zoom >= 14
       if (!map.getLayer('bcs-labels')) {
         map.addLayer({
           id:'bcs-labels',
@@ -466,7 +513,7 @@
     }
 
     function animateCardIn(card) {
-      card.style.display = 'flex';
+      card.style.display = 'block';
       card.style.opacity = 1;
       card.style.transform = "scale(1)";
     }
@@ -628,7 +675,7 @@
         localidades = Array.from(new Set(allFeatures.filter(f=>f.properties["Municipio"]===municipio).map(f=>f.properties["Localidad"] || ""))).sort();
       }
       llenarSelect(document.getElementById('filter-localidad'), localidades, "Todas");
-      filtrarYActualizar(true); // true: para saber que viene de un filtro de localidad
+      filtrarYActualizar(true);
     }
 
     function filtrarYActualizar(fromLocalidadChange=false) {
@@ -639,93 +686,4 @@
       let filtrados = allFeatures.filter(f => {
         const p = f.properties;
         let match = true;
-        if (municipio && p["Municipio"] !== municipio) match = false;
-        if (localidad && p["Localidad"] !== localidad) match = false;
-        if (nombre && !(p["Nombre de la ETC"] && p["Nombre de la ETC"].toLowerCase().includes(nombre))) match = false;
-        return match;
-      });
-
-      lastFilterFeatures = filtrados.length ? filtrados : [];
-      animateFilterPoints(filtrados);
-
-      map.getSource('bcs-points').setData({ type: 'FeatureCollection', features: filtrados });
-      stopPulse();
-      renderCards(filtrados);
-
-      if (filtrados.length > 0) {
-        const bounds = new mapboxgl.LngLatBounds();
-        filtrados.forEach(f => {
-          if (f.geometry && f.geometry.coordinates) {
-            bounds.extend(f.geometry.coordinates);
-          }
-        });
-        if (filtrados.length === 1) {
-          map.flyTo({ center: filtrados[0].geometry.coordinates, zoom: 14, pitch: 35, bearing: 0, duration: 1400, essential: true });
-        } else if (fromLocalidadChange && localidad) {
-          map.fitBounds(bounds, { padding: 60, duration: 1200, maxZoom: 14 });
-          setTimeout(() => map.setZoom(14), 1300);
-        } else {
-          map.fitBounds(bounds, { padding: 60, duration: 1200 });
-        }
-      }
-      if (filtrados.length === 0) {
-        document.querySelectorAll('#story-side .story-content.active').forEach(card => {
-          card.classList.remove('active');
-          animateCardOut(card);
-        });
-      }
-    }
-
-    function animateFilterPoints(filtrados) {
-      let state = { s: 3, opacity: 1 };
-      anime({
-        targets: state,
-        s: [3, 0.2],
-        opacity: [1, 0.2],
-        duration: 280,
-        easing: 'easeInCubic',
-        update: () => {
-          if (map.getLayer('bcs-symbols')) {
-            map.setLayoutProperty('bcs-symbols', 'icon-size', state.s);
-          }
-        },
-        complete: () => {
-          anime({
-            targets: state,
-            s: [0.2, 3],
-            opacity: [0.2, 1],
-            duration: 440,
-            easing: 'easeOutCubic',
-            update: () => {
-              if (map.getLayer('bcs-symbols')) {
-                map.setLayoutProperty('bcs-symbols', 'icon-size', state.s);
-              }
-            }
-          });
-        }
-      });
-    }
-
-    function renderCards(featureList) {
-      const sidePanel = document.getElementById('story-side');
-      sidePanel.innerHTML = '';
-      featureList.forEach(f => {
-        const p = f.properties;
-        const googleUrl = p.Google || p.google_expanded || "#";
-        const div = document.createElement('div');
-        div.className = 'story-content';
-        div.id = 'card-' + p.id;
-        div.innerHTML = `
-          <h2>${p["Nombre de la ETC"] || "(Sin nombre)"}</h2>
-          <p><strong>Municipio:</strong> ${p["Municipio"] || "-"}<br>
-          <strong>Localidad:</strong> ${p["Localidad"] || "-"}</p>
-          <p><a href="${googleUrl}" target="_blank" rel="noopener noreferrer">Ubicación en Google Maps</a></p>
-          ${p.Observación ? `<p><strong>Observación:</strong> ${p.Observación}</p>` : ""}
-          <img src="../img/BCS_1.png" alt="${p["Nombre de la ETC"]}" loading="lazy">
-        `;
-        sidePanel.appendChild(div);
-      });
-    }
-  </script>
-</body>
-</html>
+        if (municipio && p["Municip
