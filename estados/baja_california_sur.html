@@ -70,16 +70,6 @@
       position: relative;
       pointer-events: none;
     }
-    /* --- Animación para tarjetas --- */
-    .card-anim-in {
-      animation: fadeScaleIn 0.7s cubic-bezier(.25,.46,.45,.94) forwards;
-    }
-    @keyframes fadeScaleIn {
-      0%   { opacity: 0; transform: scale(0.95);}
-      80%  { opacity: 1; transform: scale(1.04);}
-      100% { opacity: 1; transform: scale(1);}
-    }
-    /* --- Fin animación --- */
     #story-main .story-content {
       background: rgba(0, 76, 66, 0.92);
       background-image: url('../img/patron1.jpg');
@@ -133,9 +123,8 @@
       align-items: center;
     }
     #story-side .story-content.active {
-      display: flex;
-      opacity: 1;
-      transform: scale(1);
+      display: block;
+      pointer-events: auto;
     }
     .story-content h2 {
       font-family: 'Patria', 'Noto Sans', sans-serif;
@@ -157,7 +146,6 @@
     .story-content a:hover {
       color: #F7E07F;
     }
-
     #filter-bar {
       position: static;
       display: flex;
@@ -222,7 +210,7 @@
     }
     #volver-inicio-btn:hover { background: #d13e74; }
 
-    /* Responsive design para móviles y pantallas pequeñas */
+    /* Responsive tablets, laptops */
     @media (max-width: 900px) {
       #main-nav ul { font-size: 0.9rem; }
       #story-panels { flex-direction: column; align-items: flex-start; height: auto; width: 100vw; }
@@ -432,31 +420,42 @@
       });
     }
 
+    // ANIMACIÓN DE TARJETAS EN EL PANEL LATERAL (efecto Campeche)
     function animateCardIn(card) {
-      card.style.display = 'flex';
-      card.style.opacity = 1;
-      card.style.transform = "scale(1)";
+      card.style.display = 'block';
+      anime({
+        targets: card,
+        opacity: [0, 1],
+        scale: [0.95, 1],
+        duration: 600,
+        easing: 'easeOutQuad'
+      });
     }
     function animateCardOut(card) {
-      card.style.display = 'none';
-      card.style.opacity = 0;
-      card.style.transform = "scale(0.95)";
+      anime({
+        targets: card,
+        opacity: [1, 0],
+        scale: [1, 0.95],
+        duration: 400,
+        easing: 'easeInQuad',
+        complete: function() {
+          card.style.display = 'none';
+        }
+      });
     }
 
     function showSideCard(id) {
-      const existing = document.getElementById('card-active');
-      if (existing && existing.dataset.activeId === String(id)) {
-        animateCardIn(existing);
-        existing.classList.add('active');
-        return;
-      }
-      document.querySelectorAll('#story-side .story-content.active').forEach(card => {
-        card.classList.remove('active');
-        animateCardOut(card);
+      document.querySelectorAll('#story-side .story-content').forEach(card => {
+        if (card.classList.contains('active')) {
+          card.classList.remove('active');
+          animateCardOut(card);
+        }
       });
-      const f = lastFilterFeatures.find(fe => fe.properties && String(fe.properties.id) === String(id));
-      if (!f) return;
-      renderActiveCard(f, id);
+      const card = document.getElementById('card-' + id);
+      if (card) {
+        card.classList.add('active');
+        animateCardIn(card);
+      }
       flyToFeatureId(id);
       startPulseFor(id);
     }
@@ -468,7 +467,7 @@
       if (!div) {
         div = document.createElement('div');
         div.id = 'card-active';
-        div.className = 'story-content active card-anim-in';
+        div.className = 'story-content active';
         document.getElementById('story-side').appendChild(div);
       }
       div.innerHTML = `
@@ -479,12 +478,9 @@
         ${p.Observación ? `<p><strong>Observación:</strong> ${p.Observación}</p>` : ""}
         <img src="../img/BCS_1.png" alt="${p["Nombre de la ETC"]}" loading="lazy">
       `;
-      div.classList.add('active', 'card-anim-in');
+      div.classList.add('active');
+      animateCardIn(div);
       div.dataset.activeId = String(id);
-      // Reinicia la animación si la tarjeta ya estaba activa
-      div.style.animation = 'none';
-      void div.offsetWidth;
-      div.style.animation = null;
     }
 
     function stopPulse() {
@@ -598,7 +594,7 @@
         localidades = Array.from(new Set(allFeatures.filter(f=>f.properties["Municipio"]===municipio).map(f=>f.properties["Localidad"] || ""))).sort();
       }
       llenarSelect(document.getElementById('filter-localidad'), localidades, "Todas");
-      filtrarYActualizar(true); // true: para saber que viene de un filtro de localidad
+      filtrarYActualizar(true);
     }
 
     function filtrarYActualizar(fromLocalidadChange=false) {
@@ -653,53 +649,4 @@
         s: [3, 0.2],
         opacity: [1, 0.2],
         duration: 280,
-        easing: 'easeInCubic',
-        update: () => {
-          if (map.getLayer('bcs-symbols')) {
-            map.setLayoutProperty('bcs-symbols', 'icon-size', state.s);
-          }
-        },
-        complete: () => {
-          anime({
-            targets: state,
-            s: [0.2, 3],
-            opacity: [0.2, 1],
-            duration: 440,
-            easing: 'easeOutCubic',
-            update: () => {
-              if (map.getLayer('bcs-symbols')) {
-                map.setLayoutProperty('bcs-symbols', 'icon-size', state.s);
-              }
-            }
-          });
-        }
-      });
-    }
-
-    function renderCards(featureList) {
-      const sidePanel = document.getElementById('story-side');
-      sidePanel.innerHTML = '';
-      featureList.forEach(f => {
-        const p = f.properties;
-        const googleUrl = p.Google || p.google_expanded || "#";
-        const div = document.createElement('div');
-        div.className = 'story-content card-anim-in';
-        div.id = 'card-' + p.id;
-        div.innerHTML = `
-          <h2>${p["Nombre de la ETC"] || "(Sin nombre)"}</h2>
-          <p><strong>Municipio:</strong> ${p["Municipio"] || "-"}<br>
-          <strong>Localidad:</strong> ${p["Localidad"] || "-"}</p>
-          <p><a href="${googleUrl}" target="_blank" rel="noopener noreferrer">Ubicación en Google Maps</a></p>
-          ${p.Observación ? `<p><strong>Observación:</strong> ${p.Observación}</p>` : ""}
-          <img src="../img/BCS_1.png" alt="${p["Nombre de la ETC"]}" loading="lazy">
-        `;
-        sidePanel.appendChild(div);
-        // Reinicia animación si se vuelve a mostrar la tarjeta
-        div.style.animation = 'none';
-        void div.offsetWidth;
-        div.style.animation = null;
-      });
-    }
-  </script>
-</body>
-</html>
+        easing:
