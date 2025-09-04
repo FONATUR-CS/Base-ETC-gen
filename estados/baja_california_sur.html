@@ -161,7 +161,7 @@
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
       opacity: 0; /* Managed by Anime.js */
       transform: scale(0.95); /* Managed by Anime.js */
-      pointer-events: auto;
+      pointer-events: none; /* Initially not interactive */
     }
     .info-card h2 {
         font-family: 'Patria', 'Noto Sans', sans-serif;
@@ -220,8 +220,364 @@
 <body>
   <div id="root"></div>
 
-  <!-- React application script -->
-  <script type="text/babel" src="app.jsx"></script>
+  <!-- React application script embedded directly -->
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+    // --- Configuration Constants ---
+    const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiY2hheXZvbHRhIiwiYSI6ImNsdGRlNml1NDAyaXgyanJ3eXYzdGQ0MmEifQ.VH5UyDCjvPQ1X_KrkkHcZQ';
+    const STATE_GEO_URL = 'data/baja_california_sur.geojson';
+    const POINTS_GEO_URL = 'data/Resultados_BCS_59.geojson';
+    const ICON_URL = 'img/eco.svg';
+    const LOTTIE_ANIMATION_URL = 'https://assets10.lottiefiles.com/packages/lf20_qjeqt76g.json';
+
+    // --- 1. Loading Spinner Component ---
+    function LoadingSpinner() {
+      return (
+        <div className="loading-container">
+          <lottie-player
+            src={LOTTIE_ANIMATION_URL}
+            background="transparent"
+            speed="1"
+            style={{ width: '300px', height: '300px' }}
+            loop
+            autoplay
+          ></lottie-player>
+        </div>
+      );
+    }
+
+    // --- 2. Interactive Map Component ---
+    function MapaInteractivo({ features, onPointSelect, selectedFeatureId, viewState, setViewState }) {
+      const mapContainerRef = useRef(null);
+      const mapRef = useRef(null);
+      
+      useEffect(() => {
+        if (mapRef.current) return;
+
+        mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
+        const map = new mapboxgl.Map({
+          container: mapContainerRef.current,
+          style: 'mapbox://styles/mapbox/satellite-streets-v12',
+          center: viewState.center,
+          zoom: viewState.zoom,
+          pitch: viewState.pitch,
+          bearing: viewState.bearing
+        });
+        
+        mapRef.current = map;
+        
+        map.on('move', () => {
+            setViewState({
+                center: map.getCenter().toArray(),
+                zoom: map.getZoom(),
+                pitch: map.getPitch(),
+                bearing: map.getBearing()
+            });
+        });
+
+        map.on('load', () => {
+          map.addSource('mapbox-dem', { type: 'raster-dem', url: 'mapbox://mapbox.terrain-rgb' });
+          map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
+
+          map.addSource('bcs-poly', { type: 'geojson', data: STATE_GEO_URL });
+          map.addLayer({ id: 'bcs-fill', type: 'fill', source: 'bcs-poly', paint: { 'fill-color': '#EA5188', 'fill-opacity': 0.18 } });
+          map.addLayer({ id: 'bcs-line', type: 'line', source: 'bcs-poly', paint: { 'line-color': '#EA5188', 'line-width': 2 } });
+          
+          map.addSource('bcs-points', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+
+          map.loadImage(ICON_URL, (error, image) => {
+            if (error) throw error;
+            if (!map.hasImage('eco-icon')) map.addImage('eco-icon', image);
+            
+            map.addLayer({
+              id: 'bcs-symbols', type: 'symbol', source: 'bcs-points',
+              layout: { 'icon-image': 'eco-icon', 'icon-size': 1.5, 'icon-allow-overlap': true }
+            });
+
+            map.addLayer({
+                id: 'bcs-symbols-active', type: 'symbol', source: 'bcs-points',
+                layout: { 'icon-image': 'eco-icon', 'icon-size': 2.5, 'icon-allow-overlap': true },
+                filter: ['==', ['get', 'id'], '']
+            });
+          });
+          
+          map.on('click', 'bcs-symbols', (e) => {
+            if (e.features.length > 0) onPointSelect(e.features[0].properties);
+          });
+          
+           map.on('mouseenter', 'bcs-symbols', () => map.getCanvas().style.cursor = 'pointer');
+           map.on('mouseleave', 'bcs-symbols', () => map.getCanvas().style.cursor = '');
+        });
+
+        return () => map.remove();
+      }, []);
+
+      useEffect(() => {
+        const map = mapRef.current;
+        if (!map || !map.isStyleLoaded()) return;
+        const source = map.getSource('bcs-points');
+        if (source) source.setData({ type: 'FeatureCollection', features });
+      }, [features]);
+
+      useEffect(() => {
+        const map = mapRef.current;
+        if (!map || !map.isStyleLoaded()) return;
+        map.setFilter('bcs-symbols-active', ['==', ['get', 'id'], selectedFeatureId || '']);
+      }, [selectedFeatureId]);
+
+      useEffect(() => {
+        const map = mapRef.current;
+        if (!map) return;
+        map.flyTo({
+            center: viewState.center, zoom: viewState.zoom, pitch: viewState.pitch, bearing: viewState.bearing,
+            duration: 1200, essential: true
+        });
+      }, [viewState.center[0], viewState.center[1], viewState.zoom]);
+
+      return <div id="map-container" ref={mapContainerRef} />;
+    }
+
+    // --- 3. Control Panel Component ---
+    function PanelDeControl({ allFeatures, activeFilters, onFilterChange, onReset, onToggleDashboard }) {
+        const municipios = useMemo(() => [...new Set(allFeatures.map(f => f.properties.Municipio))].sort(), [allFeatures]);
+        
+        const localidades = useMemo(() => {
+            if (!activeFilters.municipio) return [];
+            return [...new Set(allFeatures.filter(f => f.properties.Municipio === activeFilters.municipio).map(f => f.properties.Localidad))].sort();
+        }, [allFeatures, activeFilters.municipio]);
+
+        const handleInputChange = (e) => {
+            const { name, value } = e.target;
+            const newFilters = { ...activeFilters, [name]: value };
+            if (name === 'municipio') newFilters.localidad = '';
+            onFilterChange(newFilters);
+        };
+        
+        const handleReset = () => {
+            onFilterChange({ municipio: '', localidad: '', nombre: '' });
+            onReset();
+        };
+
+        return (
+            <div className="control-panel">
+            <div className="filter-bar">
+                <label htmlFor="filter-municipio">Municipio:</label>
+                <select id="filter-municipio" name="municipio" value={activeFilters.municipio} onChange={handleInputChange}>
+                <option value="">Todos</option>
+                {municipios.map(m => m && <option key={m} value={m}>{m}</option>)}
+                </select>
+
+                <label htmlFor="filter-localidad">Localidad:</label>
+                <select id="filter-localidad" name="localidad" value={activeFilters.localidad} onChange={handleInputChange} disabled={!activeFilters.municipio}>
+                <option value="">Todas</option>
+                {localidades.map(l => l && <option key={l} value={l}>{l}</option>)}
+                </select>
+                
+                <label htmlFor="filter-nombre">Nombre ETC:</label>
+                <input type="text" id="filter-nombre" name="nombre" placeholder="Buscar por nombre..." value={activeFilters.nombre} onChange={handleInputChange} />
+            </div>
+            <button className="control-button" onClick={handleReset}>Volver a la vista general</button>
+            <button className="control-button" onClick={onToggleDashboard}>Ver Estadísticas</button>
+            </div>
+        );
+    }
+
+    // --- 4. Information Card Component ---
+    function TarjetaDeLugar({ feature, onClose }) {
+        const cardRef = useRef(null);
+        useEffect(() => {
+            const cardElement = cardRef.current;
+            if (feature) {
+                cardElement.style.pointerEvents = 'auto';
+                anime({
+                    targets: cardElement, opacity: [0, 1], scale: [0.95, 1],
+                    duration: 600, easing: 'easeOutExpo'
+                });
+            } else {
+                anime({
+                    targets: cardElement, opacity: 0, scale: 0.95,
+                    duration: 400, easing: 'easeInExpo',
+                    complete: () => { cardElement.style.pointerEvents = 'none'; }
+                });
+            }
+        }, [feature]);
+
+        if (!feature) return <div ref={cardRef} className="info-card"></div>;
+
+        const { 'Nombre de la ETC': nombre, Municipio, Localidad, Google, Observación } = feature;
+
+        return (
+            <div ref={cardRef} className="info-card">
+                <button onClick={onClose} style={{ float: 'right', background: 'none', border: 'none', color: 'white', fontSize: '1.5rem', cursor: 'pointer' }}>&times;</button>
+                <h2>{nombre || "(Sin nombre)"}</h2>
+                <p><strong>Municipio:</strong> {Municipio || "-"}<br/>
+                <strong>Localidad:</strong> {Localidad || "-"}</p>
+                {Observación && <p><strong>Observación:</strong> {Observación}</p>}
+                <p><a href={Google || '#'} target="_blank" rel="noopener noreferrer">Ubicación en Google Maps</a></p>
+                <img src="img/BCS_1.png" alt={nombre || 'Imagen del lugar'} />
+            </div>
+        );
+    }
+
+    // --- 5. Dashboard Component ---
+    function DashboardDeDatos({ features, onClose, onFilterFromChart }) {
+        const chartRef = useRef(null);
+        const chartInstance = useRef(null);
+        useEffect(() => {
+            if (!features.length || !chartRef.current) return;
+            const dataByMunicipio = features.reduce((acc, f) => {
+                const municipio = f.properties.Municipio || 'Sin especificar';
+                acc[municipio] = (acc[municipio] || 0) + 1;
+                return acc;
+            }, {});
+            const chartData = Object.entries(dataByMunicipio)
+                .map(([label, value]) => ({ label, value }))
+                .sort((a,b) => b.value - a.value);
+
+            if (chartInstance.current) chartInstance.current.destroy();
+            chartInstance.current = new evil.Chart(chartRef.current, {
+                type: 'bar',
+                options: {
+                    title: { text: 'Empresas de Turismo Comunitario por Municipio', style: { color: '#FFF2D2' } },
+                    legend: { show: false },
+                    axis: { x: { style: { color: '#eaeaea' } }, y: { style: { color: '#eaeaea' } } },
+                    tooltip: { style: { backgroundColor: '#000', color: '#fff' } },
+                    series: { style: { bar: { backgroundColor: '#EA5188', backgroundColorHover: '#d13e74' } } }
+                },
+                data: chartData
+            });
+            chartInstance.current.on('segmentClick', (segment) => {
+              if (segment && segment.label) onFilterFromChart(segment.label);
+            });
+            chartInstance.current.render();
+            return () => { if (chartInstance.current) chartInstance.current.destroy(); };
+        }, [features]);
+
+        return (
+            <div className="dashboard-container">
+                <div className="dashboard-content">
+                    <button onClick={onClose} style={{ float: 'right', background: 'none', border: 'none', color: 'white', fontSize: '2rem', cursor: 'pointer' }}>&times;</button>
+                    <h2>Estadísticas del Turismo Comunitario</h2>
+                    <div id="chart-container" ref={chartRef}></div>
+                </div>
+            </div>
+        );
+    }
+
+    // --- Main App Component ---
+    function App() {
+      const [isLoading, setIsLoading] = useState(true);
+      const [allFeatures, setAllFeatures] = useState([]);
+      const [filteredFeatures, setFilteredFeatures] = useState([]);
+      const [selectedFeature, setSelectedFeature] = useState(null);
+      const [isDashboardVisible, setDashboardVisible] = useState(false);
+      const [activeFilters, setActiveFilters] = useState({ municipio: '', localidad: '', nombre: '' });
+      
+      const initialViewState = useMemo(() => ({ center: [-111.7, 26.5], zoom: 5, pitch: 0, bearing: 0 }), []);
+      const [currentViewState, setCurrentViewState] = useState(initialViewState);
+
+      useEffect(() => {
+        async function fetchData() {
+          try {
+            const pointsResponse = await fetch(POINTS_GEO_URL);
+            const pointsData = await pointsResponse.json();
+            const featuresWithIds = pointsData.features.map((f, index) => ({
+                ...f, properties: { ...f.properties, id: f.properties.id || `feature-${index}` }
+            }));
+            setAllFeatures(featuresWithIds);
+          } catch (error) {
+            console.error("Failed to fetch GeoJSON data:", error);
+          } finally {
+            setTimeout(() => setIsLoading(false), 500);
+          }
+        }
+        fetchData();
+      }, []);
+
+      const handleFilterChange = useCallback((filters) => {
+        setActiveFilters(filters);
+        const { municipio, localidad, nombre } = filters;
+        let filtered = allFeatures;
+
+        if (municipio) filtered = filtered.filter(f => f.properties.Municipio === municipio);
+        if (localidad && municipio) filtered = filtered.filter(f => f.properties.Localidad === localidad);
+        if (nombre) {
+          filtered = filtered.filter(f => 
+            f.properties['Nombre de la ETC'] && 
+            f.properties['Nombre de la ETC'].toLowerCase().includes(nombre.toLowerCase())
+          );
+        }
+        setFilteredFeatures(filtered);
+        
+        if (selectedFeature && !filtered.some(f => f.properties.id === selectedFeature.id)) {
+            setSelectedFeature(null);
+        }
+      }, [allFeatures, selectedFeature]);
+      
+      const handlePointSelect = (properties) => {
+          const feature = allFeatures.find(f => f.properties.id === properties.id);
+          if (feature) {
+              setSelectedFeature(feature.properties);
+              setCurrentViewState({
+                  center: feature.geometry.coordinates, zoom: 14, pitch: 35, bearing: 0,
+              });
+          }
+      };
+
+      const handleReset = () => {
+          setSelectedFeature(null);
+          setCurrentViewState(initialViewState);
+      };
+      
+      const handleFilterFromChart = (municipio) => {
+          const newFilters = { municipio, localidad: '', nombre: '' };
+          handleFilterChange(newFilters);
+          setDashboardVisible(false);
+      };
+      
+      useEffect(() => {
+        handleFilterChange(activeFilters);
+      }, [allFeatures, activeFilters, handleFilterChange]);
+
+      if (isLoading) return <LoadingSpinner />;
+
+      return (
+        <div className="app-container">
+          {isDashboardVisible && 
+            <DashboardDeDatos 
+              features={allFeatures} 
+              onClose={() => setDashboardVisible(false)}
+              onFilterFromChart={handleFilterFromChart}
+            />
+          }
+
+          <MapaInteractivo 
+            features={filteredFeatures} 
+            onPointSelect={handlePointSelect}
+            selectedFeatureId={selectedFeature ? selectedFeature.id : null}
+            viewState={currentViewState}
+            setViewState={setCurrentViewState}
+          />
+          
+          <PanelDeControl 
+            allFeatures={allFeatures}
+            activeFilters={activeFilters}
+            onFilterChange={handleFilterChange}
+            onReset={handleReset}
+            onToggleDashboard={() => setDashboardVisible(true)}
+          />
+
+          <TarjetaDeLugar 
+            feature={selectedFeature} 
+            onClose={() => setSelectedFeature(null)}
+          />
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
 </body>
 </html>
 
