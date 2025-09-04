@@ -34,7 +34,6 @@
   <style>
     :root {
       --primary-color: #EA5188;
-      --background-color: #004C42;
       --text-color: #eaeaea;
       --highlight-color: #FFF2D2;
       --dark-bg: #000;
@@ -47,14 +46,12 @@
       font-family: 'Noto Sans', sans-serif;
       color: var(--text-color);
       background-color: var(--dark-bg);
-      overflow: hidden; /* Prevent body scroll */
+      overflow: hidden;
     }
 
     #root {
       width: 100vw;
       height: 100vh;
-      display: flex;
-      flex-direction: column;
       position: relative;
     }
     
@@ -82,7 +79,6 @@
       background: var(--primary-color); color:#fff; 
     }
 
-
     /* --- Loading Spinner --- */
     .loading-container {
       width: 100%;
@@ -99,10 +95,10 @@
     /* --- App Layout --- */
     .app-container {
       width: 100%;
-      /* Adjust height to account for the header */
-      height: calc(100vh - var(--header-height));
+      height: 100vh;
+      /* FIX: This pushes the content down, avoiding the huge space */
+      padding-top: var(--header-height);
       position: relative;
-      top: var(--header-height);
     }
     
     #map-container {
@@ -113,11 +109,18 @@
       bottom: 0;
       z-index: 1;
     }
+    
+    /* Correct map-container positioning inside app-container */
+    .app-container > #map-container {
+        top: var(--header-height);
+        height: calc(100% - var(--header-height));
+    }
+
 
     /* --- Panel de Control (Izquierda) --- */
     .control-panel {
       position: absolute;
-      top: 20px;
+      top: calc(var(--header-height) + 20px);
       left: 20px;
       z-index: 2;
       display: flex;
@@ -165,7 +168,6 @@
       background: rgba(0,0,0,0.5);
       color: var(--highlight-color);
     }
-    .filter-bar select option { background-color: #333; }
 
     .control-button {
       padding: 10px 15px;
@@ -177,15 +179,11 @@
       font-weight: bold;
       transition: background-color 0.3s ease, transform 0.2s ease;
     }
-    .control-button:hover {
-      background-color: #d13e74;
-      transform: translateY(-2px);
-    }
     
     /* --- Tarjeta de Lugar (Derecha) --- */
     .info-card {
       position: absolute;
-      top: 20px;
+      top: calc(var(--header-height) + 20px);
       right: 20px;
       z-index: 2;
       width: 380px;
@@ -197,33 +195,14 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(8px);
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      opacity: 0; /* Managed by Anime.js */
-      transform: scale(0.95); /* Managed by Anime.js */
-      pointer-events: none; /* Initially not interactive */
-    }
-    .info-card h2 {
-        font-family: 'Patria', 'Noto Sans', sans-serif;
-        color: var(--highlight-color);
-        margin-bottom: 10px;
-    }
-    .info-card p {
-        margin-bottom: 15px;
-        line-height: 1.6;
-    }
-    .info-card a {
-        color: var(--primary-color);
-        font-weight: bold;
-    }
-    .info-card img {
-        width: 100%;
-        height: auto;
-        border-radius: 8px;
-        margin-top: 10px;
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
     }
     
     /* --- Dashboard (Gráficos) --- */
     .dashboard-container {
-      position: fixed; /* Use fixed to cover the whole screen */
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
@@ -234,8 +213,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
-      transition: opacity 0.4s ease;
     }
     .dashboard-content {
       background: var(--card-blur);
@@ -243,22 +220,12 @@
       border-radius: 15px;
       width: 80%;
       max-width: 900px;
-      color: var(--highlight-color);
-    }
-    .dashboard-content h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    #chart-container {
-      width: 100%;
-      height: 400px;
     }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
-  <!-- React application script embedded directly -->
   <script type="text/babel">
     const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
@@ -269,7 +236,7 @@
     const ICON_URL = '../img/eco.svg';
     const LOTTIE_ANIMATION_URL = 'https://assets10.lottiefiles.com/packages/lf20_qjeqt76g.json';
 
-    // --- 0. Header Component ---
+    // --- Header Component ---
     function Header() {
         return (
             <nav id="main-nav">
@@ -289,7 +256,7 @@
         );
     }
 
-    // --- 1. Loading Spinner Component ---
+    // --- Loading Spinner Component ---
     function LoadingSpinner() {
       return (
         <div className="loading-container">
@@ -305,14 +272,13 @@
       );
     }
 
-    // --- 2. Interactive Map Component ---
+    // --- Map Component ---
     function MapaInteractivo({ features, onPointSelect, selectedFeatureId, viewState, setViewState }) {
       const mapContainerRef = useRef(null);
       const mapRef = useRef(null);
       
       useEffect(() => {
         if (mapRef.current) return;
-
         mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
         const map = new mapboxgl.Map({
           container: mapContainerRef.current,
@@ -322,52 +288,32 @@
           pitch: viewState.pitch,
           bearing: viewState.bearing
         });
-        
         mapRef.current = map;
         
         map.on('move', () => {
-            setViewState({
-                center: map.getCenter().toArray(),
-                zoom: map.getZoom(),
-                pitch: map.getPitch(),
-                bearing: map.getBearing()
-            });
+          setViewState({
+            center: map.getCenter().toArray(), zoom: map.getZoom(),
+            pitch: map.getPitch(), bearing: map.getBearing()
+          });
         });
 
         map.on('load', () => {
           map.addSource('mapbox-dem', { type: 'raster-dem', url: 'mapbox://mapbox.terrain-rgb' });
           map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
-
           map.addSource('bcs-poly', { type: 'geojson', data: STATE_GEO_URL });
           map.addLayer({ id: 'bcs-fill', type: 'fill', source: 'bcs-poly', paint: { 'fill-color': '#EA5188', 'fill-opacity': 0.18 } });
           map.addLayer({ id: 'bcs-line', type: 'line', source: 'bcs-poly', paint: { 'line-color': '#EA5188', 'line-width': 2 } });
-          
           map.addSource('bcs-points', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
-
           map.loadImage(ICON_URL, (error, image) => {
-            if (error) { console.error('Error loading icon:', error); return; };
+            if (error) { console.error('Error loading icon:', error); return; }
             if (!map.hasImage('eco-icon')) map.addImage('eco-icon', image);
-            
-            map.addLayer({
-              id: 'bcs-symbols', type: 'symbol', source: 'bcs-points',
-              layout: { 'icon-image': 'eco-icon', 'icon-size': 1.5, 'icon-allow-overlap': true }
-            });
-
-            map.addLayer({
-                id: 'bcs-symbols-active', type: 'symbol', source: 'bcs-points',
-                layout: { 'icon-image': 'eco-icon', 'icon-size': 2.5, 'icon-allow-overlap': true },
-                filter: ['==', ['get', 'id'], '']
-            });
+            map.addLayer({ id: 'bcs-symbols', type: 'symbol', source: 'bcs-points', layout: { 'icon-image': 'eco-icon', 'icon-size': 1.5, 'icon-allow-overlap': true } });
+            map.addLayer({ id: 'bcs-symbols-active', type: 'symbol', source: 'bcs-points', layout: { 'icon-image': 'eco-icon', 'icon-size': 2.5, 'icon-allow-overlap': true }, filter: ['==', ['get', 'id'], ''] });
           });
-          
-          map.on('click', 'bcs-symbols', (e) => {
-            if (e.features.length > 0) onPointSelect(e.features[0].properties);
-          });
-          
-           map.on('mouseenter', 'bcs-symbols', () => map.getCanvas().style.cursor = 'pointer');
-           map.on('mouseleave', 'bcs-symbols', () => map.getCanvas().style.cursor = '');
+          map.on('click', 'bcs-symbols', (e) => e.features.length > 0 && onPointSelect(e.features[0].properties));
+          map.on('mouseenter', 'bcs-symbols', () => map.getCanvas().style.cursor = 'pointer');
+          map.on('mouseleave', 'bcs-symbols', () => map.getCanvas().style.cursor = '');
         });
-
         return () => map.remove();
       }, []);
 
@@ -383,29 +329,26 @@
         if (!map || !map.isStyleLoaded()) return;
         map.setFilter('bcs-symbols-active', ['==', ['get', 'id'], selectedFeatureId || '']);
       }, [selectedFeatureId]);
-
+      
       useEffect(() => {
         const map = mapRef.current;
         if (!map) return;
-        map.flyTo({
-            center: viewState.center, zoom: viewState.zoom, pitch: viewState.pitch, bearing: viewState.bearing,
-            duration: 1200, essential: true
-        });
+        map.flyTo({ center: viewState.center, zoom: viewState.zoom, pitch: viewState.pitch, bearing: viewState.bearing, duration: 1200, essential: true });
       }, [viewState.center[0], viewState.center[1], viewState.zoom]);
 
       return <div id="map-container" ref={mapContainerRef} />;
     }
 
-    // --- 3. Control Panel Component ---
+    // --- Control Panel Component ---
     function PanelDeControl({ allFeatures, activeFilters, onFilterChange, onReset, onToggleDashboard }) {
         const municipios = useMemo(() => {
             if (!allFeatures) return [];
-            return [...new Set(allFeatures.map(f => f.properties.Municipio))].sort()
+            return [...new Set(allFeatures.map(f => f.properties.Municipio))].filter(Boolean).sort();
         }, [allFeatures]);
         
         const localidades = useMemo(() => {
             if (!allFeatures || !activeFilters.municipio) return [];
-            return [...new Set(allFeatures.filter(f => f.properties.Municipio === activeFilters.municipio).map(f => f.properties.Localidad))].sort();
+            return [...new Set(allFeatures.filter(f => f.properties.Municipio === activeFilters.municipio).map(f => f.properties.Localidad))].filter(Boolean).sort();
         }, [allFeatures, activeFilters.municipio]);
 
         const handleInputChange = (e) => {
@@ -415,11 +358,6 @@
             onFilterChange(newFilters);
         };
         
-        const handleReset = () => {
-            onFilterChange({ municipio: '', localidad: '', nombre: '' });
-            onReset();
-        };
-
         return (
             <div className="control-panel">
                 <div className="intro-content">
@@ -427,57 +365,45 @@
                     <p>Explora los puntos destacados con este mapa interactivo. Utiliza los filtros para encontrar un lugar de interés.</p>
                 </div>
                 <div className="filter-bar">
-                    <label htmlFor="filter-municipio">Municipio:</label>
-                    <select id="filter-municipio" name="municipio" value={activeFilters.municipio} onChange={handleInputChange}>
-                    <option value="">Todos</option>
-                    {municipios.map(m => m && <option key={m} value={m}>{m}</option>)}
+                    <label>Municipio:</label>
+                    <select name="municipio" value={activeFilters.municipio} onChange={handleInputChange}>
+                        <option value="">Todos</option>
+                        {municipios.map(m => <option key={m} value={m}>{m}</option>)}
                     </select>
-
-                    <label htmlFor="filter-localidad">Localidad:</label>
-                    <select id="filter-localidad" name="localidad" value={activeFilters.localidad} onChange={handleInputChange} disabled={!activeFilters.municipio}>
-                    <option value="">Todas</option>
-                    {localidades.map(l => l && <option key={l} value={l}>{l}</option>)}
+                    <label>Localidad:</label>
+                    <select name="localidad" value={activeFilters.localidad} onChange={handleInputChange} disabled={!activeFilters.municipio}>
+                        <option value="">Todas</option>
+                        {localidades.map(l => <option key={l} value={l}>{l}</option>)}
                     </select>
-                    
-                    <label htmlFor="filter-nombre">Nombre ETC:</label>
-                    <input type="text" id="filter-nombre" name="nombre" placeholder="Buscar por nombre..." value={activeFilters.nombre} onChange={handleInputChange} />
+                    <label>Nombre ETC:</label>
+                    <input type="text" name="nombre" placeholder="Buscar por nombre..." value={activeFilters.nombre} onChange={handleInputChange} />
                 </div>
-                <button className="control-button" onClick={handleReset}>Volver a la vista general</button>
+                <button className="control-button" onClick={onReset}>Volver a la vista general</button>
                 <button className="control-button" onClick={onToggleDashboard}>Ver Estadísticas</button>
             </div>
         );
     }
 
-    // --- 4. Information Card Component ---
+    // --- Info Card Component ---
     function TarjetaDeLugar({ feature, onClose }) {
         const cardRef = useRef(null);
         useEffect(() => {
             const cardElement = cardRef.current;
             if (feature) {
                 cardElement.style.pointerEvents = 'auto';
-                anime({
-                    targets: cardElement, opacity: [0, 1], scale: [0.95, 1],
-                    duration: 600, easing: 'easeOutExpo'
-                });
+                anime({ targets: cardElement, opacity: [0, 1], scale: [0.95, 1], duration: 500, easing: 'easeOutExpo' });
             } else {
-                anime({
-                    targets: cardElement, opacity: 0, scale: 0.95,
-                    duration: 400, easing: 'easeInExpo',
-                    complete: () => { cardElement.style.pointerEvents = 'none'; }
-                });
+                anime({ targets: cardElement, opacity: 0, scale: 0.95, duration: 400, easing: 'easeInExpo', complete: () => cardElement.style.pointerEvents = 'none' });
             }
         }, [feature]);
 
         if (!feature) return <div ref={cardRef} className="info-card"></div>;
-
         const { 'Nombre de la ETC': nombre, Municipio, Localidad, Google, Observación } = feature;
-
         return (
             <div ref={cardRef} className="info-card">
                 <button onClick={onClose} style={{ float: 'right', background: 'none', border: 'none', color: 'white', fontSize: '1.5rem', cursor: 'pointer' }}>&times;</button>
                 <h2>{nombre || "(Sin nombre)"}</h2>
-                <p><strong>Municipio:</strong> {Municipio || "-"}<br/>
-                <strong>Localidad:</strong> {Localidad || "-"}</p>
+                <p><strong>Municipio:</strong> {Municipio || "-"}<br/><strong>Localidad:</strong> {Localidad || "-"}</p>
                 {Observación && <p><strong>Observación:</strong> {Observación}</p>}
                 <p><a href={Google || '#'} target="_blank" rel="noopener noreferrer">Ubicación en Google Maps</a></p>
                 <img src="../img/BCS_1.png" alt={nombre || 'Imagen del lugar'} />
@@ -485,10 +411,9 @@
         );
     }
 
-    // --- 5. Dashboard Component ---
+    // --- Dashboard Component ---
     function DashboardDeDatos({ features, onClose, onFilterFromChart }) {
         const chartRef = useRef(null);
-        const chartInstance = useRef(null);
         useEffect(() => {
             if (!features || !features.length || !chartRef.current) return;
             const dataByMunicipio = features.reduce((acc, f) => {
@@ -496,27 +421,15 @@
                 acc[municipio] = (acc[municipio] || 0) + 1;
                 return acc;
             }, {});
-            const chartData = Object.entries(dataByMunicipio)
-                .map(([label, value]) => ({ label, value }))
-                .sort((a,b) => b.value - a.value);
-
-            if (chartInstance.current) chartInstance.current.destroy();
-            chartInstance.current = new evil.Chart(chartRef.current, {
+            const chartData = Object.entries(dataByMunicipio).map(([label, value]) => ({ label, value })).sort((a,b) => b.value - a.value);
+            const chart = new evil.Chart(chartRef.current, {
                 type: 'bar',
-                options: {
-                    title: { text: 'Empresas de Turismo Comunitario por Municipio', style: { color: '#FFF2D2' } },
-                    legend: { show: false },
-                    axis: { x: { style: { color: '#eaeaea' } }, y: { style: { color: '#eaeaea' } } },
-                    tooltip: { style: { backgroundColor: '#000', color: '#fff' } },
-                    series: { style: { bar: { backgroundColor: '#EA5188', backgroundColorHover: '#d13e74' } } }
-                },
+                options: { title: { text: 'Empresas por Municipio', style: { color: '#FFF2D2' } }, legend: { show: false }, axis: { x: { style: { color: '#eaeaea' } }, y: { style: { color: '#eaeaea' } } }, series: { style: { bar: { backgroundColor: '#EA5188', backgroundColorHover: '#d13e74' } } } },
                 data: chartData
             });
-            chartInstance.current.on('segmentClick', (segment) => {
-              if (segment && segment.label) onFilterFromChart(segment.label);
-            });
-            chartInstance.current.render();
-            return () => { if (chartInstance.current) chartInstance.current.destroy(); };
+            chart.on('segmentClick', (segment) => segment && segment.label && onFilterFromChart(segment.label));
+            chart.render();
+            return () => chart.destroy();
         }, [features]);
 
         return (
@@ -524,7 +437,7 @@
                 <div className="dashboard-content">
                     <button onClick={onClose} style={{ float: 'right', background: 'none', border: 'none', color: 'white', fontSize: '2rem', cursor: 'pointer' }}>&times;</button>
                     <h2>Estadísticas del Turismo Comunitario</h2>
-                    <div id="chart-container" ref={chartRef}></div>
+                    <div ref={chartRef} style={{ width: '100%', height: '400px' }}></div>
                 </div>
             </div>
         );
@@ -533,87 +446,62 @@
     // --- Main App Component ---
     function App() {
       const [isLoading, setIsLoading] = useState(true);
-      const [allFeatures, setAllFeatures] = useState(null); // Start as null
+      const [allFeatures, setAllFeatures] = useState(null);
       const [filteredFeatures, setFilteredFeatures] = useState([]);
       const [selectedFeature, setSelectedFeature] = useState(null);
       const [isDashboardVisible, setDashboardVisible] = useState(false);
       const [activeFilters, setActiveFilters] = useState({ municipio: '', localidad: '', nombre: '' });
-      
       const initialViewState = useMemo(() => ({ center: [-111.7, 26.5], zoom: 5, pitch: 0, bearing: 0 }), []);
       const [currentViewState, setCurrentViewState] = useState(initialViewState);
 
       useEffect(() => {
-        async function fetchData() {
-          try {
-            const pointsResponse = await fetch(POINTS_GEO_URL);
-            if (!pointsResponse.ok) {
-                throw new Error(`Error al cargar los puntos: ${pointsResponse.status} ${pointsResponse.statusText}`);
-            }
-            const pointsData = await pointsResponse.json();
-            const featuresWithIds = pointsData.features.map((f, index) => ({
-                ...f, properties: { ...f.properties, id: f.properties.id || `feature-${index}` }
-            }));
+        fetch(POINTS_GEO_URL)
+          .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return response.json();
+          })
+          .then(data => {
+            const featuresWithIds = data.features.map((f, i) => ({ ...f, properties: { ...f.properties, id: f.properties.id || `feature-${i}` } }));
             setAllFeatures(featuresWithIds);
-          } catch (error) {
-            console.error("ERROR CRÍTICO: No se pudieron cargar los datos del mapa. Asegúrate de que los archivos GeoJSON están en la carpeta '../data'.", error);
-            // Avoid using alert in production, but it's useful for debugging this specific issue.
-            alert("No se pudieron cargar los datos del mapa. Revisa la consola (F12) para más detalles.");
-          } finally {
-            setTimeout(() => setIsLoading(false), 500);
-          }
-        }
-        fetchData();
+          })
+          .catch(error => console.error("ERROR CRÍTICO: No se pudieron cargar los datos GeoJSON. Revisa la ruta del archivo y la estructura de carpetas.", error))
+          .finally(() => setTimeout(() => setIsLoading(false), 500));
       }, []);
 
       const handleFilterChange = useCallback((filters) => {
         setActiveFilters(filters);
-        if (!allFeatures) return; // Don't filter if data isn't loaded
-
+        if (!allFeatures) return;
         const { municipio, localidad, nombre } = filters;
         let filtered = allFeatures;
-
         if (municipio) filtered = filtered.filter(f => f.properties.Municipio === municipio);
-        if (localidad && municipio) filtered = filtered.filter(f => f.properties.Localidad === localidad);
-        if (nombre) {
-          filtered = filtered.filter(f => 
-            f.properties['Nombre de la ETC'] && 
-            f.properties['Nombre de la ETC'].toLowerCase().includes(nombre.toLowerCase())
-          );
-        }
+        if (localidad) filtered = filtered.filter(f => f.properties.Localidad === localidad);
+        if (nombre) filtered = filtered.filter(f => f.properties['Nombre de la ETC']?.toLowerCase().includes(nombre.toLowerCase()));
         setFilteredFeatures(filtered);
-        
-        if (selectedFeature && !filtered.some(f => f.properties.id === selectedFeature.id)) {
-            setSelectedFeature(null);
-        }
+        if (selectedFeature && !filtered.some(f => f.properties.id === selectedFeature.id)) setSelectedFeature(null);
       }, [allFeatures, selectedFeature]);
       
+      useEffect(() => { handleFilterChange(activeFilters); }, [allFeatures, activeFilters, handleFilterChange]);
+
       const handlePointSelect = (properties) => {
           if (!allFeatures) return;
           const feature = allFeatures.find(f => f.properties.id === properties.id);
           if (feature) {
               setSelectedFeature(feature.properties);
-              setCurrentViewState({
-                  center: feature.geometry.coordinates, zoom: 14, pitch: 35, bearing: 0,
-              });
+              setCurrentViewState({ center: feature.geometry.coordinates, zoom: 14, pitch: 35, bearing: 0 });
           }
       };
 
       const handleReset = () => {
           setSelectedFeature(null);
           setCurrentViewState(initialViewState);
+          setActiveFilters({ municipio: '', localidad: '', nombre: '' });
       };
       
       const handleFilterFromChart = (municipio) => {
-          const newFilters = { municipio, localidad: '', nombre: '' };
-          handleFilterChange(newFilters);
+          handleFilterChange({ municipio, localidad: '', nombre: '' });
           setDashboardVisible(false);
       };
       
-      useEffect(() => {
-        // This effect runs when allFeatures is loaded or when filters change
-        handleFilterChange(activeFilters);
-      }, [allFeatures, activeFilters, handleFilterChange]);
-
       if (isLoading) return <LoadingSpinner />;
 
       return (
@@ -621,33 +509,11 @@
           <Header />
           <div className="app-container">
             {isDashboardVisible && 
-              <DashboardDeDatos 
-                features={allFeatures} 
-                onClose={() => setDashboardVisible(false)}
-                onFilterFromChart={handleFilterFromChart}
-              />
+              <DashboardDeDatos features={allFeatures} onClose={() => setDashboardVisible(false)} onFilterFromChart={handleFilterFromChart} />
             }
-
-            <MapaInteractivo 
-              features={filteredFeatures} 
-              onPointSelect={handlePointSelect}
-              selectedFeatureId={selectedFeature ? selectedFeature.id : null}
-              viewState={currentViewState}
-              setViewState={setCurrentViewState}
-            />
-            
-            <PanelDeControl 
-              allFeatures={allFeatures || []} // Pass empty array if not loaded yet
-              activeFilters={activeFilters}
-              onFilterChange={handleFilterChange}
-              onReset={handleReset}
-              onToggleDashboard={() => setDashboardVisible(true)}
-            />
-
-            <TarjetaDeLugar 
-              feature={selectedFeature} 
-              onClose={() => setSelectedFeature(null)}
-            />
+            <MapaInteractivo features={filteredFeatures} onPointSelect={handlePointSelect} selectedFeatureId={selectedFeature?.id} viewState={currentViewState} setViewState={setCurrentViewState} />
+            <PanelDeControl allFeatures={allFeatures} activeFilters={activeFilters} onFilterChange={handleFilterChange} onReset={handleReset} onToggleDashboard={() => setDashboardVisible(true)} />
+            <TarjetaDeLugar feature={selectedFeature} onClose={() => setSelectedFeature(null)} />
           </div>
         </React.Fragment>
       );
