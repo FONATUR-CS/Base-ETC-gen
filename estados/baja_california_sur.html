@@ -39,6 +39,7 @@
       --highlight-color: #FFF2D2;
       --dark-bg: #000;
       --card-blur: rgba(0, 50, 43, 0.85);
+      --header-height: 56px;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -56,6 +57,31 @@
       flex-direction: column;
       position: relative;
     }
+    
+    /* --- Main Nav Header --- */
+    #main-nav {
+      position: fixed; top: 0; left: 0; width: 100%;
+      height: var(--header-height);
+      background-image: url('img/patron2.jpg');  
+      background-size: cover;
+      background-position: center;
+      color: #fff; z-index: 1000;
+      padding: 10px 24px; box-shadow: 0 2px 6px rgba(0,0,0,.2);
+      display: flex;
+      align-items: center;
+    }
+    #main-nav ul {
+      display: flex; list-style: none; gap: 1rem;
+      align-items: center; flex-wrap: wrap;
+    }
+    #main-nav a { 
+      text-decoration:none; color:#555; font-weight:700; 
+      padding:6px 8px; border-radius:4px; 
+    }
+    #main-nav a.active, #main-nav a:hover { 
+      background: var(--primary-color); color:#fff; 
+    }
+
 
     /* --- Loading Spinner --- */
     .loading-container {
@@ -75,6 +101,7 @@
       width: 100%;
       height: 100%;
       position: relative;
+      top: var(--header-height);
     }
     
     #map-container {
@@ -100,18 +127,28 @@
       pointer-events: auto;
     }
 
-    .filter-bar, .dashboard-toggle {
+    .intro-content, .filter-bar {
       background: var(--card-blur);
       background-image: url('img/patron1.jpg');
       background-size: cover;
-      padding: 15px;
+      padding: 20px;
       border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(8px);
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    
+    .intro-content h2 {
+        font-family: 'Patria', 'Noto Sans', sans-serif;
+        color: var(--highlight-color);
+        margin-bottom: 10px;
+    }
+
+    .filter-bar {
       display: flex;
       flex-direction: column;
       gap: 10px;
+      padding: 15px;
     }
     
     .filter-bar label {
@@ -185,12 +222,12 @@
     
     /* --- Dashboard (Gráficos) --- */
     .dashboard-container {
-      position: absolute;
+      position: fixed; /* Use fixed to cover the whole screen */
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 5;
+      z-index: 5000;
       background-color: rgba(0,0,0,0.8);
       backdrop-filter: blur(10px);
       display: flex;
@@ -230,6 +267,23 @@
     const POINTS_GEO_URL = 'data/Resultados_BCS_59.geojson';
     const ICON_URL = 'img/eco.svg';
     const LOTTIE_ANIMATION_URL = 'https://assets10.lottiefiles.com/packages/lf20_qjeqt76g.json';
+
+    // --- 0. Header Component ---
+    function Header() {
+        return (
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#" className="active">Baja California Sur</a></li>
+                    <li><a href="#">Hidalgo</a></li>
+                    <li><a href="#">Michoacán</a></li>
+                    <li><a href="#">Morelos</a></li>
+                    <li><a href="#">Nayarit</a></li>
+                    <li><a href="#">Oaxaca</a></li>
+                </ul>
+            </nav>
+        );
+    }
 
     // --- 1. Loading Spinner Component ---
     function LoadingSpinner() {
@@ -287,7 +341,7 @@
           map.addSource('bcs-points', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
 
           map.loadImage(ICON_URL, (error, image) => {
-            if (error) throw error;
+            if (error) { console.error('Error loading icon:', error); return; };
             if (!map.hasImage('eco-icon')) map.addImage('eco-icon', image);
             
             map.addLayer({
@@ -361,24 +415,28 @@
 
         return (
             <div className="control-panel">
-            <div className="filter-bar">
-                <label htmlFor="filter-municipio">Municipio:</label>
-                <select id="filter-municipio" name="municipio" value={activeFilters.municipio} onChange={handleInputChange}>
-                <option value="">Todos</option>
-                {municipios.map(m => m && <option key={m} value={m}>{m}</option>)}
-                </select>
+                <div className="intro-content">
+                    <h2>Turismo Comunitario en Baja California Sur</h2>
+                    <p>Explora los puntos destacados con este mapa interactivo. Utiliza los filtros para encontrar un lugar de interés.</p>
+                </div>
+                <div className="filter-bar">
+                    <label htmlFor="filter-municipio">Municipio:</label>
+                    <select id="filter-municipio" name="municipio" value={activeFilters.municipio} onChange={handleInputChange}>
+                    <option value="">Todos</option>
+                    {municipios.map(m => m && <option key={m} value={m}>{m}</option>)}
+                    </select>
 
-                <label htmlFor="filter-localidad">Localidad:</label>
-                <select id="filter-localidad" name="localidad" value={activeFilters.localidad} onChange={handleInputChange} disabled={!activeFilters.municipio}>
-                <option value="">Todas</option>
-                {localidades.map(l => l && <option key={l} value={l}>{l}</option>)}
-                </select>
-                
-                <label htmlFor="filter-nombre">Nombre ETC:</label>
-                <input type="text" id="filter-nombre" name="nombre" placeholder="Buscar por nombre..." value={activeFilters.nombre} onChange={handleInputChange} />
-            </div>
-            <button className="control-button" onClick={handleReset}>Volver a la vista general</button>
-            <button className="control-button" onClick={onToggleDashboard}>Ver Estadísticas</button>
+                    <label htmlFor="filter-localidad">Localidad:</label>
+                    <select id="filter-localidad" name="localidad" value={activeFilters.localidad} onChange={handleInputChange} disabled={!activeFilters.municipio}>
+                    <option value="">Todas</option>
+                    {localidades.map(l => l && <option key={l} value={l}>{l}</option>)}
+                    </select>
+                    
+                    <label htmlFor="filter-nombre">Nombre ETC:</label>
+                    <input type="text" id="filter-nombre" name="nombre" placeholder="Buscar por nombre..." value={activeFilters.nombre} onChange={handleInputChange} />
+                </div>
+                <button className="control-button" onClick={handleReset}>Volver a la vista general</button>
+                <button className="control-button" onClick={onToggleDashboard}>Ver Estadísticas</button>
             </div>
         );
     }
@@ -481,13 +539,17 @@
         async function fetchData() {
           try {
             const pointsResponse = await fetch(POINTS_GEO_URL);
+            if (!pointsResponse.ok) {
+                throw new Error(`Error al cargar los puntos: ${pointsResponse.statusText}`);
+            }
             const pointsData = await pointsResponse.json();
             const featuresWithIds = pointsData.features.map((f, index) => ({
                 ...f, properties: { ...f.properties, id: f.properties.id || `feature-${index}` }
             }));
             setAllFeatures(featuresWithIds);
           } catch (error) {
-            console.error("Failed to fetch GeoJSON data:", error);
+            console.error("ERROR CRÍTICO: No se pudieron cargar los datos del mapa. Asegúrate de que los archivos GeoJSON están en la carpeta 'data'.", error);
+            alert("No se pudieron cargar los datos del mapa. Revisa la consola para más detalles.");
           } finally {
             setTimeout(() => setIsLoading(false), 500);
           }
@@ -543,36 +605,39 @@
       if (isLoading) return <LoadingSpinner />;
 
       return (
-        <div className="app-container">
-          {isDashboardVisible && 
-            <DashboardDeDatos 
-              features={allFeatures} 
-              onClose={() => setDashboardVisible(false)}
-              onFilterFromChart={handleFilterFromChart}
+        <React.Fragment>
+          <Header />
+          <div className="app-container">
+            {isDashboardVisible && 
+              <DashboardDeDatos 
+                features={allFeatures} 
+                onClose={() => setDashboardVisible(false)}
+                onFilterFromChart={handleFilterFromChart}
+              />
+            }
+
+            <MapaInteractivo 
+              features={filteredFeatures} 
+              onPointSelect={handlePointSelect}
+              selectedFeatureId={selectedFeature ? selectedFeature.id : null}
+              viewState={currentViewState}
+              setViewState={setCurrentViewState}
             />
-          }
+            
+            <PanelDeControl 
+              allFeatures={allFeatures}
+              activeFilters={activeFilters}
+              onFilterChange={handleFilterChange}
+              onReset={handleReset}
+              onToggleDashboard={() => setDashboardVisible(true)}
+            />
 
-          <MapaInteractivo 
-            features={filteredFeatures} 
-            onPointSelect={handlePointSelect}
-            selectedFeatureId={selectedFeature ? selectedFeature.id : null}
-            viewState={currentViewState}
-            setViewState={setCurrentViewState}
-          />
-          
-          <PanelDeControl 
-            allFeatures={allFeatures}
-            activeFilters={activeFilters}
-            onFilterChange={handleFilterChange}
-            onReset={handleReset}
-            onToggleDashboard={() => setDashboardVisible(true)}
-          />
-
-          <TarjetaDeLugar 
-            feature={selectedFeature} 
-            onClose={() => setSelectedFeature(null)}
-          />
-        </div>
+            <TarjetaDeLugar 
+              feature={selectedFeature} 
+              onClose={() => setSelectedFeature(null)}
+            />
+          </div>
+        </React.Fragment>
       );
     }
 
