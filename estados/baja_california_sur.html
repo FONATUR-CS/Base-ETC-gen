@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Baja California Sur – Turismo Comunitario (Story Map)</title>
+
   <!-- Mapbox GL -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet"/>
@@ -123,8 +124,7 @@
       align-items: center;
     }
     #story-side .story-content.active {
-      display: block;
-      pointer-events: auto;
+      display: flex; /* Mantenemos flex para la tarjeta activa */
     }
     .story-content h2 {
       font-family: 'Patria', 'Noto Sans', sans-serif;
@@ -146,13 +146,14 @@
     .story-content a:hover {
       color: #F7E07F;
     }
+
     #filter-bar {
       position: static;
       display: flex;
       flex-direction: column;
       gap: 7px;
       background: rgba(0, 76, 66, 0.92); /* igual que tarjeta */
-      background-image: url('../img/patron1.jpg');
+      background-image: url('../img/patron1.jpg'); /* igual que tarjeta */
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -208,21 +209,52 @@
       text-align: left;
       align-self: flex-start;
     }
-    #volver-inicio-btn:hover { background: #d13e74; }
+    #volver-inicio-btn:hover {
+      background: #d13e74;
+    }
 
-    /* Responsive tablets, laptops */
+    /* Responsive design para móviles y pantallas pequeñas */
     @media (max-width: 900px) {
       #main-nav ul { font-size: 0.9rem; }
-      #story-panels { flex-direction: column; align-items: flex-start; height: auto; width: 100vw; }
-      #story-main, #story-side { width: 98vw; min-width: 80px; max-width: 98vw; margin-left: 0 !important; margin-right: 0 !important; }
+      #story-panels {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        width: 100vw;
+      }
+      #story-main, #story-side {
+        width: 98vw;
+        min-width: 80px;
+        max-width: 98vw;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
       #story-main { margin-left: 0; gap: 20px; }
       #story-main .story-content,
-      #story-side .story-content { margin: 20px auto 0 auto; padding: 7px 8px 5px 8px; border-radius: 7px; font-size: 0.85rem; box-shadow: 0 8px 16px rgba(0,0,0,.21); max-width: 96vw; }
+      #story-side .story-content {
+        margin: 20px auto 0 auto;
+        padding: 7px 8px 5px 8px;
+        border-radius: 7px;
+        font-size: 0.85rem;
+        box-shadow: 0 8px 16px rgba(0,0,0,.21);
+        max-width: 96vw;
+      }
       #story-main .story-content img,
       #story-side .story-content img { max-width: 76vw; border-radius: 10px; }
-      #volver-inicio-btn, #filter-bar { width: 94vw !important; max-width: 94vw !important; }
+      #volver-inicio-btn,
+      #filter-bar {
+        width: 94vw !important;
+        max-width: 94vw !important;
+      }
       #volver-inicio-btn { font-size: 0.88rem; padding: 7px 12px; border-radius: 7px; }
-      #filter-bar { padding: 7px 12px; border-radius: 7px; font-size: 0.85rem; gap: 5px; width: 94vw !important; max-width: 94vw !important; }
+      #filter-bar {
+        padding: 7px 12px;
+        border-radius: 7px;
+        font-size: 0.85rem;
+        gap: 5px;
+        width: 94vw !important;
+        max-width: 94vw !important;
+      }
       #filter-bar label { font-size: 0.85rem; }
       #filter-bar input[type=text], #filter-bar select { min-width: 60px; width: 92px; font-size: 0.85rem;}
     }
@@ -230,16 +262,30 @@
       #main-nav ul { font-size: 0.84rem; }
       #story-main, #story-side,
       #story-main .story-content,
-      #story-side .story-content { width: 99vw !important; min-width: 50px !important; max-width: 99vw !important; padding: 3px 4px 3px 4px !important; font-size: 0.80rem !important; }
+      #story-side .story-content {
+        width: 99vw !important;
+        min-width: 50px !important;
+        max-width: 99vw !important;
+        padding: 3px 4px 3px 4px !important;
+        font-size: 0.80rem !important;
+      }
       #story-main { gap: 12px; }
       #story-main .story-content img,
       #story-side .story-content img { max-width: 62vw; border-radius: 7px;}
-      #filter-bar, #volver-inicio-btn { width: 99vw !important; max-width: 99vw !important; padding: 2px 3px !important; }
+      #filter-bar,
+      #volver-inicio-btn {
+        width: 99vw !important;
+        max-width: 99vw !important;
+        padding: 2px 3px !important;
+      }
       #filter-bar label { font-size: 0.74rem; }
       #filter-bar input[type=text], #filter-bar select { min-width: 38px; width: 59px; font-size: 0.74rem;}
       #volver-inicio-btn { font-size: 0.82rem; padding: 5px 8px; border-radius: 6px; }
     }
-    #story-main, #volver-inicio-btn, #filter-bar { align-items: flex-start; text-align: left; }
+    #story-main, #volver-inicio-btn, #filter-bar {
+      align-items: flex-start;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
@@ -364,6 +410,7 @@
           }
         });
       }
+      // Nombres solo cuando zoom >= 14
       if (!map.getLayer('bcs-labels')) {
         map.addLayer({
           id:'bcs-labels',
@@ -419,10 +466,11 @@
         }
       });
     }
-
-    // ANIMACIÓN DE TARJETAS EN EL PANEL LATERAL (efecto Campeche)
+    
+    // ===== MODIFICACIÓN INICIA =====
+    // Funciones de animación de tarjetas tomadas del segundo código
     function animateCardIn(card) {
-      card.style.display = 'block';
+      card.style.display = 'flex'; // Usamos 'flex' para que coincida con el layout original
       anime({
         targets: card,
         opacity: [0, 1],
@@ -440,48 +488,71 @@
         easing: 'easeInQuad',
         complete: function() {
           card.style.display = 'none';
+          // Si la tarjeta que se oculta es la 'card-active', la eliminamos o la dejamos para reutilizar
+          if (card.id === 'card-active') {
+             // Opcional: podrías querer limpiar su contenido o eliminarla si no se reutiliza
+          }
         }
       });
     }
+    // ===== MODIFICACIÓN TERMINA =====
 
     function showSideCard(id) {
-      document.querySelectorAll('#story-side .story-content').forEach(card => {
-        if (card.classList.contains('active')) {
+      // Oculta la tarjeta activa actualmente visible, si existe
+      document.querySelectorAll('#story-side .story-content.active').forEach(card => {
+        if (card.dataset.activeId !== String(id)) {
           card.classList.remove('active');
           animateCardOut(card);
         }
       });
-      const card = document.getElementById('card-' + id);
+
+      const f = lastFilterFeatures.find(fe => fe.properties && String(fe.properties.id) === String(id));
+      if (!f) return;
+
+      // Busca si ya existe una tarjeta para este ID y la reutiliza, o crea una nueva
+      let card = document.getElementById('card-' + id);
       if (card) {
         card.classList.add('active');
         animateCardIn(card);
+      } else {
+        renderActiveCard(f, id); // Esta función ahora creará y animará la tarjeta
       }
+      
       flyToFeatureId(id);
       startPulseFor(id);
     }
 
     function renderActiveCard(feature, id) {
-      const p = feature.properties;
-      const googleUrl = p.Google || p.google_expanded || "#";
-      let div = document.getElementById('card-active');
-      if (!div) {
-        div = document.createElement('div');
-        div.id = 'card-active';
+        const p = feature.properties;
+        const googleUrl = p.Google || p.google_expanded || "#";
+
+        // Oculta cualquier otra tarjeta activa antes de mostrar la nueva
+        document.querySelectorAll('#story-side .story-content.active').forEach(c => {
+            if (c.id !== 'card-' + id) {
+                c.classList.remove('active');
+                animateCardOut(c);
+            }
+        });
+
+        // Crea una nueva tarjeta para el punto seleccionado
+        const div = document.createElement('div');
+        div.id = 'card-' + id;
         div.className = 'story-content active';
+        div.dataset.activeId = String(id);
+        
+        div.innerHTML = `
+            <h2>${p["Nombre de la ETC"] || "(Sin nombre)"}</h2>
+            <p><strong>Municipio:</strong> ${p["Municipio"] || "-"}<br>
+            <strong>Localidad:</strong> ${p["Localidad"] || "-"}</p>
+            <p><a href="${googleUrl}" target="_blank" rel="noopener noreferrer">Ubicación en Google Maps</a></p>
+            ${p.Observación ? `<p><strong>Observación:</strong> ${p.Observación}</p>` : ""}
+            <img src="../img/BCS_1.png" alt="${p["Nombre de la ETC"]}" loading="lazy">
+        `;
+
         document.getElementById('story-side').appendChild(div);
-      }
-      div.innerHTML = `
-        <h2>${p["Nombre de la ETC"] || "(Sin nombre)"}</h2>
-        <p><strong>Municipio:</strong> ${p["Municipio"] || "-"}<br>
-        <strong>Localidad:</strong> ${p["Localidad"] || "-"}</p>
-        <p><a href="${googleUrl}" target="_blank" rel="noopener noreferrer">Ubicación en Google Maps</a></p>
-        ${p.Observación ? `<p><strong>Observación:</strong> ${p.Observación}</p>` : ""}
-        <img src="../img/BCS_1.png" alt="${p["Nombre de la ETC"]}" loading="lazy">
-      `;
-      div.classList.add('active');
-      animateCardIn(div);
-      div.dataset.activeId = String(id);
+        animateCardIn(div); // Anima la entrada de la nueva tarjeta
     }
+
 
     function stopPulse() {
       if (pulseAnim) { pulseAnim.pause(); pulseAnim = null; }
@@ -594,7 +665,7 @@
         localidades = Array.from(new Set(allFeatures.filter(f=>f.properties["Municipio"]===municipio).map(f=>f.properties["Localidad"] || ""))).sort();
       }
       llenarSelect(document.getElementById('filter-localidad'), localidades, "Todas");
-      filtrarYActualizar(true);
+      filtrarYActualizar(true); // true: para saber que viene de un filtro de localidad
     }
 
     function filtrarYActualizar(fromLocalidadChange=false) {
@@ -616,7 +687,17 @@
 
       map.getSource('bcs-points').setData({ type: 'FeatureCollection', features: filtrados });
       stopPulse();
-      renderCards(filtrados);
+      renderCards(filtrados); // Esto re-renderiza las tarjetas, pero no las muestra.
+
+      // Oculta la tarjeta activa si ya no está en los resultados filtrados
+      const activeCard = document.querySelector('#story-side .story-content.active');
+      if (activeCard) {
+          const activeCardId = activeCard.dataset.activeId;
+          if (!filtrados.some(f => String(f.properties.id) === activeCardId)) {
+              activeCard.classList.remove('active');
+              animateCardOut(activeCard);
+          }
+      }
 
       if (filtrados.length > 0) {
         const bounds = new mapboxgl.LngLatBounds();
@@ -649,4 +730,45 @@
         s: [3, 0.2],
         opacity: [1, 0.2],
         duration: 280,
-        easing:
+        easing: 'easeInCubic',
+        update: () => {
+          if (map.getLayer('bcs-symbols')) {
+            map.setLayoutProperty('bcs-symbols', 'icon-size', state.s);
+          }
+        },
+        complete: () => {
+          anime({
+            targets: state,
+            s: [0.2, 3],
+            opacity: [0.2, 1],
+            duration: 440,
+            easing: 'easeOutCubic',
+            update: () => {
+              if (map.getLayer('bcs-symbols')) {
+                map.setLayoutProperty('bcs-symbols', 'icon-size', state.s);
+              }
+            }
+          });
+        }
+      });
+    }
+
+    function renderCards(featureList) {
+        const sidePanel = document.getElementById('story-side');
+        const currentActiveCard = document.querySelector('#story-side .story-content.active');
+        const currentActiveId = currentActiveCard ? currentActiveCard.id : null;
+
+        sidePanel.innerHTML = ''; // Limpia el panel
+        
+        // Si había una tarjeta activa, la volvemos a añadir para que no desaparezca visualmente
+        if (currentActiveCard) {
+            sidePanel.appendChild(currentActiveCard);
+        }
+
+        // Esta función ya no necesita renderizar todas las tarjetas, solo la activa.
+        // La lógica de renderizar la tarjeta activa ahora está en `renderActiveCard`.
+    }
+
+  </script>
+</body>
+</html>
