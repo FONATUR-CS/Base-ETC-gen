@@ -2,773 +2,226 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Baja California Sur – Turismo Comunitario (Story Map)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baja California Sur – Plataforma de Turismo Comunitario</title>
+
+  <!-- React -->
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+  <!-- Babel to transpile JSX in the browser -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <!-- Mapbox GL -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
-  <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet"/>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet" />
+
+  <!-- Lottie Player for loading animation -->
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  
+  <!-- Anime.js for animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+  <!-- Evil Charts for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/evil-charts/dist/evil-charts.min.js"></script>
+
+  <!-- Google Fonts & Styles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet">
-  <script src="https://unpkg.com/animejs@3.2.1/lib/anime.min.js"></script>
+  
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: 'Noto Sans', system-ui, Arial, sans-serif; color:#fff; background:#000; }
-
-    #main-nav {
-      position: fixed; top: 0; left: 0; width: 100%;
-      background-image: url('../img/patron2.jpg'); 
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      color: #fff; z-index: 10000;
-      padding: 10px 24px; box-shadow: 0 2px 6px rgba(0,0,0,.2);
+    :root {
+      --primary-color: #EA5188;
+      --background-color: #004C42;
+      --text-color: #eaeaea;
+      --highlight-color: #FFF2D2;
+      --dark-bg: #000;
+      --card-blur: rgba(0, 50, 43, 0.85);
     }
-    #main-nav ul {
-      display: flex;
-      gap: 1rem;
-      justify-content: left;
-      align-items: left;
-      height: 100%;
-      flex-wrap: wrap;
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      color: var(--text-color);
+      background-color: var(--dark-bg);
+      overflow: hidden; /* Prevent body scroll */
     }
-    #main-nav a { text-decoration:none; color:#555; font-weight:700; padding:6px 8px; border-radius:4px; }
-    #main-nav a.active, #main-nav a:hover { background:#EA5188; color:#fff; }
 
-    #map { position: fixed; top: 56px; left:0; right:0; height: calc(100vh - 56px); z-index:1; }
-
-    #story-panels {
-      position: fixed;
-      top: 56px;
-      left: 0;
+    #root {
       width: 100vw;
-      height: calc(100vh - 56px);
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: flex-start;
-      pointer-events: none;
-      z-index: 2;
-    }
-    #story-main {
-      width: 420px;
-      min-width: 320px;
-      max-width: 92vw;
-      height: 100%;
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
       position: relative;
-      pointer-events: auto;
-      margin-left: 48px;
-      gap: 32px;
     }
-    #story-side {
-      width: 420px;
-      min-width: 320px;
-      max-width: 92vw;
-      height: 100%;
-      position: relative;
-      pointer-events: none;
-    }
-    #story-main .story-content {
-      background: rgba(0, 76, 66, 0.92);
-      background-image: url('../img/patron1.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      padding: 32px 32px 28px 32px;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: 0 24px 48px rgba(0,0,0,.45);
-      color: #fff;
-      margin: 48px 0 0 0;
-      max-width: 520px;
+
+    /* --- Loading Spinner --- */
+    .loading-container {
       width: 100%;
-      transition: all .8s cubic-bezier(.25,.46,.45,.94);
-      backdrop-filter: blur(6px);
+      height: 100%;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
+      background-color: var(--dark-bg);
+      position: absolute;
+      z-index: 10000;
+      transition: opacity 0.5s ease-out;
     }
-    #story-side .story-content {
-      margin-right: 40px;
-      margin-left: 0 !important;
+
+    /* --- App Layout --- */
+    .app-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    
+    #map-container {
       position: absolute;
       top: 0;
+      left: 0;
       right: 0;
-      z-index: 10;
-      width: calc(100% - 40px);
-      pointer-events: auto;
-      display: none;
-      opacity: 0;
-      transform: scale(0.95);
-      background: rgba(0, 76, 66, 0.92);
-      background-image: url('../img/patron1.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,0.12);
-      transition: all .8s cubic-bezier(.25,.46,.45,.94);
-      backdrop-filter: blur(6px);
-      box-shadow: 0 24px 48px rgba(0,0,0,.45);
-      color: #fff;
-      padding: 32px 32px 28px 32px;
-      max-width: 520px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    #story-side .story-content.active {
-      display: flex; /* Mantenemos flex para la tarjeta activa */
-    }
-    .story-content h2 {
-      font-family: 'Patria', 'Noto Sans', sans-serif;
-      font-weight: 700;
-      font-size: 1.55rem;
-      margin-bottom:.7rem;
-      color:#FFF2D2;
-      justify-content:center;
-      text-align: left;
-      width: 100%;
-    }
-    .story-content p  { font-size: 1.09rem; line-height:1.55; color: #eaeaea; justify-content:center; text-align: left; width: 100%;}
-    .story-content img { width:100%; max-width: 420px; height:auto; border-radius:18px; margin-top:16px; margin-bottom:0; }
-    .story-content a {
-      color: #EA5188;
-      text-decoration: underline;
-      transition: color 0.2s;
-    }
-    .story-content a:hover {
-      color: #F7E07F;
+      bottom: 0;
+      z-index: 1;
     }
 
-    #filter-bar {
-      position: static;
+    /* --- Panel de Control (Izquierda) --- */
+    .control-panel {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 2;
       display: flex;
       flex-direction: column;
-      gap: 7px;
-      background: rgba(0, 76, 66, 0.92); /* igual que tarjeta */
-      background-image: url('../img/patron1.jpg'); /* igual que tarjeta */
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-      padding: 10px 18px;
-      z-index: 10001;
-      color: #fff;
-      align-items: flex-start;
-      font-family: 'Noto Sans', Arial, sans-serif;
+      gap: 15px;
       width: 350px;
-      max-width: 98vw;
+      max-width: 90vw;
       pointer-events: auto;
-      align-self: flex-start;
-    }
-    #filter-bar label {
-      font-size: 0.93rem;
-      color: #FFF2D2;
-      margin-bottom: 2px;
-      font-family: inherit;
-    }
-    #filter-bar select, #filter-bar input {
-      border-radius: 7px;
-      border: 1px solid #EA5188;
-      padding: 5px 10px;
-      background: #222;
-      color: #FFF2D2;
-      font-size: 0.93rem;
-      min-width: 110px;
-      margin-bottom: 6px;
-      margin-right: 0;
-      font-family: inherit;
-    }
-    #filter-bar input[type=text] {
-      width: 110px;
     }
 
-    #volver-inicio-btn {
-      display: block;
-      padding: 12px 24px;
-      background: #EA5188;
-      color: #fff;
+    .filter-bar, .dashboard-toggle {
+      background: var(--card-blur);
+      background-image: url('./img/patron1.jpg');
+      background-size: cover;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .filter-bar label {
+      font-size: 0.9rem;
+      color: var(--highlight-color);
+      font-weight: 700;
+    }
+    .filter-bar select, .filter-bar input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid var(--primary-color);
+      background: rgba(0,0,0,0.5);
+      color: var(--highlight-color);
+    }
+    .filter-bar select option { background-color: #333; }
+
+    .control-button {
+      padding: 10px 15px;
+      background-color: var(--primary-color);
+      color: white;
       border: none;
       border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-      transition: background 0.2s;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .control-button:hover {
+      background-color: #d13e74;
+      transform: translateY(-2px);
+    }
+    
+    /* --- Tarjeta de Lugar (Derecha) --- */
+    .info-card {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 2;
+      width: 380px;
+      max-width: 90vw;
+      background: var(--card-blur);
+      background-image: url('./img/patron1.jpg');
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      opacity: 0; /* Managed by Anime.js */
+      transform: scale(0.95); /* Managed by Anime.js */
       pointer-events: auto;
-      font-family: 'Noto Sans', Arial, sans-serif;
-      text-align: left;
-      align-self: flex-start;
     }
-    #volver-inicio-btn:hover {
-      background: #d13e74;
+    .info-card h2 {
+        font-family: 'Patria', 'Noto Sans', sans-serif;
+        color: var(--highlight-color);
+        margin-bottom: 10px;
     }
-
-    /* Responsive design para móviles y pantallas pequeñas */
-    @media (max-width: 900px) {
-      #main-nav ul { font-size: 0.9rem; }
-      #story-panels {
-        flex-direction: column;
-        align-items: flex-start;
+    .info-card p {
+        margin-bottom: 15px;
+        line-height: 1.6;
+    }
+    .info-card a {
+        color: var(--primary-color);
+        font-weight: bold;
+    }
+    .info-card img {
+        width: 100%;
         height: auto;
-        width: 100vw;
-      }
-      #story-main, #story-side {
-        width: 98vw;
-        min-width: 80px;
-        max-width: 98vw;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-      }
-      #story-main { margin-left: 0; gap: 20px; }
-      #story-main .story-content,
-      #story-side .story-content {
-        margin: 20px auto 0 auto;
-        padding: 7px 8px 5px 8px;
-        border-radius: 7px;
-        font-size: 0.85rem;
-        box-shadow: 0 8px 16px rgba(0,0,0,.21);
-        max-width: 96vw;
-      }
-      #story-main .story-content img,
-      #story-side .story-content img { max-width: 76vw; border-radius: 10px; }
-      #volver-inicio-btn,
-      #filter-bar {
-        width: 94vw !important;
-        max-width: 94vw !important;
-      }
-      #volver-inicio-btn { font-size: 0.88rem; padding: 7px 12px; border-radius: 7px; }
-      #filter-bar {
-        padding: 7px 12px;
-        border-radius: 7px;
-        font-size: 0.85rem;
-        gap: 5px;
-        width: 94vw !important;
-        max-width: 94vw !important;
-      }
-      #filter-bar label { font-size: 0.85rem; }
-      #filter-bar input[type=text], #filter-bar select { min-width: 60px; width: 92px; font-size: 0.85rem;}
+        border-radius: 8px;
+        margin-top: 10px;
     }
-    @media (max-width: 600px) {
-      #main-nav ul { font-size: 0.84rem; }
-      #story-main, #story-side,
-      #story-main .story-content,
-      #story-side .story-content {
-        width: 99vw !important;
-        min-width: 50px !important;
-        max-width: 99vw !important;
-        padding: 3px 4px 3px 4px !important;
-        font-size: 0.80rem !important;
-      }
-      #story-main { gap: 12px; }
-      #story-main .story-content img,
-      #story-side .story-content img { max-width: 62vw; border-radius: 7px;}
-      #filter-bar,
-      #volver-inicio-btn {
-        width: 99vw !important;
-        max-width: 99vw !important;
-        padding: 2px 3px !important;
-      }
-      #filter-bar label { font-size: 0.74rem; }
-      #filter-bar input[type=text], #filter-bar select { min-width: 38px; width: 59px; font-size: 0.74rem;}
-      #volver-inicio-btn { font-size: 0.82rem; padding: 5px 8px; border-radius: 6px; }
+    
+    /* --- Dashboard (Gráficos) --- */
+    .dashboard-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      background-color: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      transition: opacity 0.4s ease;
     }
-    #story-main, #volver-inicio-btn, #filter-bar {
-      align-items: flex-start;
-      text-align: left;
+    .dashboard-content {
+      background: var(--card-blur);
+      padding: 30px;
+      border-radius: 15px;
+      width: 80%;
+      max-width: 900px;
+      color: var(--highlight-color);
+    }
+    .dashboard-content h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #chart-container {
+      width: 100%;
+      height: 400px;
     }
   </style>
 </head>
 <body>
-  <nav id="main-nav">
-    <ul>
-      <li><a href="../index.html">Inicio</a></li>
-      <li><a href="baja_california_sur.html" class="active">Baja California Sur</a></li>
-      <li><a href="hidalgo.html">Hidalgo</a></li>
-      <li><a href="michoacan.html">Michoacán</a></li>
-      <li><a href="morelos.html">Morelos</a></li>
-      <li><a href="nayarit.html">Nayarit</a></li>
-      <li><a href="oaxaca.html">Oaxaca</a></li>
-      <li><a href="puebla.html">Puebla</a></li>
-      <li><a href="tlaxcala.html">Tlaxcala</a></li>
-      <li><a href="veracruz.html">Veracruz</a></li>
-    </ul>
-  </nav>
-  <div id="map"></div>
-  <div id="story-panels">
-    <div id="story-main">
-      <div class="story-content active">
-        <h2>Turismo Comunitario en Baja California Sur</h2>
-        <p class="intro-sub">Explora los puntos destacados con este mapa interactivo.</p>
-        <p>Desplázate para acercarte a cada sitio.<br>
-        Puedes moverte libremente por el mapa y dar clic en cada punto de interés, así saltarás a su capítulo correspondiente en el mapa.<br></p>
-        <img src="../img/BCS_1.png" alt="Panorámica de Baja California Sur" loading="lazy">
-      </div>
-      <div id="filter-bar">
-        <label for="filter-municipio">Municipio:</label>
-        <select id="filter-municipio"><option value="">Todos</option></select>
-        <label for="filter-localidad">Localidad:</label>
-        <select id="filter-localidad"><option value="">Todas</option></select>
-        <label for="filter-nombre">Nombre ETC:</label>
-        <input type="text" id="filter-nombre" placeholder="Buscar ETC...">
-      </div>
-      <button id="volver-inicio-btn">Volver a la vista general</button>
-    </div>
-    <div id="story-side"></div>
-  </div>
-  <script>
-    const ACCESS_TOKEN = 'pk.eyJ1IjoiY2hheXZvbHRhIiwiYSI6ImNsdGRlNml1NDAyaXgyanJ3eXYzdGQ0MmEifQ.VH5UyDCjvPQ1X_KrkkHcZQ';
-    const BASE = '../';
-    const STATE_GEO  = BASE + 'data/baja_california_sur.geojson';
-    const POINTS_GEO = BASE + 'data/Resultados_BCS_59.geojson';
-    const ICON_URL   = BASE + 'img/eco.svg';
+  <div id="root"></div>
 
-    let map, pointsData = null, stateBounds = null;
-    let pulseAnim = null, activeId = null;
-    let breathingAnim = null;
-    let allFeatures = [];
-    let lastFilterFeatures = [];
-
-    mapboxgl.accessToken = ACCESS_TOKEN;
-    map = new mapboxgl.Map({
-      container:'map',
-      style:'mapbox://styles/mapbox/satellite-streets-v12',
-      center:[-111.7, 26.5],
-      zoom:5, pitch:0, bearing:0, projection:'globe'
-    });
-    map.addControl(new mapboxgl.NavigationControl({ visualizePitch:true }), 'top-right');
-
-    map.on('load', async () => {
-      map.addSource('mapbox-dem', {
-        "type": "raster-dem",
-        "url": "mapbox://mapbox.terrain-rgb",
-        "tileSize": 512,
-        "maxzoom": 14
-      });
-      map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
-
-      const state = await fetch(STATE_GEO).then(r=>r.json());
-      stateBounds = getGeoJSONBounds(state);
-      map.addSource('bcs-poly',{ type:'geojson', data: state });
-      map.addLayer({ id:'bcs-fill', type:'fill', source:'bcs-poly',
-        paint:{ 'fill-color':'#EA5188', 'fill-opacity':0.18 }});
-      map.addLayer({ id:'bcs-line', type:'line', source:'bcs-poly',
-        paint:{ 'line-color':'#EA5188', 'line-width':2 }});
-
-      pointsData = await fetch(POINTS_GEO).then(r=>r.json());
-      allFeatures = pointsData.features;
-      lastFilterFeatures = allFeatures;
-
-      map.addSource('bcs-points',{ type:'geojson', data: pointsData });
-
-      const img = new Image(32,32);
-      img.src = ICON_URL;
-      img.onload = () => {
-        if (!map.hasImage('eco')) map.addImage('eco', img, { pixelRatio: 2 });
-        addPointLayers();
-        setupPointClick();
-        startBreathingAll();
-        animatePointsIn();
-        setupFilterBar();
-        renderCards(allFeatures);
-      };
-      if (stateBounds) { map.fitBounds(stateBounds, { padding: 40, duration: 800 }); }
-    });
-
-    function addPointLayers(){
-      if (!map.getLayer('bcs-symbols')) {
-        map.addLayer({
-          id:'bcs-symbols',
-          type:'symbol',
-          source:'bcs-points',
-          layout:{
-            'icon-image': 'eco',
-            'icon-size': 3,
-            'icon-allow-overlap': true
-          }
-        });
-      }
-      if (!map.getLayer('bcs-symbols-active')) {
-        map.addLayer({
-          id: 'bcs-symbols-active',
-          type: 'symbol',
-          source: 'bcs-points',
-          filter: ['==', ['get','id'], '__none__'],
-          layout: {
-            'icon-image': 'eco',
-            'icon-size': 4.2,
-            'icon-allow-overlap': true
-          }
-        });
-      }
-      // Nombres solo cuando zoom >= 14
-      if (!map.getLayer('bcs-labels')) {
-        map.addLayer({
-          id:'bcs-labels',
-          type:'symbol',
-          source:'bcs-points',
-          layout:{
-            'text-field': ['get','Nombre de la ETC'],
-            'text-size': 14,
-            'text-offset': [0, 2.2],
-            'text-anchor': 'top',
-            'text-allow-overlap': true,
-            'text-ignore-placement': true
-          },
-          paint:{
-            'text-color':'#FFF2D2',
-            'text-halo-color':'#EA5188',
-            'text-halo-width': 1.5
-          },
-          minzoom: 14
-        });
-      }
-    }
-
-    function animatePointsIn(){
-      let state = { s: 0.2 };
-      anime({
-        targets: state,
-        s: [0.2, 3],
-        duration: 1200,
-        easing: 'easeOutExpo',
-        update: () => {
-          if (map.getLayer('bcs-symbols')) {
-            map.setLayoutProperty('bcs-symbols', 'icon-size', state.s);
-          }
-        }
-      });
-    }
-
-    function startBreathingAll() {
-      if (breathingAnim) breathingAnim.pause();
-      let state = { s: 3 };
-      breathingAnim = anime({
-        targets: state,
-        s: [3, 3.7],
-        duration: 1200,
-        direction: 'alternate',
-        easing: 'easeInOutSine',
-        loop: true,
-        update: () => {
-          if (map.getLayer('bcs-symbols')) {
-            map.setLayoutProperty('bcs-symbols', 'icon-size', state.s);
-          }
-        }
-      });
-    }
-    
-    // ===== MODIFICACIÓN INICIA =====
-    // Funciones de animación de tarjetas tomadas del segundo código
-    function animateCardIn(card) {
-      card.style.display = 'flex'; // Usamos 'flex' para que coincida con el layout original
-      anime({
-        targets: card,
-        opacity: [0, 1],
-        scale: [0.95, 1],
-        duration: 600,
-        easing: 'easeOutQuad'
-      });
-    }
-    function animateCardOut(card) {
-      anime({
-        targets: card,
-        opacity: [1, 0],
-        scale: [1, 0.95],
-        duration: 400,
-        easing: 'easeInQuad',
-        complete: function() {
-          card.style.display = 'none';
-          // Si la tarjeta que se oculta es la 'card-active', la eliminamos o la dejamos para reutilizar
-          if (card.id === 'card-active') {
-             // Opcional: podrías querer limpiar su contenido o eliminarla si no se reutiliza
-          }
-        }
-      });
-    }
-    // ===== MODIFICACIÓN TERMINA =====
-
-    function showSideCard(id) {
-      // Oculta la tarjeta activa actualmente visible, si existe
-      document.querySelectorAll('#story-side .story-content.active').forEach(card => {
-        if (card.dataset.activeId !== String(id)) {
-          card.classList.remove('active');
-          animateCardOut(card);
-        }
-      });
-
-      const f = lastFilterFeatures.find(fe => fe.properties && String(fe.properties.id) === String(id));
-      if (!f) return;
-
-      // Busca si ya existe una tarjeta para este ID y la reutiliza, o crea una nueva
-      let card = document.getElementById('card-' + id);
-      if (card) {
-        card.classList.add('active');
-        animateCardIn(card);
-      } else {
-        renderActiveCard(f, id); // Esta función ahora creará y animará la tarjeta
-      }
-      
-      flyToFeatureId(id);
-      startPulseFor(id);
-    }
-
-    function renderActiveCard(feature, id) {
-        const p = feature.properties;
-        const googleUrl = p.Google || p.google_expanded || "#";
-
-        // Oculta cualquier otra tarjeta activa antes de mostrar la nueva
-        document.querySelectorAll('#story-side .story-content.active').forEach(c => {
-            if (c.id !== 'card-' + id) {
-                c.classList.remove('active');
-                animateCardOut(c);
-            }
-        });
-
-        // Crea una nueva tarjeta para el punto seleccionado
-        const div = document.createElement('div');
-        div.id = 'card-' + id;
-        div.className = 'story-content active';
-        div.dataset.activeId = String(id);
-        
-        div.innerHTML = `
-            <h2>${p["Nombre de la ETC"] || "(Sin nombre)"}</h2>
-            <p><strong>Municipio:</strong> ${p["Municipio"] || "-"}<br>
-            <strong>Localidad:</strong> ${p["Localidad"] || "-"}</p>
-            <p><a href="${googleUrl}" target="_blank" rel="noopener noreferrer">Ubicación en Google Maps</a></p>
-            ${p.Observación ? `<p><strong>Observación:</strong> ${p.Observación}</p>` : ""}
-            <img src="../img/BCS_1.png" alt="${p["Nombre de la ETC"]}" loading="lazy">
-        `;
-
-        document.getElementById('story-side').appendChild(div);
-        animateCardIn(div); // Anima la entrada de la nueva tarjeta
-    }
-
-
-    function stopPulse() {
-      if (pulseAnim) { pulseAnim.pause(); pulseAnim = null; }
-      activeId = null;
-      if (map.getLayer('bcs-symbols-active')) {
-        map.setFilter('bcs-symbols-active', ['==', ['get','id'], '__none__']);
-      }
-    }
-    function startPulseFor(id) {
-      if (!map.getLayer('bcs-symbols-active')) return;
-      const targetId = String(id);
-      if (activeId === targetId) return;
-      activeId = targetId;
-      map.setFilter('bcs-symbols-active', ['==', ['get','id'], activeId]);
-      if (pulseAnim) pulseAnim.pause();
-      const state = { s: 4.2 };
-      pulseAnim = anime({
-        targets: state,
-        s: [4.2, 5.2],
-        duration: 900,
-        direction: 'alternate',
-        easing: 'easeInOutSine',
-        loop: true,
-        update: () => map.setLayoutProperty('bcs-symbols-active', 'icon-size', state.s)
-      });
-    }
-
-    function flyToFeatureId(id){
-      if (!pointsData) return;
-      const f = allFeatures.find(fe => (fe.properties && String(fe.properties.id) === String(id)));
-      if (!f) return;
-      const coords = f.geometry.coordinates;
-      map.flyTo({ center: coords, zoom: 14, pitch: 35, bearing: 0, duration: 1400, essential: true });
-    }
-
-    function getGeoJSONBounds(gj){
-      const b = new mapboxgl.LngLatBounds();
-      const eachCoord = (coords) => {
-        if (typeof coords[0] === 'number') b.extend(coords);
-        else coords.forEach(eachCoord);
-      };
-      if (gj.type === 'FeatureCollection') gj.features.forEach(ft => eachCoord(ft.geometry.coordinates));
-      else if (gj.type === 'Feature') eachCoord(gj.geometry.coordinates);
-      else if (gj.type === 'Polygon' || gj.type === 'MultiPolygon') eachCoord(gj.coordinates);
-      return b;
-    }
-
-    function setupPointClick() {
-      map.on('click', 'bcs-symbols', function(e) {
-        if (!e.features || !e.features.length) return;
-        const feature = e.features[0];
-        const id = feature.properties.id;
-        showSideCard(id);
-      });
-      map.on('mouseenter', 'bcs-symbols', function(e) {
-        map.getCanvas().style.cursor = 'pointer';
-      });
-      map.on('mouseleave', 'bcs-symbols', function(e) {
-        map.getCanvas().style.cursor = '';
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      const btn = document.getElementById('volver-inicio-btn');
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('#story-side .story-content.active').forEach(card => {
-          card.classList.remove('active');
-          animateCardOut(card);
-        });
-        document.getElementById('filter-municipio').selectedIndex = 0;
-        document.getElementById('filter-localidad').selectedIndex = 0;
-        document.getElementById('filter-nombre').value = '';
-        filtrarYActualizar();
-        if (stateBounds) {
-          map.fitBounds(stateBounds, { padding: 40, duration: 1200 });
-        }
-        stopPulse();
-      });
-    });
-
-    function setupFilterBar() {
-      const municipios = Array.from(new Set(allFeatures.map(f => f.properties["Municipio"] || ""))).sort();
-      llenarSelect(document.getElementById('filter-municipio'), municipios, "Todos");
-      document.getElementById('filter-municipio').addEventListener('change', onFilterMunicipio);
-      document.getElementById('filter-localidad').addEventListener('change', filtrarYActualizar);
-      document.getElementById('filter-nombre').addEventListener('input', filtrarYActualizar);
-      onFilterMunicipio();
-    }
-
-    function llenarSelect(select, items, labelTodos) {
-      select.innerHTML = '';
-      const opt0 = document.createElement('option');
-      opt0.value = '';
-      opt0.textContent = labelTodos;
-      select.appendChild(opt0);
-      items.filter(it => it).forEach(it => {
-        const o = document.createElement('option');
-        o.value = it;
-        o.textContent = it;
-        select.appendChild(o);
-      });
-    }
-
-    function onFilterMunicipio() {
-      const municipio = document.getElementById('filter-municipio').value;
-      let localidades;
-      if (!municipio) {
-        localidades = Array.from(new Set(allFeatures.map(f=>f.properties["Localidad"] || ""))).sort();
-      } else {
-        localidades = Array.from(new Set(allFeatures.filter(f=>f.properties["Municipio"]===municipio).map(f=>f.properties["Localidad"] || ""))).sort();
-      }
-      llenarSelect(document.getElementById('filter-localidad'), localidades, "Todas");
-      filtrarYActualizar(true); // true: para saber que viene de un filtro de localidad
-    }
-
-    function filtrarYActualizar(fromLocalidadChange=false) {
-      const municipio = document.getElementById('filter-municipio').value;
-      const localidad = document.getElementById('filter-localidad').value;
-      const nombre = document.getElementById('filter-nombre').value.trim().toLowerCase();
-
-      let filtrados = allFeatures.filter(f => {
-        const p = f.properties;
-        let match = true;
-        if (municipio && p["Municipio"] !== municipio) match = false;
-        if (localidad && p["Localidad"] !== localidad) match = false;
-        if (nombre && !(p["Nombre de la ETC"] && p["Nombre de la ETC"].toLowerCase().includes(nombre))) match = false;
-        return match;
-      });
-
-      lastFilterFeatures = filtrados.length ? filtrados : [];
-      animateFilterPoints(filtrados);
-
-      map.getSource('bcs-points').setData({ type: 'FeatureCollection', features: filtrados });
-      stopPulse();
-      renderCards(filtrados); // Esto re-renderiza las tarjetas, pero no las muestra.
-
-      // Oculta la tarjeta activa si ya no está en los resultados filtrados
-      const activeCard = document.querySelector('#story-side .story-content.active');
-      if (activeCard) {
-          const activeCardId = activeCard.dataset.activeId;
-          if (!filtrados.some(f => String(f.properties.id) === activeCardId)) {
-              activeCard.classList.remove('active');
-              animateCardOut(activeCard);
-          }
-      }
-
-      if (filtrados.length > 0) {
-        const bounds = new mapboxgl.LngLatBounds();
-        filtrados.forEach(f => {
-          if (f.geometry && f.geometry.coordinates) {
-            bounds.extend(f.geometry.coordinates);
-          }
-        });
-        if (filtrados.length === 1) {
-          map.flyTo({ center: filtrados[0].geometry.coordinates, zoom: 14, pitch: 35, bearing: 0, duration: 1400, essential: true });
-        } else if (fromLocalidadChange && localidad) {
-          map.fitBounds(bounds, { padding: 60, duration: 1200, maxZoom: 14 });
-          setTimeout(() => map.setZoom(14), 1300);
-        } else {
-          map.fitBounds(bounds, { padding: 60, duration: 1200 });
-        }
-      }
-      if (filtrados.length === 0) {
-        document.querySelectorAll('#story-side .story-content.active').forEach(card => {
-          card.classList.remove('active');
-          animateCardOut(card);
-        });
-      }
-    }
-
-    function animateFilterPoints(filtrados) {
-      let state = { s: 3, opacity: 1 };
-      anime({
-        targets: state,
-        s: [3, 0.2],
-        opacity: [1, 0.2],
-        duration: 280,
-        easing: 'easeInCubic',
-        update: () => {
-          if (map.getLayer('bcs-symbols')) {
-            map.setLayoutProperty('bcs-symbols', 'icon-size', state.s);
-          }
-        },
-        complete: () => {
-          anime({
-            targets: state,
-            s: [0.2, 3],
-            opacity: [0.2, 1],
-            duration: 440,
-            easing: 'easeOutCubic',
-            update: () => {
-              if (map.getLayer('bcs-symbols')) {
-                map.setLayoutProperty('bcs-symbols', 'icon-size', state.s);
-              }
-            }
-          });
-        }
-      });
-    }
-
-    function renderCards(featureList) {
-        const sidePanel = document.getElementById('story-side');
-        const currentActiveCard = document.querySelector('#story-side .story-content.active');
-        const currentActiveId = currentActiveCard ? currentActiveCard.id : null;
-
-        sidePanel.innerHTML = ''; // Limpia el panel
-        
-        // Si había una tarjeta activa, la volvemos a añadir para que no desaparezca visualmente
-        if (currentActiveCard) {
-            sidePanel.appendChild(currentActiveCard);
-        }
-
-        // Esta función ya no necesita renderizar todas las tarjetas, solo la activa.
-        // La lógica de renderizar la tarjeta activa ahora está en `renderActiveCard`.
-    }
-
-  </script>
+  <!-- React application script -->
+  <script type="text/babel" src="./app.jsx"></script>
 </body>
 </html>
+
