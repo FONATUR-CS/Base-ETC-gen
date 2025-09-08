@@ -1,394 +1,147 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Turismo Comunitario – México</title>
 
-  <!-- Leaflet CSS (se mantiene externo) -->
-  <link rel="stylesheet" href="js/leaflet.css" />
+  <!-- Leaflet CSS (fallback mínimo inlinado para que el mapa se vea correctamente) -->
+  <style id="leaflet-css">
+    .leaflet-container { position: relative; overflow: hidden; outline: 0; }
+    .leaflet-pane, .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow,
+    .leaflet-zoom-box, .leaflet-image-layer, .leaflet-overlay-pane svg,
+    .leaflet-overlay-pane canvas { position:absolute; left:0; top:0; }
+    .leaflet-zoom-animated { transform-origin: 0 0; }
+    .leaflet-control { pointer-events: auto; }
+  </style>
 
-  <!-- Google Fonts: Noto Sans -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet"/>
 
-  <!-- Orden de capas: primero gobmx (CDN), luego tu app -->
+  <!-- Orden de capas CSS -->
   <style>@layer gobmx, app;</style>
 
-  <!-- CSS del CDN en la capa "gobmx" -->
-  <link
-    href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css"
-    rel="stylesheet"
-    layer="gobmx"
-  />
+  <!-- Framework gobmx (CDN) -->
+  <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet" layer="gobmx" />
 
-  <!-- Tu CSS inlinado (ajusté ../img/ ➜ img/) -->
+  <!-- Tu CSS inlinado (ajustado ../img/ ➜ img/) -->
   <style>
-/* (Si usas Google Fonts vía @import, déjalo primero) */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
+    /* ====== App CSS ====== */
+    :root{
+      font-size:16px;
+      --primary:#2E8B57;
+      --light-bg:#fafafa;
+      --nav-h:56px;
+      --footer-h:clamp(56px,8vw,90px);
+    }
+    @media (max-width:768px){ :root{ font-size:14px; } }
 
-/* Abre la capa de tu app */
-@layer app {
+    html,body{
+      height:100%;
+      font-family:'Noto Sans',sans-serif;
+      color:#fff;
+      background-image:url('img/patron1.jpg');
+      background-size:cover; background-position:center;
+      background-repeat:no-repeat; background-attachment:fixed;
+      margin:0; padding:0;
+    }
 
-/* ⬇️ Tu CSS actual tal cual (no borres nada) ⬇️ */
-/* RESET */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-/* ... todo lo que ya tienes ... */
+    /* NAV fijo */
+    #main-nav{
+      position:fixed; top:0; left:0; width:100%;
+      padding:10px 30px; z-index:10000;
+      box-shadow:0 2px 6px rgba(0,0,0,.2);
+      background-image:url('img/patron2.jpg');
+      background-size:cover; background-position:center;
+      background-repeat:no-repeat; background-attachment:fixed;
+      margin-bottom:0 !important;
+    }
+    #main-nav::before{ content:""; position:absolute; inset:0; background:rgba(0,0,0,0); pointer-events:none; }
+    #main-nav>*{ position:relative; z-index:1; }
+    #main-nav ul{ list-style:none; display:flex; gap:1rem; margin:0; padding:0; }
+    #main-nav a{ text-decoration:none; color:#555; font-weight:700; padding:6px 8px; border-radius:4px; }
+    #main-nav a.active, #main-nav a:hover{ background:#EA5188; color:#fff; }
+    @media (max-width:768px){ #main-nav{ background-attachment:scroll; } }
 
-/* Al final (o donde prefieras dentro de la capa app) 
-   haz que TODOS los h2 “hereden” lo del CDN (capa gobmx) */
-h2 {
-  font: revert-layer;
-  font-size: revert-layer;
-  font-weight: revert-layer;
-  line-height: revert-layer;
-  letter-spacing: revert-layer;
-  text-transform: revert-layer;
-  color: revert-layer;
-  margin: revert-layer;
-}
+    /* Menú hamburguesa */
+    #nav-toggle{ display:none; background:none; border:none; font-size:1.8em; cursor:pointer; }
+    #nav-menu{ list-style:none; display:flex; gap:1em; }
+    @media (max-width:768px){
+      #nav-toggle{ display:block; position:fixed; top:10px; right:20px; z-index:1200; }
+      #nav-menu{
+        position:fixed; top:0; right:0; background:#fff; height:100%; width:75%;
+        transform:translateX(100%); flex-direction:column; padding:80px 20px;
+        transition:transform .3s ease; box-shadow:-2px 0 8px rgba(0,0,0,.1);
+      }
+      #nav-menu.open{ transform:translateX(0); }
+      #nav-menu li+li{ margin-top:1em; }
+    }
 
-/* Animación de respirar para los estados en el mapa */
-@keyframes respirar {
-  0%   { filter: drop-shadow(0 0 0px #EA5188); }
-  50%  { filter: drop-shadow(0 0 14px #EA5188); }
-  100% { filter: drop-shadow(0 0 0px #EA5188); }
-}
+    /* Layout principal */
+    #container{ display:flex; height:calc(100vh - var(--nav-h)); margin-top:var(--nav-h); }
 
-.estado-respirar {
-  animation: respirar 1.8s infinite;
-}
+    /* Panel izquierdo (texto) */
+    #story{
+      width:50%; padding:30px 40px;
+      background-image:url('img/patron1.jpg');
+      background-size:cover; background-position:center;
+      background-repeat:no-repeat; background-attachment:fixed;
+      position:relative; margin-top:0 !important; padding-top:0 !important; display:flow-root;
+      padding-bottom:calc(var(--footer-h) + 16px);
+    }
+    #story > *:first-child{ margin-top:0 !important; }
+    #story section{ margin-bottom:50px; padding-bottom:20px; border-bottom:1px solid #e0e0e0; }
+    #story section img{ display:block; width:100%; height:auto; margin:1em 0; }
+    #story section.is-active{ opacity:1; }
+    #story h2{ font-size:1.8em; margin-bottom:.5em; color:#FFF2D2; }
+    #story p{ margin-bottom:1em; line-height:1.6; text-align:justify; }
+    #story ul{ margin-left:1.2em; list-style:disc; }
+    #story li{ margin-bottom:.6em; transition:color .3s; }
+    #story li a{ text-decoration:none; color:#EA5188; }
+    #story li a:hover{ text-decoration:underline; color:#fff; }
 
-/* Etiquetas de nombres de estados sobre el mapa */
-/*.estado-label {
-  font-family: 'Noto Sans', sans-serif;
-  font-size: 1em;
-  font-weight: bold;
-  color: #fff;
-  text-shadow: 0 1px 4px #000, 0 0 8px #611232;
-  pointer-events: none;
-  text-align: center;
-  white-space: nowrap;
-}*/
+    /* Panel derecho (mapa) */
+    #map{
+      position:fixed; top:var(--nav-h); right:0; width:50%;
+      height:calc(100% - var(--nav-h) - var(--footer-h));
+      z-index:500; border-left:2px solid #e0e0e0; box-shadow:-2px 0 4px rgba(0,0,0,.05);
+      background:#fafafa; pointer-events:auto;
+    }
 
-/* Cierra la capa de tu app */
-}
+    /* Scrollbar personalizado del texto */
+    #story::-webkit-scrollbar{ width:8px; }
+    #story::-webkit-scrollbar-track{ background:#f0f0f0; border-radius:4px; }
+    #story::-webkit-scrollbar-thumb{ background:#cccccc; border-radius:4px; }
+    #story::-webkit-scrollbar-thumb:hover{ background:#aaaaaa; }
 
-/* RESET */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+    /* Banner inferior fijo */
+    #footer-banner{
+      position:fixed; left:0; right:0; bottom:0; height:var(--footer-h); z-index:1100;
+      background-image:url('img/patron2.jpg');
+      background-size:cover; background-position:center;
+      background-repeat:no-repeat; background-attachment:fixed;
+      display:flex; align-items:center; justify-content:center;
+    }
+    #footer-banner img{ width:100%; height:100%; object-fit:contain; padding:4px 12px; display:block; }
 
-/* Elimina margen y padding global */
-body {
-  margin: 0 !important;
-  padding: 0 !important;
-}
+    /* Animación de “respirar” para polígonos */
+    @keyframes respirar{ 0%{filter:drop-shadow(0 0 0px #EA5188);} 50%{filter:drop-shadow(0 0 14px #EA5188);} 100%{filter:drop-shadow(0 0 0px #EA5188);} }
+    .estado-respirar{ animation:respirar 1.8s infinite; }
 
-/* ============================ */
-/*  VARIABLES GLOBALES          */
-/* ============================ */
-:root {
-  font-size: 16px;
-  --primary: #2E8B57;
-  --light-bg: #fafafa;
-
-  /* alturas de elementos fijos */
-  --nav-h: 56px;                        /* ⬅️ igual que BCS */
-  --footer-h: clamp(56px, 8vw, 90px);   /* banner inferior fijo */
-}
-
-/* Ajuste de fuente en móviles */
-@media (max-width: 768px) {
-  :root { font-size: 14px; }
-}
-
-/* pagina principal izquierda segunda */
-html, body {
-  height: 100%;
-  font-family: 'Noto Sans', sans-serif;
-  color: #fff;
-  /* Fondo con imagen */
-  background-image: url('img/patron1.jpg'); /* ← antes: ../img/patron1.jpg */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
-
-/* NAV FIJA con imagen de fondo como el body */
-#main-nav {
-  position: fixed;
-  top: 0; left: 0; width: 100%;
-  padding: 10px 30px;
-  z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-
-  background-image: url('img/patron2.jpg'); /* ← antes: ../img/patron2.jpg */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  margin-bottom: 0 !important; /* <-- añadido */
-}
-
-#main-nav::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0);
-  pointer-events: none;
-}
-#main-nav > * { position: relative; z-index: 1; }
-
-#main-nav a { color: #3a0732; }
-#main-nav a:hover,
-#main-nav a.active {
-  background: #c2a9d1;
-  color: #fff;
-}
-
-/* Fallback en móviles */
-@media (max-width: 768px) {
-  #main-nav { background-attachment: scroll; }
-}
-
-/* CONTENEDOR PRINCIPAL */
-#container {
-  display: flex;
-  height: calc(100vh - var(--nav-h));
-  margin-top: var(--nav-h);  /* ⬅️ empieza justo debajo del nav */
-}
-
-/* PANEL IZQUIERDO */
-#story {
-  padding-top: 24px;
-  width: 50%;
-  padding: 30px 40px;
-  background-image: url('img/patron1.jpg'); /* ← antes: ../img/patron1.jpg */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-
-  position: relative;
-
-  /* ⬇️ Eliminar espacio arriba y evitar colapso de márgenes */
-  margin-top: 0 !important;      /* <-- añadido */
-  padding-top: 0 !important;     /* <-- reforzado */
-  display: flow-root;            /* ⬅️ evita que el primer hijo “empuje” */
-
-  /* Reserva espacio para que el banner inferior fijo no tape el final del texto */
-  padding-bottom: calc(var(--footer-h) + 16px);
-}
-
-/* Quitar margen superior del primer hijo dentro de #story (por si acaso) */
-#story > *:first-child { margin-top: 0 !important; }
-
-/* Por si antes tenías la imagen “flotando” */
-#story > img { 
-  position: static !important;
-  bottom: auto !important;
-  left: auto !important;
-  right: auto !important;
-  margin: 0 !important;
-}
-
-/* ============================ */
-/*  BANNER INFERIOR INDEPENDIENTE (tipo navbar) */
-/* ============================ */
-#footer-banner {
-  position: fixed;
-  left: 0; right: 0; bottom: 0;
-  height: var(--footer-h);
-  z-index: 1100; /* por encima de mapa/story */
-
-  background-image: url('img/patron2.jpg'); /* ← antes: ../img/patron2.jpg */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* Si no quieres bloquear clics al mapa/links encima, quita este comentario:
-  pointer-events: none;
-  */
-}
-
-#footer-banner img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 4px 12px;
-  display: block;
-}
-
-/* Imágenes dentro de secciones ocupan ancho completo */
-#story section img {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin: 1em 0;
-}
-
-#story section {
-  margin-bottom: 50px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #e0e0e0;
-
-}
-#story section.is-active { opacity: 1; }
-#story h2 {
-  font-size: 1.8em;
-  margin-bottom: 0.5em;
-  color: #FFF2D2;
-}
-#story p {
-  margin-bottom: 1em;
-  line-height: 1.6;
-  text-align: justify;
-}
-#story ul { margin-left: 1.2em; list-style-type: disc; }
-#story li { margin-bottom: 0.6em; transition: color 0.3s; }
-#story li a { text-decoration: none; color: #EA5188; }
-#story li a:hover { text-decoration: underline; color: #fff; }
-
-/* PANEL DERECHO (MAPA)
-   Restamos también el alto del banner para que no quede oculto detrás */
-#map {
-  position: fixed;
-  top: var(--nav-h);
-  right: 0;
-  width: 50%;
-  height: calc(100% - var(--nav-h) - var(--footer-h));
-  z-index: 500;
-  border-left: 2px solid #e0e0e0;
-  box-shadow: -2px 0 4px rgba(0,0,0,0.05);
-  background: #fafafa;
-  pointer-events: auto;
-}
-
-/* Scrollbar personalizado para #story */
-#story::-webkit-scrollbar { width: 8px; }
-#story::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 4px; }
-#story::-webkit-scrollbar-thumb { background: #cccccc; border-radius: 4px; }
-#story::-webkit-scrollbar-thumb:hover { background: #aaaaaa; }
-
-/* ============================ */
-/*  MENÚ HAMBURGUESA            */
-#nav-toggle {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 1.8em;
-  cursor: pointer;
-}
-#nav-menu {
-  list-style: none;
-  display: flex;
-  gap: 1em;
-}
-@media (max-width: 768px) {
-  #nav-toggle {
-    display: block;
-    position: fixed;
-    top: 10px;
-    right: 20px;
-    z-index: 1200;
-  }
-  #nav-menu {
-    position: fixed;
-    top: 0; right: 0;
-    background: white;
-    height: 100%;
-    width: 75%;
-    transform: translateX(100%);
-    flex-direction: column;
-    padding: 80px 20px;
-    transition: transform 0.3s ease;
-    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
-  }
-  #nav-menu.open { transform: translateX(0); }
-  #nav-menu li + li { margin-top: 1em; }
-}
-
-/* ============================ */
-/*  LAYOUT RESPONSIVE           */
-@media (max-width: 1024px) {
-  #story { width: 60%; }
-  #map   { width: 40%; }
-}
-@media (max-width: 768px) {
-  #container {
-    display: block;
-    margin-top: var(--nav-h);
-  }
-  #story {
-    width: 100%;
-    max-height: none;
-    border-bottom: 1px solid #ccc;
-    background-attachment: scroll;
-    padding-bottom: calc(var(--footer-h) + 12px);
-    margin-top: 0 !important;      /* <-- añadido */
-    padding-top: 0 !important;     /* <-- añadido */
-  }
-  #map {
-    width: 100%;
-    /* restamos también el banner en móvil */
-    height: calc(50vh - var(--footer-h));
-    position: relative;
-    top: auto; right: auto;
-    border-top: 1px solid #ccc;
-  }
-  #footer-banner img { padding: 6px 10px; }
-}
-
-/* === NAV igual a Baja California Sur === */
-#main-nav {
-  position: fixed;
-  top: 0; left: 0; width: 100%;
-  padding: 10px 24px;          /* BCS */
-  z-index: 10000;
-  box-shadow: 0 2px 6px rgba(0,0,0,.2);
-
-  background-image: url('img/patron2.jpg'); /* ← antes: ../img/patron2.jpg */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-
-  color: #fff;
-  margin-bottom: 0 !important; /* <-- añadido */
-}
-
-#main-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 1rem;
-}
-
-#main-nav a {
-  text-decoration: none;
-  color: #555;              /* igual que BCS */
-  font-weight: 700;
-  padding: 6px 8px;
-  border-radius: 4px;
-}
-
-#main-nav a.active,
-#main-nav a:hover {
-  background: #EA5188;      /* igual que BCS */
-  color: #fff;
-}
-
-/* Fallback móvil como en BCS */
-@media (max-width: 768px) {
-  #main-nav { background-attachment: scroll; }
-}
+    /* Responsive */
+    @media (max-width:1024px){ #story{ width:60%; } #map{ width:40%; } }
+    @media (max-width:768px){
+      #container{ display:block; margin-top:var(--nav-h); }
+      #story{
+        width:100%; max-height:none; border-bottom:1px solid #ccc; background-attachment:scroll;
+        padding-bottom:calc(var(--footer-h) + 12px);
+      }
+      #map{
+        width:100%; height:calc(50vh - var(--footer-h)); position:relative; top:auto; right:auto;
+        border-top:1px solid #ccc;
+      }
+      #footer-banner img{ padding:6px 10px; }
+    }
   </style>
 </head>
 <body>
@@ -410,9 +163,9 @@ html, body {
     </ul>
   </nav>
 
-  <!-- Contenedor principal para layout correcto -->
+  <!-- Contenedor principal -->
   <div id="container">
-    <!-- Panel izquierdo: encabezado + listado -->
+    <!-- Panel izquierdo: contenido -->
     <div id="story">
       <section data-step="0">
         <h2>Estrategia de Turismo Comunitario en México</h2>
@@ -474,208 +227,171 @@ html, body {
     <div id="map"></div>
   </div>
 
-  <!-- Scripts -->
-  <!-- Leaflet JS (se mantiene externo para no inflar el HTML) -->
-  <script src="js/leaflet.js"></script>
+  <!-- Leaflet JS por CDN (funcional ya mismo). Para uso 100% offline, ver bloque “Versión offline” más abajo -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
 
-  <!-- (Opcional) Scrollama si lo vuelves a activar en el futuro -->
-  <!-- <script src="js/scrollama.min.js"></script> -->
-
-  <!-- js/script.js inlinado y aislado para no colisionar con main.js -->
+  <!-- (Opcional) si usas marcadores por defecto de Leaflet, fija la ruta de imágenes -->
   <script>
-  (function(){
-    function initMapLegacy({ container, geojson, defaultView, defaultZoom, onEachFeature }) {
-      window.map = L.map(container).setView(defaultView, defaultZoom);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18
-      }).addTo(map);
-      fetch(geojson)
-        .then(r => r.json())
-        .then(data => L.geoJSON(data, { onEachFeature }).addTo(map));
+    if (window.L && L.Icon && L.Icon.Default) {
+      L.Icon.Default.mergeOptions({ imagePath: 'img/' });
     }
-    window.initMapLegacy = initMapLegacy;
-  })();
   </script>
 
-  <!-- js/main.js inlinado -->
+  <!-- Tu script “legacy” como función aislada para no chocar con initMap() principal -->
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Observar cuando #map aparezca en viewport y cargar el mapa
-    const mapEl = document.getElementById('map');
-    const obs   = new IntersectionObserver((entries, observer) => {
-      if (entries[0].isIntersecting) {
-        observer.disconnect();
-        initMap();
+    // Basado en tu js/script.js (antes: initMap({...})) — lo exponemos como initMapLegacy
+    // Genera mapa simple dado un contenedor, un geojson y callbacks
+    (function(){
+      function initMapLegacy({ container, geojson, defaultView, defaultZoom, onEachFeature }) {
+        window.map = L.map(container).setView(defaultView, defaultZoom);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+        fetch(geojson).then(r => r.json()).then(data => L.geoJSON(data, { onEachFeature }).addTo(map));
       }
-    }, { rootMargin: '200px' });
-    obs.observe(mapEl);
-  });
+      window.initMapLegacy = initMapLegacy;
+    })();
+  </script>
 
-  function initMap() {
-    // 1. Inicializar el mapa
-    const isStatePage = window.location.pathname.includes('/estados/');
-    const basePath    = isStatePage ? '../' : '';
-    const map = L.map('map', { zoomControl: false })
-      .setView([23.6345, -102.5528], 5);
+  <!-- Tu main.js inlinado (carga diferida del mapa, polígonos por página y puntos BCS) -->
+  <script>
+    // Carga el mapa cuando #map entra al viewport
+    document.addEventListener('DOMContentLoaded', () => {
+      const mapEl = document.getElementById('map');
+      const obs = new IntersectionObserver((entries, observer) => {
+        if (entries[0].isIntersecting) { observer.disconnect(); initMap(); }
+      }, { rootMargin: '200px' });
+      obs.observe(mapEl);
+    });
 
-    // Satélite (solo imagen)
-    const esriImagery = L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      {
-        attribution: 'Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community'
-      }
-    ).addTo(map);
+    function initMap() {
+      // 1) Mapa base
+      const isStatePage = window.location.pathname.includes('/estados/');
+      const basePath    = isStatePage ? '../' : '';
+      const map = L.map('map', { zoomControl: false }).setView([23.6345, -102.5528], 5);
 
-    // 2. Determinar pageKey
-    const pageKey = isStatePage
-      ? window.location.pathname.split('/').pop().replace('.html','')
-      : 'index';
+      // Satélite (solo imagen)
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community' }
+      ).addTo(map);
 
-    // 3. Slug map…
-    const slugMap = {
-      'Baja California Sur':             'baja_california_sur',
-      'Hidalgo':                         'hidalgo',
-      'Michoacán de Ocampo':             'michoacan',
-      'Morelos':                         'morelos',
-      'Nayarit':                         'nayarit',
-      'Oaxaca':                          'oaxaca',
-      'Puebla':                          'puebla',
-      'Tlaxcala':                        'tlaxcala',
-      'Veracruz de Ignacio de la Llave': 'veracruz'
-    };
+      // 2) Page key
+      const pageKey = isStatePage ? window.location.pathname.split('/').pop().replace('.html','') : 'index';
 
-    // 4. URL de polígonos
-    const geoUrl = pageKey === 'index'
-      ? `${basePath}data/Estados_1.geojson`
-      : `${basePath}data/${pageKey}.geojson`;
+      // 3) Slugs para redirección desde el índice
+      const slugMap = {
+        'Baja California Sur':'baja_california_sur','Hidalgo':'hidalgo','Michoacán de Ocampo':'michoacan',
+        'Morelos':'morelos','Nayarit':'nayarit','Oaxaca':'oaxaca','Puebla':'puebla','Tlaxcala':'tlaxcala',
+        'Veracruz de Ignacio de la Llave':'veracruz'
+      };
 
-    // 5. Cargar polígonos
-    fetch(geoUrl)
-      .then(r => {
-        if (!r.ok) throw new Error(r.statusText);
-        return r.json();
-      })
-      .then(geojson => {
-        // 5a. Capa de polígonos
-        const layerGroup = L.geoJSON(geojson, {
-          style: f => ({
-            color: '#611232',
-            weight: pageKey === 'index' ? 2 : 3,
-            fillOpacity: pageKey === 'index' ? 0.3 : 0.2
-          }),
-          onEachFeature: (feature, lyr) => {
-            lyr.options.interactive = true;
-            const name = feature.properties.Estado;
-            if (pageKey === 'index') {
-              lyr.on('mouseover', () => lyr.getElement().style.cursor = 'pointer');
-              lyr.on('click', () => {
-                const slug = slugMap[name] || slugify(name);
-                window.location.href = `estados/${slug}.html`;
-              });
-              // Agrega una animación visual al polígono cuando está listo el SVG
-              setTimeout(() => {
-                const el = lyr.getElement();
-                if (el) el.classList.add('estado-respirar');
-              }, 0);
-            } else {
-              // Popup en páginas de estado
-              const props = feature.properties || {};
-              let html = '<table>';
-              for (let k in props) {
-                html += `<tr><th>${k}</th><td>${props[k]}</td></tr>`;
+      // 4) Fuente de GeoJSON (todos o por estado)
+      const geoUrl = pageKey === 'index'
+        ? `${basePath}data/Estados_1.geojson`
+        : `${basePath}data/${pageKey}.geojson`;
+
+      // 5) Cargar polígonos
+      fetch(geoUrl)
+        .then(r => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+        .then(geojson => {
+          const layerGroup = L.geoJSON(geojson, {
+            style: f => ({ color:'#611232', weight: pageKey==='index' ? 2 : 3, fillOpacity: pageKey==='index' ? 0.3 : 0.2 }),
+            onEachFeature: (feature, lyr) => {
+              lyr.options.interactive = true;
+              const name = feature.properties.Estado;
+              if (pageKey === 'index') {
+                lyr.on('mouseover', () => lyr.getElement().style.cursor = 'pointer');
+                lyr.on('click', () => {
+                  const slug = slugMap[name] || slugify(name);
+                  window.location.href = `estados/${slug}.html`;
+                });
+                // Efecto visual al estar listo el SVG
+                setTimeout(() => { const el = lyr.getElement(); if (el) el.classList.add('estado-respirar'); }, 0);
+              } else {
+                // Tabla con propiedades en popup
+                const props = feature.properties || {};
+                let html = '<table>';
+                for (let k in props) html += `<tr><th>${k}</th><td>${props[k]}</td></tr>`;
+                html += '</table>';
+                lyr.bindPopup(html);
               }
-              html += '</table>';
-              lyr.bindPopup(html);
             }
+          }).addTo(map);
+
+          // Enfocar al conjunto de polígonos
+          const initialBounds = layerGroup.getBounds();
+          if (initialBounds.isValid()) map.fitBounds(initialBounds, { padding:[20,20] });
+
+          // --- Puntos para BCS ---
+          if (pageKey === 'baja_california_sur') {
+            const ecoIcon = L.icon({ iconUrl: `${basePath}img/eco.svg`, iconSize:[32,32], iconAnchor:[16,32] });
+            fetch(`${basePath}data/5_Puntos_BCS.geojson`)
+              .then(r => { if(!r.ok) throw new Error(r.statusText); return r.json(); })
+              .then(pointsGeojson => {
+                const points = pointsGeojson.features;
+                const pointsLayer = L.geoJSON(pointsGeojson, {
+                  pointToLayer: (f, latlng) => L.marker(latlng, { icon: ecoIcon }),
+                  onEachFeature: (f, lyr) => {
+                    const raw = f.properties;
+                    const label = raw.Name || raw.name || raw.nombre || 'Sin título';
+                    lyr.bindPopup(label);
+                    lyr.on('click', () => {
+                      if (map.hasLayer(layerGroup)) map.removeLayer(layerGroup);
+                      const b = L.geoJSON(f).getBounds();
+                      const optZ = map.getBoundsZoom(b);
+                      const tz = optZ > 4 ? optZ - 4 : optZ;
+                      map.flyToBounds(b, { padding:[20,20], maxZoom: tz });
+                      map.once('moveend', () => lyr.openPopup());
+
+                      const sec = document.querySelector(`#story section[data-index="${f.properties.id}"]`);
+                      if (sec) {
+                        document.querySelectorAll('#story section').forEach(s => s.classList.remove('is-active'));
+                        sec.classList.add('is-active');
+                        sec.scrollIntoView({ behavior:'smooth' });
+                      }
+                    });
+                  }
+                }).addTo(map);
+              })
+              .catch(() => console.error('No se pudo cargar 5_Puntos_BCS.geojson'));
           }
-        }).addTo(map);
+        })
+        .catch(err => {
+          console.error('Error cargando GeoJSON:', err);
+          if (pageKey === 'index') alert('No se pudo cargar el mapa de estados.');
+        });
+    }
 
-        // 5b. Ajustar vista inicial a todo el layerGroup
-        const initialBounds = layerGroup.getBounds();
-        if (initialBounds.isValid()) {
-          map.fitBounds(initialBounds, { padding: [20,20] });
-        }
-
-        // ─── Scrollama (código comentado en el original) ───
-        // if (pageKey === 'index') { ... }
-
-        // ─── Scrollama y puntos para BCS ───
-        if (pageKey === 'baja_california_sur') {
-          // 1) Icono eco.svg
-          const ecoIcon = L.icon({
-            iconUrl: `${basePath}img/eco.svg`,
-            iconSize: [32,32],
-            iconAnchor: [16,32]
-          });
-
-          // 2) Cargar y mostrar puntos
-          fetch(`${basePath}data/5_Puntos_BCS.geojson`)
-            .then(r => {
-              if (!r.ok) throw new Error(r.statusText);
-              return r.json();
-            })
-            .then(pointsGeojson => {
-              const points = pointsGeojson.features;
-
-              // Capa de puntos con popup y handler de clic
-              const pointsLayer = L.geoJSON(pointsGeojson, {
-                pointToLayer: (f, latlng) => L.marker(latlng, { icon: ecoIcon }),
-                onEachFeature: (f, lyr) => {
-                  const raw   = f.properties;
-                  const label = raw.Name || raw.name || raw.nombre || 'Sin título';
-                  lyr.bindPopup(label);
-
-                  lyr.on('click', () => {
-                    if (map.hasLayer(layerGroup)) map.removeLayer(layerGroup);
-                    const b    = L.geoJSON(f).getBounds();
-                    const optZ = map.getBoundsZoom(b);
-                    const tz   = optZ > 4 ? optZ - 4 : optZ;
-                    map.flyToBounds(b, { padding: [20,20], maxZoom: tz });
-                    map.once('moveend', () => lyr.openPopup());
-
-                    const sec = document.querySelector(
-                      `#story section[data-index="${f.properties.id}"]`
-                    );
-                    if (sec) {
-                      document.querySelectorAll('#story section')
-                        .forEach(s => s.classList.remove('is-active'));
-                      sec.classList.add('is-active');
-                      sec.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  });
-                }
-              }).addTo(map);
-
-              // (Scrollama en BCS estaba comentado en el original)
-            })
-            .catch(() => console.error('No se pudo cargar 5_Puntos_BCS.geojson'));
-        }
-      })
-      .catch(err => {
-        console.error('Error cargando GeoJSON:', err);
-        if (pageKey === 'index') alert('No se pudo cargar el mapa de estados.');
-      });
-  }
-
-  // helper slugify
-  function slugify(name) {
-    return typeof name === 'string'
-      ? name.toLowerCase()
-            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            .replace(/\s+/g, '_')
+    // Utilidad de slug
+    function slugify(name){
+      return typeof name === 'string'
+        ? name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'_')
         : '';
-  }
+    }
   </script>
 
-  <!-- Toggle del menú (se queda igual) -->
+  <!-- Toggle del menú -->
   <script>
-  document.getElementById('nav-toggle')
-    .addEventListener('click', () => {
+    document.getElementById('nav-toggle').addEventListener('click', () => {
       document.getElementById('nav-menu').classList.toggle('open');
     });
   </script>
 
-  <!-- Banner inferior independiente del Footer-->
+  <!-- Banner inferior -->
   <div id="footer-banner"><img src="img/tittle.png" alt="Turismo Comunitario"></div>
+
+  <!-- ===== Versión OFFLINE (opcional) =====
+       Si quieres TODO 100% embebido sin CDN:
+       1) Elimina el <script src="https://unpkg.com/leaflet..."></script> de arriba.
+       2) Pega aquí el contenido completo de tu js/leaflet.js entre <script id="leaflet-js"> ... </script>.
+       (Tu proyecto ya incluye Leaflet 1.9.4) -->
+  <!--
+  <script id="leaflet-js">
+  // Pega aquí TODO el contenido de tu archivo local js/leaflet.js (Leaflet 1.9.4)
+  </script>
+  <script>
+    // Ruta de iconos por si usas los marcadores por defecto (PNG)
+    L.Icon.Default.mergeOptions({ imagePath: 'img/' });
+  </script>
+  -->
 </body>
 </html>
