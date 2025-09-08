@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Turismo Comunitario – México</title>
 
-  <!-- Leaflet CSS (fallback mínimo inlinado para que el mapa se vea correctamente) -->
   <style id="leaflet-css">
     .leaflet-container { position: relative; overflow: hidden; outline: 0; }
     .leaflet-pane, .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow,
@@ -15,21 +14,18 @@
     .leaflet-control { pointer-events: auto; }
   </style>
 
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet"/>
 
-  <!-- Orden de capas CSS -->
   <style>@layer gobmx, app;</style>
 
-  <!-- Framework gobmx (CDN) -->
   <link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet" layer="gobmx" />
 
-  <!-- Tu CSS inlinado (ajustado ../img/ ➜ img/) -->
   <style>
-    /* ====== App CSS ====== */
+    /* ====== App CSS (Versión Mejorada) ====== */
     :root{
       font-size:16px;
       --primary:#2E8B57;
+      --accent: #EA5188; /* ✨ MEJORA: Definimos el color de acento como variable */
       --light-bg:#fafafa;
       --nav-h:56px;
       --footer-h:clamp(56px,8vw,90px);
@@ -44,37 +40,61 @@
       background-size:cover; background-position:center;
       background-repeat:no-repeat; background-attachment:fixed;
       margin:0; padding:0;
+      position: relative; /* ✨ MEJORA: Necesario para el overlay */
+    }
+
+    /* ✨ MEJORA: Overlay sutil para mejorar el contraste del texto */
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(40, 40, 40, 0.3);
+        z-index: -1;
     }
 
     /* NAV fijo */
     #main-nav{
       position:fixed; top:0; left:0; width:100%;
       padding:10px 30px; z-index:10000;
-      box-shadow:0 2px 6px rgba(0,0,0,.2);
+      box-shadow:0 4px 12px rgba(0,0,0,.25); /* ✨ MEJORA: Sombra más pronunciada */
       background-image:url('img/patron2.jpg');
       background-size:cover; background-position:center;
       background-repeat:no-repeat; background-attachment:fixed;
       margin-bottom:0 !important;
     }
-    #main-nav::before{ content:""; position:absolute; inset:0; background:rgba(0,0,0,0); pointer-events:none; }
+    #main-nav::before{ content:""; position:absolute; inset:0; background:rgba(0,0,0,0.2); pointer-events:none; } /* ✨ MEJORA: Overlay también en el nav */
     #main-nav>*{ position:relative; z-index:1; }
     #main-nav ul{ list-style:none; display:flex; gap:1rem; margin:0; padding:0; }
-    #main-nav a{ text-decoration:none; color:#555; font-weight:700; padding:6px 8px; border-radius:4px; }
-    #main-nav a.active, #main-nav a:hover{ background:#EA5188; color:#fff; }
+    #main-nav a{
+      text-decoration:none;
+      color:#fff; /* ✨ MEJORA: Texto blanco para mejor contraste en nav */
+      font-weight:700;
+      padding:6px 12px; /* ✨ MEJORA: Un poco más de padding horizontal */
+      border-radius:6px; /* ✨ MEJORA: Bordes redondeados */
+      transition: background-color 0.3s, color 0.3s; /* ✨ MEJORA: Transición suave */
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* ✨ MEJORA: Sombra de texto */
+    }
+    #main-nav a.active, #main-nav a:hover{ background:var(--accent); color:#fff; }
     @media (max-width:768px){ #main-nav{ background-attachment:scroll; } }
 
     /* Menú hamburguesa */
-    #nav-toggle{ display:none; background:none; border:none; font-size:1.8em; cursor:pointer; }
+    #nav-toggle{
+      display:none; background:none; border:none; font-size:1.8em; cursor:pointer;
+      color: white; /* ✨ MEJORA: Asegurar que el ícono sea visible */
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* ✨ MEJORA: Sombra para visibilidad */
+    }
     #nav-menu{ list-style:none; display:flex; gap:1em; }
     @media (max-width:768px){
       #nav-toggle{ display:block; position:fixed; top:10px; right:20px; z-index:1200; }
       #nav-menu{
-        position:fixed; top:0; right:0; background:#fff; height:100%; width:75%;
-        transform:translateX(100%); flex-direction:column; padding:80px 20px;
-        transition:transform .3s ease; box-shadow:-2px 0 8px rgba(0,0,0,.1);
+        position:fixed; top:0; right:0; background:#333; /* ✨ MEJORA: Fondo oscuro para el menú móvil */
+        height:100%; width:75%;
+        transform:translateX(100%); flex-direction:column; padding:80px 30px;
+        transition:transform .3s ease; box-shadow:-4px 0 15px rgba(0,0,0,.2);
       }
       #nav-menu.open{ transform:translateX(0); }
       #nav-menu li+li{ margin-top:1em; }
+      #nav-menu a { color: #fff; } /* ✨ MEJORA: Color de texto para el menú móvil */
     }
 
     /* Layout principal */
@@ -83,36 +103,54 @@
     /* Panel izquierdo (texto) */
     #story{
       width:50%; padding:30px 40px;
-      background-image:url('img/patron1.jpg');
-      background-size:cover; background-position:center;
-      background-repeat:no-repeat; background-attachment:fixed;
+      background: transparent; /* ✨ MEJORA: Hacemos el fondo transparente para que se vea el de body */
       position:relative; margin-top:0 !important; padding-top:0 !important; display:flow-root;
       padding-bottom:calc(var(--footer-h) + 16px);
+      overflow-y: auto; /* ✨ MEJORA: Asegurar que el scroll siempre sea posible si el contenido excede */
     }
     #story > *:first-child{ margin-top:0 !important; }
-    #story section{ margin-bottom:50px; padding-bottom:20px; border-bottom:1px solid #e0e0e0; }
-    #story section img{ display:block; width:100%; height:auto; margin:1em 0; }
+    #story section{ margin-bottom:50px; padding-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.2); } /* ✨ MEJORA: Borde más sutil */
+    #story section img{
+      display:block; width:100%; height:auto; margin:1.5em 0;
+      border-radius: 12px; /* ✨ MEJORA: Bordes redondeados en imágenes */
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* ✨ MEJORA: Sombra para dar profundidad */
+    }
     #story section.is-active{ opacity:1; }
-    #story h2{ font-size:1.8em; margin-bottom:.5em; color:#FFF2D2; }
-    #story p{ margin-bottom:1em; line-height:1.6; text-align:justify; }
+    #story h2{
+      font-size:1.8em; margin-bottom:.5em; color:#FFF2D2;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.7); /* ✨ MEJORA: Sombra para resaltar el título */
+    }
+    #story p{
+      margin-bottom:1em; line-height:1.7; /* ✨ MEJORA: Mayor interlineado */
+      text-align:left; /* ✨ MEJORA: Mejor legibilidad que justificado */
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.7); /* ✨ MEJORA: Sombra de texto */
+    }
     #story ul{ margin-left:1.2em; list-style:disc; }
-    #story li{ margin-bottom:.6em; transition:color .3s; }
-    #story li a{ text-decoration:none; color:#EA5188; }
+    #story li{ margin-bottom:.6em; transition:color .3s; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
+    #story li a{ text-decoration:none; color:var(--accent); font-weight: bold; }
     #story li a:hover{ text-decoration:underline; color:#fff; }
 
     /* Panel derecho (mapa) */
     #map{
       position:fixed; top:var(--nav-h); right:0; width:50%;
       height:calc(100% - var(--nav-h) - var(--footer-h));
-      z-index:500; border-left:2px solid #e0e0e0; box-shadow:-2px 0 4px rgba(0,0,0,.05);
+      z-index:500;
+      border-left:2px solid rgba(255,255,255,0.2); /* ✨ MEJORA: Borde más sutil */
+      box-shadow:-4px 0 15px rgba(0,0,0,.2);
       background:#fafafa; pointer-events:auto;
+      border-radius: 12px 0 0 0; /* ✨ MEJORA: Redondeo en la esquina superior izquierda */
     }
 
     /* Scrollbar personalizado del texto */
-    #story::-webkit-scrollbar{ width:8px; }
-    #story::-webkit-scrollbar-track{ background:#f0f0f0; border-radius:4px; }
-    #story::-webkit-scrollbar-thumb{ background:#cccccc; border-radius:4px; }
-    #story::-webkit-scrollbar-thumb:hover{ background:#aaaaaa; }
+    #story::-webkit-scrollbar{ width:10px; }
+    #story::-webkit-scrollbar-track{ background:rgba(0,0,0,0.1); }
+    #story::-webkit-scrollbar-thumb{
+      background:var(--accent); /* ✨ MEJORA: Scrollbar con el color de acento */
+      border-radius:10px;
+      border: 2px solid transparent;
+      background-clip: content-box;
+    }
+    #story::-webkit-scrollbar-thumb:hover{ background: #c74572; } /* ✨ MEJORA: Versión más oscura del acento al pasar el cursor */
 
     /* Banner inferior fijo */
     #footer-banner{
@@ -121,11 +159,12 @@
       background-size:cover; background-position:center;
       background-repeat:no-repeat; background-attachment:fixed;
       display:flex; align-items:center; justify-content:center;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.25); /* ✨ MEJORA: Sombra superior */
     }
     #footer-banner img{ width:100%; height:100%; object-fit:contain; padding:4px 12px; display:block; }
 
     /* Animación de “respirar” para polígonos */
-    @keyframes respirar{ 0%{filter:drop-shadow(0 0 0px #EA5188);} 50%{filter:drop-shadow(0 0 14px #EA5188);} 100%{filter:drop-shadow(0 0 0px #EA5188);} }
+    @keyframes respirar{ 0%{filter:drop-shadow(0 0 0px var(--accent));} 50%{filter:drop-shadow(0 0 14px var(--accent));} 100%{filter:drop-shadow(0 0 0px var(--accent));} }
     .estado-respirar{ animation:respirar 1.8s infinite; }
 
     /* Responsive */
@@ -133,12 +172,14 @@
     @media (max-width:768px){
       #container{ display:block; margin-top:var(--nav-h); }
       #story{
-        width:100%; max-height:none; border-bottom:1px solid #ccc; background-attachment:scroll;
+        width:100%; max-height:none;
         padding-bottom:calc(var(--footer-h) + 12px);
+        border-bottom:none;
       }
       #map{
         width:100%; height:calc(50vh - var(--footer-h)); position:relative; top:auto; right:auto;
-        border-top:1px solid #ccc;
+        border-top:2px solid rgba(255,255,255,0.2); /* ✨ MEJORA: Borde más sutil */
+        border-radius: 0; /* ✨ MEJORA: Quitar redondeo en móvil */
       }
       #footer-banner img{ padding:6px 10px; }
     }
@@ -146,7 +187,6 @@
 </head>
 <body>
 
-  <!-- Navegación fija -->
   <nav id="main-nav">
     <button id="nav-toggle" aria-label="Abrir menú">☰</button>
     <ul id="nav-menu">
@@ -163,42 +203,40 @@
     </ul>
   </nav>
 
-  <!-- Contenedor principal -->
   <div id="container">
-    <!-- Panel izquierdo: contenido -->
     <div id="story">
       <section data-step="0">
         <h2>Estrategia de Turismo Comunitario en México</h2>
-        <p class="justificado">El turismo comunitario en México es un modelo de desarrollo turístico que busca empoderar a las comunidades locales al involucrarlas directamente a la planificación,
+        <p>El turismo comunitario en México es un modelo de desarrollo turístico que busca empoderar a las comunidades locales al involucrarlas directamente a la planificación,
         operación y beneficio de actividades turísticas en sus territorios.</p>
-        <p class="justificado">Este enfoque permite a los visitantes experimentar de manera auténtica la cultura, tradiciones, historia y entorno natural de las comunidades anfitrionas, promoviendo el respeto
+        <p>Este enfoque permite a los visitantes experimentar de manera auténtica la cultura, tradiciones, historia y entorno natural de las comunidades anfitrionas, promoviendo el respeto
         por los recursos naturales y el patrimonio cultural.</p>
         <img src="img/Turismo_9.jpg" alt="Turismo" loading="lazy">
       </section>
       <section data-step="2">
         <h2>Lo esencial del Turismo Comunitario </h2>
-        <p class="justificado">Un turismo donde las actividades, productos y servicios que se ofrecen, son gestionados por las propias comunidades rurales e indígenas.</p>
+        <p>Un turismo donde las actividades, productos y servicios que se ofrecen, son gestionados por las propias comunidades rurales e indígenas.</p>
         <img src="img/Turismo_3.jpg" alt="Turismo" loading="lazy">
       </section>
       <section data-step="3">
         <h2>¿Por qué elegirlo?</h2>
-        <p class="justificado">¡Es un turismo con impacto positivo!</p>
+        <p>¡Es un turismo con impacto positivo!</p>
         <ul>
           <li>Ofrece experiencias auténticas</li>
           <li>Apoya la economía local</li>
           <li>Preserva el medio ambiente</li>
         </ul>
-        <p class="justificado">La ONU Turismo lo promueve como una herramienta para el desarrollo sostenible, la preservación de la cultura y el entorno natural.</p>   
+        <p>La ONU Turismo lo promueve como una herramienta para el desarrollo sostenible, la preservación de la cultura y el entorno natural.</p> 
         <img src="img/Turismo_4.jpg" alt="Turismo" loading="lazy">
       </section>
       <section data-step="4">
         <h2>Una forma de contribuir al desarrollo local.</h2>
-        <p class="justificado">Es elegir el Turismo Comunitario. Esta es solo una introducción de lo que debes saber sobre él. 🌱.</p>
+        <p>Es elegir el Turismo Comunitario. Esta es solo una introducción de lo que debes saber sobre él. 🌱.</p>
         <img src="img/Turismo_5.jpg" alt="Turismo" loading="lazy">
       </section>
       <section data-step="5">
         <h2>Actividades que puedes realizar de Turismo Comunitario</h2>
-        <p class="justificado">Todas las actividades son ofrecidas por las propias comunidades locales quienes comparten sus conocimientos, tradiciones y formas de vida fortaleciendo su identidad y cultura.</p>
+        <p>Todas las actividades son ofrecidas por las propias comunidades locales quienes comparten sus conocimientos, tradiciones y formas de vida fortaleciendo su identidad y cultura.</p>
         <ul>
           <li>Talleres artesanales: Alfarería, bordado, tejido, etc.</li>
           <li>Talleres Gastronómicos: Aprender a preparar platillos locales con ingredientes de la región</li>
@@ -208,7 +246,7 @@
       </section>
       <section data-step="10">
         <h2>Explora los estados</h2>
-        <p class="justificado">Haz clic en un estado en el mapa o en el listado para conocerlo más a fondo:</p>
+        <p>Haz clic en un estado en el mapa o en el listado para conocerlo más a fondo:</p>
         <ul>
           <li><a href="estados/baja_california_sur.html">Baja California Sur</a></li>
           <li><a href="estados/hidalgo.html">Hidalgo</a></li>
@@ -223,21 +261,17 @@
       </section>
     </div>
 
-    <!-- Panel derecho: mapa -->
     <div id="map"></div>
   </div>
 
-  <!-- Leaflet JS por CDN (funcional ya mismo). Para uso 100% offline, ver bloque “Versión offline” más abajo -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
 
-  <!-- (Opcional) si usas marcadores por defecto de Leaflet, fija la ruta de imágenes -->
   <script>
     if (window.L && L.Icon && L.Icon.Default) {
       L.Icon.Default.mergeOptions({ imagePath: 'img/' });
     }
   </script>
 
-  <!-- Tu script “legacy” como función aislada para no chocar con initMap() principal -->
   <script>
     // Basado en tu js/script.js (antes: initMap({...})) — lo exponemos como initMapLegacy
     // Genera mapa simple dado un contenedor, un geojson y callbacks
@@ -251,7 +285,6 @@
     })();
   </script>
 
-  <!-- Tu main.js inlinado (carga diferida del mapa, polígonos por página y puntos BCS) -->
   <script>
     // Carga el mapa cuando #map entra al viewport
     document.addEventListener('DOMContentLoaded', () => {
@@ -369,29 +402,13 @@
     }
   </script>
 
-  <!-- Toggle del menú -->
   <script>
     document.getElementById('nav-toggle').addEventListener('click', () => {
       document.getElementById('nav-menu').classList.toggle('open');
     });
   </script>
 
-  <!-- Banner inferior -->
   <div id="footer-banner"><img src="img/tittle.png" alt="Turismo Comunitario"></div>
 
-  <!-- ===== Versión OFFLINE (opcional) =====
-       Si quieres TODO 100% embebido sin CDN:
-       1) Elimina el <script src="https://unpkg.com/leaflet..."></script> de arriba.
-       2) Pega aquí el contenido completo de tu js/leaflet.js entre <script id="leaflet-js"> ... </script>.
-       (Tu proyecto ya incluye Leaflet 1.9.4) -->
-  <!--
-  <script id="leaflet-js">
-  // Pega aquí TODO el contenido de tu archivo local js/leaflet.js (Leaflet 1.9.4)
-  </script>
-  <script>
-    // Ruta de iconos por si usas los marcadores por defecto (PNG)
-    L.Icon.Default.mergeOptions({ imagePath: 'img/' });
-  </script>
-  -->
-</body>
+  </body>
 </html>
